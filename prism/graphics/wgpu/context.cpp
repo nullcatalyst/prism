@@ -5,17 +5,23 @@
 
 namespace prism::graphics::inline wgpu {
 
-Context::Context(WGPUInstance instance, WGPUSurface surface, const uint32_t width,
-                 const uint32_t height, const float pixel_ratio)
-    : _instance{instance},
-      _surface{surface},
-      _width{width},
-      _height{height},
-      _pixel_ratio{pixel_ratio} {
-    _adapter    = common::request_adapter(_instance, _surface);
-    _device     = common::create_device(_adapter);
-    _swap_chain = common::create_swap_chain(_device, _surface, _adapter, width, height);
-    _queue      = common::get_queue(_device);
+void Context::enable_debug() {
+#if defined(PRISM_BACKEND_WGPU)
+    wgpuSetLogLevel(WGPULogLevel_Debug);
+    wgpuSetLogCallback([](auto level, auto* msg,
+                          void* user_data) { ::prism::common::log_message("[[WGPU]] ", msg); },
+                       nullptr);
+#endif
+}
+
+Context::Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_width,
+                 uint32_t surface_height)
+    : _instance{instance}, _surface{surface} {
+    _adapter = common::request_adapter(_instance, _surface);
+    _device  = common::create_device(_adapter);
+    _swap_chain =
+        common::create_swap_chain(_device, _surface, _adapter, surface_width, surface_height);
+    _queue = common::get_queue(_device);
 
     _surface_format = static_cast<TextureFormat>(wgpuSurfaceGetPreferredFormat(_surface, _adapter));
 }

@@ -35,11 +35,11 @@ std::tuple<app::Application, graphics::Context> create_window(const char*    tit
     const auto surface = app::create_surface_for_window(instance, window);
     PRISM_DEBUG_RESULT(surface);
 
-    auto app          = app::Application{window};
-    const auto [w, h] = app.drawable_size();
-    auto ctx          = graphics::Context{instance, surface, w, h, app.pixel_ratio()};
+    auto app                                   = app::Application{window};
+    const auto [surface_width, surface_height] = app.drawable_size();
 
-    return std::make_tuple(std::move(app), std::move(ctx));
+    return std::make_tuple(std::move(app),
+                           graphics::Context{instance, surface, surface_width, surface_height});
 }
 #endif  // defined(PRISM_BACKEND_SDL2) && defined(PRISM_BACKEND_WGPU)
 

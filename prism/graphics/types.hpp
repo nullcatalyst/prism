@@ -22,29 +22,29 @@ struct Labelable {
 
 // BindGroupLayoutDescriptor
 
-struct BufferBindingLayout : private Chainable {
+struct BufferBindingLayout : public Chainable {
     BufferBindingType type;
     bool              has_dynamic_offset;
     uint64_t          min_binding_size;
 };
 
-struct SamplerBindingLayout : private Chainable {
+struct SamplerBindingLayout : public Chainable {
     SamplerBindingType type;
 };
 
-struct TextureBindingLayout : private Chainable {
+struct TextureBindingLayout : public Chainable {
     TextureSampleType    sample_type;
     TextureViewDimension view_dimension;
     bool                 multisampled;
 };
 
-struct StorageTextureBindingLayout : private Chainable {
+struct StorageTextureBindingLayout : public Chainable {
     StorageTextureAccess access;
     TextureFormat        format;
     TextureViewDimension view_dimension;
 };
 
-struct BindGroupLayoutEntry : private Chainable {
+struct BindGroupLayoutEntry : public Chainable {
     uint32_t                    binding;
     ShaderStage                 visibility;
     BufferBindingLayout         buffer;
@@ -53,14 +53,14 @@ struct BindGroupLayoutEntry : private Chainable {
     StorageTextureBindingLayout storage_texture;
 };
 
-struct BindGroupLayoutDescriptor : private Chainable, Labelable {
+struct BindGroupLayoutDescriptor : public Chainable, public Labelable {
     uint32_t                    entry_count;
     const BindGroupLayoutEntry* entries;
 };
 
 // BindGroupDescriptor
 
-struct BindGroupEntry : private Chainable {
+struct BindGroupEntry : public Chainable {
     uint32_t        binding;
     WGPUBuffer      buffer = nullptr;
     uint64_t        offset;
@@ -69,7 +69,7 @@ struct BindGroupEntry : private Chainable {
     WGPUTextureView texture_view = nullptr;
 };
 
-struct BindGroupDescriptor : private Chainable, Labelable {
+struct BindGroupDescriptor : public Chainable, public Labelable {
     WGPUBindGroupLayout   layout;
     uint32_t              entry_count;
     const BindGroupEntry* entries;
@@ -77,14 +77,14 @@ struct BindGroupDescriptor : private Chainable, Labelable {
 
 // PipelineLayoutDescriptor
 
-struct PipelineLayoutDescriptor : private Chainable, Labelable {
+struct PipelineLayoutDescriptor : public Chainable, public Labelable {
     uint32_t                   bind_group_layout_count;
     const WGPUBindGroupLayout* bind_group_layouts;
 };
 
 // RenderPipelineDescriptor
 
-struct ConstantEntry : private Chainable {
+struct ConstantEntry : public Chainable {
     char const* key;
     double      value;
 };
@@ -102,7 +102,7 @@ struct VertexBufferLayout {
     const VertexAttribute* attributes;
 };
 
-struct VertexState : private Chainable {
+struct VertexState : public Chainable {
     WGPUShaderModule          module;
     const char*               entry_point;
     uint32_t                  constant_count = 0;
@@ -111,11 +111,11 @@ struct VertexState : private Chainable {
     const VertexBufferLayout* buffers        = nullptr;
 };
 
-struct PrimitiveState : private Chainable {
+struct PrimitiveState : public Chainable {
     PrimitiveTopology topology;
-    IndexFormat       strip_index_format;
-    FrontFace         front_face;
-    CullMode          cull_mode;
+    IndexFormat       strip_index_format = IndexFormat::Undefined;
+    FrontFace         front_face         = FrontFace::CCW;
+    CullMode          cull_mode          = CullMode::None;
 };
 
 struct StencilFaceState {
@@ -125,23 +125,23 @@ struct StencilFaceState {
     StencilOperation pass_op;
 };
 
-struct DepthStencilState : private Chainable {
+struct DepthStencilState : public Chainable {
     TextureFormat    format;
     bool             depth_writeE_enabled;
     CompareFunction  depth_compare;
     StencilFaceState stencil_front;
     StencilFaceState stencil_back;
-    uint32_t         stencil_readM_mask;
-    uint32_t         stencil_writeM_mask;
+    uint32_t         stencil_read_mask;
+    uint32_t         stencil_write_mask;
     int32_t          depth_bias;
     float            depth_bias_slope_scale;
     float            depth_bias_clamp;
 };
 
-struct MultisampleState : private Chainable {
-    uint32_t count;
-    uint32_t mask;
-    bool     alpha_to_coverage_enabled;
+struct MultisampleState : public Chainable {
+    uint32_t count                     = 1;
+    uint32_t mask                      = 0xFFFFFFFF;
+    bool     alpha_to_coverage_enabled = false;
 };
 
 struct BlendComponent {
@@ -155,13 +155,13 @@ struct BlendState {
     BlendComponent alpha;
 };
 
-struct ColorTargetState : private Chainable {
+struct ColorTargetState : public Chainable {
     TextureFormat     format;
     const BlendState* blend      = nullptr;
     ColorWriteMask    write_mask = ColorWriteMask::All;
 };
 
-struct FragmentState : private Chainable {
+struct FragmentState : public Chainable {
     WGPUShaderModule        module;
     const char*             entry_point;
     uint32_t                constant_count = 0;
@@ -170,7 +170,7 @@ struct FragmentState : private Chainable {
     const ColorTargetState* targets;
 };
 
-struct RenderPipelineDescriptor : private Chainable, Labelable {
+struct RenderPipelineDescriptor : public Chainable, public Labelable {
     WGPUPipelineLayout       layout = nullptr;
     VertexState              vertex;
     PrimitiveState           primitive;
@@ -214,7 +214,7 @@ struct RenderPassTimestampWrite {
     RenderPassTimestampLocation location;
 };
 
-struct RenderPassDescriptor : private Chainable, Labelable {
+struct RenderPassDescriptor : public Chainable, public Labelable {
     uint32_t                                color_attachment_count   = 0;
     const RenderPassColorAttachment*        color_attachments        = nullptr;
     const RenderPassDepthStencilAttachment* depth_stencil_attachment = nullptr;

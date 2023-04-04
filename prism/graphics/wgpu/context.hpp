@@ -18,19 +18,13 @@ class Context final {
     CommandEncoder _encoder    = nullptr;
 
     TextureFormat _surface_format = TextureFormat::Undefined;
-    uint32_t      _width          = 0;
-    uint32_t      _height         = 0;
-    float         _pixel_ratio    = 1.0f;
 
   public:
-    constexpr Context() = default;
+    static void enable_debug();
 
-    /**
-     * Create a new context.
-     * Ideally, this should not be called by you.
-     */
-    Context(WGPUInstance instance, WGPUSurface surface, const uint32_t width, const uint32_t height,
-            const float pixel_ratio = 1.0f);
+    constexpr Context() = default;
+    Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_width,
+            uint32_t surface_height);
 
     Context(const Context& other)            = delete;
     Context& operator=(const Context& other) = delete;
@@ -41,15 +35,6 @@ class Context final {
 
     [[nodiscard]] constexpr TextureFormat surface_format() const noexcept {
         return _surface_format;
-    }
-    [[nodiscard]] constexpr uint32_t width() const noexcept { return _width; }
-    [[nodiscard]] constexpr uint32_t height() const noexcept { return _height; }
-    [[nodiscard]] constexpr float    pixel_ratio() const noexcept { return _pixel_ratio; }
-
-    void resize(const uint32_t width, const uint32_t height, const float pixel_ratio = 1.0f) {
-        _width       = width;
-        _height      = height;
-        _pixel_ratio = pixel_ratio;
     }
 
     ////////////////////////////////

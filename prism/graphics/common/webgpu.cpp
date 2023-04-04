@@ -166,7 +166,8 @@ WGPUSwapChain create_swap_chain(WGPUDevice device, WGPUSurface surface, WGPUAdap
         .format      = wgpuSurfaceGetPreferredFormat(surface, adapter),
         .width       = width,
         .height      = height,
-        .presentMode = WGPUPresentMode_Fifo,
+        // .presentMode = WGPUPresentMode_Fifo,
+        .presentMode = WGPUPresentMode_Mailbox,
     };
 
     const WGPUSwapChain swap_chain = wgpuDeviceCreateSwapChain(device, surface, &desc);
