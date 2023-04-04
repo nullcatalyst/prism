@@ -66,7 +66,7 @@ def prism_dependencies():
     _WGPU_VERSION = "0.15.1.2"
     maybe(
         http_archive,
-        name = "wgpu",
+        name = "com_github_gfxrs_wgpu",
         sha256 = "379e83da9cb2a755e5a48fcf2551e891d19c71af582d2116d7e8ad8b83db3d01",
         strip_prefix = "wgpu-native-lib-{version}".format(version = _WGPU_VERSION),
         url = "https://github.com/nullcatalyst/wgpu-native-lib/archive/refs/tags/v{version}.tar.gz".format(version = _WGPU_VERSION),
@@ -75,9 +75,19 @@ def prism_dependencies():
     _SDL2_VERSION = "2.26.3"
     maybe(
         http_archive,
-        name = "sdl2",
+        name = "org_libsdl_sdl2",
         build_file = "@com_nullcatalyst_prism//third_party/sdl2:sdl2.BUILD",
         sha256 = "af0ff86e4a268bc12c915a0ea19ea1a16419ab1426d92bad5f4e26eb31583967",
         strip_prefix = "SDL-release-{version}".format(version = _SDL2_VERSION),
         url = "https://github.com/libsdl-org/SDL/archive/refs/tags/release-{version}.tar.gz".format(version = _SDL2_VERSION),
+    )
+
+    _GLM_VERSION = "0.9.9.8"
+    maybe(
+        http_archive,
+        name = "net_gtruc_glm",
+        build_file = "@com_nullcatalyst_prism//third_party/glm:glm.BUILD",
+        sha256 = "7d508ab72cb5d43227a3711420f06ff99b0a0cb63ee2f93631b162bfe1fe9592",
+        strip_prefix = "glm-{version}".format(version = _GLM_VERSION),
+        url = "https://github.com/g-truc/glm/archive/refs/tags/{version}.tar.gz".format(version = _GLM_VERSION),
     )

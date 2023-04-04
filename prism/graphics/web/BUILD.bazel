@@ -15,7 +15,7 @@ prism_cc_library(
         "//prism/common:debug",
         "//prism/common:platform",
         "//prism/graphics:defines",
-        "@wgpu//:webgpu-hdrs",
+        "@com_github_gfxrs_wgpu//:webgpu-hdrs",
     ],
 )
 

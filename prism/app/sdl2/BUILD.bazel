@@ -10,7 +10,7 @@ prism_cc_library(
         "//prism/app:input",
         "//prism/common:debug",
         "//prism/common:platform",
-        "@sdl2",
-        "@wgpu//:hdrs",
+        "@com_github_gfxrs_wgpu//:hdrs",
+        "@org_libsdl_sdl2//:sdl2",
     ],
 )

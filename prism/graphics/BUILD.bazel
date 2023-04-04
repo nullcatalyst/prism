@@ -17,7 +17,7 @@ prism_cc_library(
         "enums_validate.hpp",
     ],
     visibility = ["//prism:__subpackages__"],
-    deps = ["@wgpu//:webgpu-hdrs"],
+    deps = ["@com_github_gfxrs_wgpu//:webgpu-hdrs"],
 )
 
 prism_cc_library(
@@ -29,7 +29,7 @@ prism_cc_library(
     visibility = ["//prism:__subpackages__"],
     deps = [
         ":enums",
-        "@wgpu//:webgpu-hdrs",
+        "@com_github_gfxrs_wgpu//:webgpu-hdrs",
     ],
 )
 

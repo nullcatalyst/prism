@@ -11,7 +11,7 @@ prism_cc_library(
         "//prism/graphics:defines",
         "//prism/graphics:enums",
         "//prism/graphics:types",
+        "@com_github_gfxrs_wgpu//:hdrs",
         "@com_google_absl//absl/strings:str_format",
-        "@wgpu//:hdrs",
     ],
 )
