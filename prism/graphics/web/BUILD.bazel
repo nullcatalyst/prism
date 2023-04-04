@@ -1,0 +1,35 @@
+load("@prism_config//:cc.bzl", "prism_cc_library")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+
+prism_cc_library(
+    name = "web",
+    srcs = ["context.cpp"],
+    hdrs = [
+        "context.hpp",
+        "js_api.hpp",
+        "js_strings.hpp",
+        "types.hpp",
+    ],
+    visibility = ["//prism:__subpackages__"],
+    deps = [
+        "//prism/common:debug",
+        "//prism/common:platform",
+        "//prism/graphics:defines",
+        "@wgpu//:webgpu-hdrs",
+    ],
+)
+
+ts_project(
+    name = "gpu_js",
+    srcs = [
+        "gpu.ts",
+        "webgpu.typings.ts",
+    ],
+    declaration = True,
+    tsconfig = "//:tsconfig",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//base/wasm/memory:memory_js",
+        "//base/wasm/object:object_js",
+    ],
+)

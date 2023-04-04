@@ -1,0 +1,13 @@
+load("@prism_config//:cc.bzl", "prism_cc_library")
+
+prism_cc_library(
+    name = "export",
+    hdrs = ["export.hpp"],
+    visibility = ["//visibility:public"],
+)
+
+prism_cc_library(
+    name = "import",
+    hdrs = ["import.hpp"],
+    visibility = ["//visibility:public"],
+)

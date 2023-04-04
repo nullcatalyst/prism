@@ -1,0 +1,27 @@
+load("@prism_config//:cc.bzl", "prism_cc_library")
+
+prism_cc_library(
+    name = "prism",
+    srcs = ["create.cpp"],
+    hdrs = [
+        "create.hpp",
+        "prism.hpp",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//prism/app",
+        "//prism/graphics",
+    ],
+)
+
+config_setting(
+    name = "backend_sdl2",
+    define_values = {"prism_backend": "sdl2"},
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "backend_web",
+    define_values = {"prism_backend": "web"},
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,33 @@
+load("@prism_config//:cc.bzl", "prism_cc_library")
+
+prism_cc_library(
+    name = "web",
+    srcs = ["application.cpp"],
+    hdrs = [
+        "application.hpp",
+        "js_api.hpp",
+    ],
+    defines = ["PRISM_BACKEND_WEB=1"],
+    visibility = ["//prism:__subpackages__"],
+    deps = [
+        "//base:result",
+        "//base/wasm/dom:dom_cpp",
+        "//base/wasm/object:object_cpp",
+        "//prism/app:input",
+        "//prism/common:debug",
+        "//prism/common:platform",
+    ],
+)
+
+prism_cc_library(
+    name = "graphics",
+    hdrs = ["graphics.hpp"],
+    defines = ["PRISM_BACKEND_WEB=1"],
+    visibility = ["//prism:__subpackages__"],
+    deps = [
+        "//base:result",
+        "//prism/common:debug",
+        "//prism/common:platform",
+        "//prism/graphics",
+    ],
+)

@@ -1,0 +1,23 @@
+load("@prism_config//:cc.bzl", "prism_cc_library")
+
+prism_cc_library(
+    name = "wgpu",
+    srcs = ["context.cpp"],
+    hdrs = [
+        "context.hpp",
+        "types.hpp",
+    ],
+    visibility = ["//prism:__subpackages__"],
+    deps = [
+        "//prism/graphics:defines",
+        "//prism/common:debug",
+        "//prism/common:platform",
+        "//prism/graphics/common:webgpu",
+        "@wgpu//:hdrs",
+    ] + select({
+        "@platforms//os:windows": ["@wgpu//:lib-windows-x86_64"],
+        "@platforms//os:macos": ["@wgpu//:lib-macos-x86_64"],
+        # "@platforms//os:ios": ["@wgpu//:lib-ios_sim-x86_64"],
+        "@platforms//os:ios": ["@wgpu//:lib-ios-arm64"],
+    }),
+)

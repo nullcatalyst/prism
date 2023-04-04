@@ -1,0 +1,43 @@
+load("@prism_config//:cc.bzl", "prism_cc_library")
+
+prism_cc_library(
+    name = "graphics",
+    hdrs = ["context.hpp"],
+    visibility = ["//prism:__subpackages__"],
+    deps = [":defines"] + select({
+        "//prism:backend_web": ["//prism/graphics/web"],
+        "//conditions:default": ["//prism/graphics/wgpu"],
+    }),
+)
+
+prism_cc_library(
+    name = "enums",
+    hdrs = [
+        "enums.hpp",
+        "enums_validate.hpp",
+    ],
+    visibility = ["//prism:__subpackages__"],
+    deps = ["@wgpu//:webgpu-hdrs"],
+)
+
+prism_cc_library(
+    name = "types",
+    hdrs = [
+        "types.hpp",
+        "types_validate.hpp",
+    ],
+    visibility = ["//prism:__subpackages__"],
+    deps = [
+        ":enums",
+        "@wgpu//:webgpu-hdrs",
+    ],
+)
+
+prism_cc_library(
+    name = "defines",
+    defines = select({
+        "//prism:backend_web": ["PRISM_BACKEND_WEB=1"],
+        "//conditions:default": ["PRISM_BACKEND_WGPU=1"],
+    }),
+    visibility = ["//prism:__subpackages__"],
+)

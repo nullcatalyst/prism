@@ -1,0 +1,69 @@
+{
+  "configurations": [
+    {
+      "name": "Win32",
+      "includePath": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/third_party/webgpu-headers/include",
+        "${workspaceFolder}/third_party/wgpu/include",
+        "${workspaceFolder}/bazel-violet/external/com_google_absl",
+        "${workspaceFolder}/bazel-violet/external/com_googlesource_code_re2",
+        "${workspaceFolder}/bazel-violet/external/glm",
+      ],
+      "defines": [
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE",
+        "PRISM_BACKEND_WGPU",
+        "PRISM_BACKEND_SDL2",
+      ],
+      "windowsSdkVersion": "10.0.19041.0",
+      "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.32.31326/bin/Hostx64/x64/cl.exe",
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "windows-msvc-x64"
+    },
+    {
+      "name": "Mac",
+      "includePath": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/third_party/webgpu-headers/include",
+        "${workspaceFolder}/third_party/wgpu/include",
+        "${workspaceFolder}/bazel-violet/external/com_google_absl",
+        "${workspaceFolder}/bazel-violet/external/com_googlesource_code_re2",
+        "${workspaceFolder}/bazel-violet/external/glm",
+      ],
+      "defines": [
+        "PRISM_BACKEND_WGPU",
+        "PRISM_BACKEND_SDL2",
+      ],
+      "macFrameworkPath": [
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
+      ],
+      "compilerPath": "/usr/bin/clang",
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "macos-clang-x64"
+    },
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/third_party/webgpu-headers/include",
+        "${workspaceFolder}/third_party/wgpu/include",
+        "${workspaceFolder}/bazel-violet/external/com_google_absl",
+        "${workspaceFolder}/bazel-violet/external/com_googlesource_code_re2",
+        "${workspaceFolder}/bazel-violet/external/glm",
+      ],
+      "defines": [
+        "PRISM_BACKEND_WGPU",
+        "PRISM_BACKEND_SDL2",
+      ],
+      "compilerPath": "clang",
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "linux-clang-x64"
+    }
+  ],
+  "version": 4
+}

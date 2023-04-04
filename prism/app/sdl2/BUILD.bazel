@@ -1,0 +1,16 @@
+load("@prism_config//:cc.bzl", "prism_cc_library")
+
+prism_cc_library(
+    name = "sdl2",
+    srcs = ["application.cpp"],
+    hdrs = ["application.hpp"],
+    defines = ["PRISM_BACKEND_SDL2=1"],
+    visibility = ["//prism:__subpackages__"],
+    deps = [
+        "//prism/app:input",
+        "//prism/common:debug",
+        "//prism/common:platform",
+        "@sdl2",
+        "@wgpu//:hdrs",
+    ],
+)

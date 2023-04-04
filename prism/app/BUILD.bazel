@@ -1,0 +1,22 @@
+load("@prism_config//:cc.bzl", "prism_cc_library")
+
+_DEFAULT_BACKEND = "//prism/app/sdl2"
+
+prism_cc_library(
+    name = "app",
+    hdrs = ["application.hpp"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":input",
+    ] + select({
+        "//prism:backend_sdl2": ["//prism/app/sdl2"],
+        "//prism:backend_web": ["//prism/app/web"],
+        "//conditions:default": [_DEFAULT_BACKEND],
+    }),
+)
+
+prism_cc_library(
+    name = "input",
+    hdrs = ["input.hpp"],
+    visibility = ["//prism:__subpackages__"],
+)

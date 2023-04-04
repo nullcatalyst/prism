@@ -1,0 +1,24 @@
+load("@prism_config//:cc.bzl", "prism_cc_library")
+
+prism_cc_library(
+    name = "debug",
+    hdrs = ["debug.hpp"],
+    visibility = ["//prism:__subpackages__"],
+    deps = [":log"],
+)
+
+prism_cc_library(
+    name = "platform",
+    hdrs = ["platform.hpp"],
+    visibility = ["//prism:__subpackages__"],
+)
+
+prism_cc_library(
+    name = "log",
+    hdrs = ["log.hpp"],
+    visibility = ["//prism:__subpackages__"],
+    deps = [
+        "//prism/wasm:import",
+        "@com_google_absl//absl/strings",
+    ],
+)

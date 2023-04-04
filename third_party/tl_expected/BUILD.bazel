@@ -1,0 +1,6 @@
+cc_library(
+    name = "expected",
+    hdrs = ["tl/expected.hpp"],
+    includes = ["."],
+    visibility = ["//visibility:public"],
+)
