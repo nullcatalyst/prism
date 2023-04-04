@@ -1,0 +1,10 @@
+load("@prism_config//:cc.bzl", "prism_cc_binary")
+
+prism_cc_binary(
+    name = "hello_triangle",
+    srcs = ["main.cpp"],
+    deps = [
+        "@com_nullcatalyst_prism//prism",
+        "@com_nullcatalyst_prism//prism/wasm:export",
+    ],
+)

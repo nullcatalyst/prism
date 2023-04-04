@@ -1,4 +1,7 @@
-workspace(name = "com_nullcatalyst_prism")
+local_repository(
+    name = "com_nullcatalyst_prism",
+    path = "../..",
+)
 
 load("@com_nullcatalyst_prism//config:config.bzl", "prism_config", "prism_dependencies")
 
