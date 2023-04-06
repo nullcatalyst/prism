@@ -11,6 +11,7 @@ prism_cc_library(
     deps = [
         "//prism/graphics:defines",
         "//prism/common:debug",
+        "//prism/common:shared",
         "//prism/common:platform",
         "//prism/graphics/common:webgpu",
         "@com_github_gfxrs_wgpu//:hdrs",

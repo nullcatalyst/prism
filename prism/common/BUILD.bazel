@@ -22,3 +22,9 @@ prism_cc_library(
         "@com_google_absl//absl/strings",
     ],
 )
+
+prism_cc_library(
+    name = "shared",
+    hdrs = ["shared.hpp"],
+    visibility = ["//prism:__subpackages__"],
+)

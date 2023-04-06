@@ -17,11 +17,11 @@ void Context::enable_debug() {
 Context::Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_width,
                  uint32_t surface_height)
     : _instance{instance}, _surface{surface} {
-    _adapter = common::request_adapter(_instance, _surface);
-    _device  = common::create_device(_adapter);
-    _swap_chain =
-        common::create_swap_chain(_device, _surface, _adapter, surface_width, surface_height);
-    _queue = common::get_queue(_device);
+    _adapter    = Adapter{common::request_adapter(_instance, _surface)};
+    _device     = Device{common::create_device(_adapter)};
+    _swap_chain = SwapChain{
+        common::create_swap_chain(_device, _surface, _adapter, surface_width, surface_height)};
+    _queue = Queue{common::get_queue(_device)};
 
     _surface_format = static_cast<TextureFormat>(wgpuSurfaceGetPreferredFormat(_surface, _adapter));
 }
@@ -100,7 +100,7 @@ void Context::start_frame() { _encoder = common::start_frame(_device); }
 
 void Context::present_frame() {
     common::present_frame(_device, _swap_chain, _encoder, _queue);
-    _encoder._already_released();
+    _encoder.UNSAFE_already_released();
 }
 
 TextureView Context::swap_chain_view() {
@@ -116,7 +116,7 @@ RenderPassEncoder Context::begin_render_pass(const RenderPassDescriptor& render_
 
 void Context::end_render_pass(const RenderPassEncoder& render_pass) {
     common::end_render_pass(_device, render_pass);
-    const_cast<RenderPassEncoder&>(render_pass)._already_released();
+    const_cast<RenderPassEncoder&>(render_pass).UNSAFE_already_released();
 }
 
 void Context::set_pipeline(const RenderPassEncoder& render_pass, const RenderPipeline& pipeline) {
