@@ -50,6 +50,9 @@ build:host_posix        --host_cxxopt=-std=c++20
 build:sandbox           --verbose_failures
 build:sandbox           --sandbox_debug
 
+# Useful for debugging the issues with the graphics at runtime
+build:debug             --define debug=on
+
 # Turn off legacy external runfiles on all platforms except Windows
 # This prevents accidentally dependening on this feature, which Bazel will remove
 # Skylib's diff_test implementation for Windows depends on legacy external

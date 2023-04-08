@@ -68,7 +68,9 @@ void init() {
 
 WASM_EXPORT("start")
 void start() {
+#if defined(EXAMPLES_VERBOSE_DEBUG)
     prism::Context::enable_debug();
+#endif
 
     // Load resources here.
     auto shader_module = ctx.create_shader_module(SHADER_WGSL);
