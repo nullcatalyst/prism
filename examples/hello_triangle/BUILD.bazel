@@ -1,3 +1,6 @@
+load("@aspect_rules_rollup//rollup:defs.bzl", "rollup")
+load("@aspect_rules_terser//terser:defs.bzl", "terser")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@prism_config//:cc.bzl", "prism_cc_binary")
 
 prism_cc_binary(
@@ -7,4 +10,30 @@ prism_cc_binary(
         "@com_nullcatalyst_prism//prism",
         "@com_nullcatalyst_prism//prism/wasm:export",
     ],
+)
+
+ts_project(
+    name = "js",
+    srcs = ["main.ts"],
+    data = ["@com_nullcatalyst_prism//prism/js"],
+    declaration = True,
+    tsconfig = "tsconfig.json",
+    deps = ["@com_nullcatalyst_prism//prism/js"],
+)
+
+rollup(
+    name = "js_bundle",
+    config_file = "rollup.config.js",
+    entry_point = ":main.js",
+    node_modules = "//:node_modules",
+    sourcemap = "false",
+    deps = [":js"],
+)
+
+terser(
+    name = "js_min",
+    srcs = [":js_bundle"],
+    config_file = "terser.config.json",
+    node_modules = "//:node_modules",
+    sourcemap = 0,
 )

@@ -91,3 +91,12 @@ def prism_dependencies():
         strip_prefix = "glm-{version}".format(version = _GLM_VERSION),
         url = "https://github.com/g-truc/glm/archive/refs/tags/{version}.tar.gz".format(version = _GLM_VERSION),
     )
+
+    _GLM_VERSION = "0.9.9.8"
+    maybe(
+        http_archive,
+        name = "com_nullcatalyst_wasmtoolchain",
+        sha256 = "7d508ab72cb5d43227a3711420f06ff99b0a0cb63ee2f93631b162bfe1fe9592",
+        strip_prefix = "glm-{version}".format(version = _GLM_VERSION),
+        url = "https://github.com/g-truc/glm/archive/refs/tags/{version}.tar.gz".format(version = _GLM_VERSION),
+    )

@@ -1,0 +1,55 @@
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@prism_config//:cc.bzl", "prism_cc_library")
+
+prism_cc_library(
+    name = "dom",
+    hdrs = ["dom.hpp"],
+    deps = [
+        ":object",
+        "//prism/wasm:import",
+    ],
+)
+
+prism_cc_library(
+    name = "gpu",
+    hdrs = ["gpu.hpp"],
+    deps = ["//prism/wasm:import"],
+)
+
+prism_cc_library(
+    name = "object",
+    hdrs = ["object.hpp"],
+    deps = [
+        "//prism/common:shared",
+        "//prism/wasm:import",
+    ],
+)
+
+ts_project(
+    name = "js",
+    srcs = [
+        "dom.ts",
+        "gpu.ts",
+        "index.ts",
+        "keycode.ts",
+        "log.ts",
+        "math.ts",
+        "memory.ts",
+        "object.ts",
+        "ref_map.ts",
+        "time.ts",
+        "webgpu.typings.ts",
+    ],
+    declaration = True,
+    supports_workers = False,
+    tsconfig = "tsconfig.json",
+    visibility = ["//visibility:public"],
+)
+
+npm_package(
+    name = "js_lib",
+    srcs = [":js"],
+    package = "@com_nullcatalyst_prism/prism",
+    visibility = ["//visibility:public"],
+)

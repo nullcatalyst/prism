@@ -1,11 +1,11 @@
 #include "prism/app/web/application.hpp"
 
-#include "prism/app/web/js_api.hpp"
 #include "prism/common/debug.hpp"
+#include "prism/js/gpu.hpp"
 
 namespace prism::app::inline web {
 
-Application::Application(base::wasm::dom::HtmlCanvasElement canvas) : _canvas{canvas} {}
+Application::Application(js::HtmlCanvasElement canvas) : _canvas{canvas} {}
 
 [[nodiscard]] std::tuple<uint32_t, uint32_t> Application::window_size() const {
     return {_canvas.width(), _canvas.height()};

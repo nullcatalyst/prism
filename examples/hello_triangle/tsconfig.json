@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": [
+      "ES2020",
+      "DOM"
+    ],
+    "module": "ES2020",
+    "target": "ES2020",
+    "declaration": true,
+    "baseUrl": ".",
+    "paths": {
+      "@com_nullcatalyst_prism/prism": [
+        // "../bazel-examples/external/com_nullcatalyst_prism/prism/js",
+        "../external/com_nullcatalyst_prism/prism/js/index",
+      ],
+      "@com_nullcatalyst_prism/prism/*": [
+        // "../bazel-examples/external/com_nullcatalyst_prism/prism/js/*",
+        "../external/com_nullcatalyst_prism/prism/js/*",
+      ]
+    }
+  }
+}

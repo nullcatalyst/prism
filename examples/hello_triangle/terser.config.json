@@ -1,0 +1,10 @@
+{
+    "compress": {
+        "defaults": true,
+        "enclose": true
+    },
+    "mangle": {
+        "properties": true,
+        "toplevel": true
+    }
+}

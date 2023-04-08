@@ -2,13 +2,13 @@
 
 #include <functional>
 
-#include "base/wasm/dom/dom.hpp"
 #include "prism/app/input.hpp"
+#include "prism/js/dom.hpp"
 
 namespace prism::app::inline web {
 
 class Application final {
-    base::wasm::dom::HtmlCanvasElement _canvas;
+    js::HtmlCanvasElement _canvas;
 
     std::function<void(const float x, const float y)>    _on_mouse_move         = nullptr;
     std::function<void(const input::MouseButton button)> _on_mouse_button_down  = nullptr;
@@ -20,9 +20,9 @@ class Application final {
   public:
     ////////////////////////////////
     // Backend specific
-    Application(base::wasm::dom::HtmlCanvasElement canvas);
+    Application(js::HtmlCanvasElement canvas);
 
-    base::wasm::dom::HtmlCanvasElement canvas() const { return _canvas; }
+    js::HtmlCanvasElement canvas() const { return _canvas; }
 
     ////////////////////////////////
     // General
