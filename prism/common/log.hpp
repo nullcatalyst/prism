@@ -27,6 +27,12 @@ void log_error(Args&&... args) {
     console_error(absl::StrCat(std::forward<Args>(args)...));
 }
 
+template <typename... Args>
+void log_fatal(Args&&... args) {
+    std::cerr << absl::StrCat(std::forward<Args>(args)...) << "\n";
+    std::abort();
+}
+
 #else
 
 template <typename... Args>
@@ -37,6 +43,12 @@ void log_message(Args&&... args) {
 template <typename... Args>
 void log_error(Args&&... args) {
     std::cerr << absl::StrCat(std::forward<Args>(args)...) << "\n";
+}
+
+template <typename... Args>
+void log_fatal(Args&&... args) {
+    std::cerr << absl::StrCat(std::forward<Args>(args)...) << "\n";
+    exit(EXIT_FAILURE);
 }
 
 #endif

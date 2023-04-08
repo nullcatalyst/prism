@@ -9,8 +9,7 @@
 #define PRISM_DEBUG_ASSERT_CONDITION($condition)                                    \
     do {                                                                            \
         if (!($condition)) {                                                        \
-            ::prism::common::log_error(__FILE__, ":", __LINE__, ": ", #$condition); \
-            exit(EXIT_FAILURE);                                                     \
+            ::prism::common::log_fatal(__FILE__, ":", __LINE__, ": ", #$condition); \
         }                                                                           \
     } while (0)
 

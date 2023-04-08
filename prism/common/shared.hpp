@@ -48,7 +48,10 @@ class Shared {
 
     template <typename... Args>
     explicit Shared(Args&&... args)
-        : _impl{new Impl{.value = T{std::forward<Args>(args)...}, .ref_count = 1}} {}
+        : _impl{new Impl{
+              .value     = T{std::forward<Args>(args)...},
+              .ref_count = 1,
+          }} {}
 
     Shared& operator=(const Shared& other) {
         release();
@@ -69,6 +72,8 @@ class Shared {
 
     /// !!! ONLY USE THIS IF YOU ARE ABSOLUTELY SURE !!!
     void UNSAFE_release_without_dtor() {
+        PRISM_DEBUG_ASSERT_CONDITION(_impl == nullptr || _impl->ref_count == 1);
+
         delete _impl;
         _impl = nullptr;
     }
@@ -163,6 +168,15 @@ class Shared<T*, Dtor> {
     constexpr const T& operator*() const { return *_value; }
     constexpr T*       operator->() const { return _value; }
 
+    /// !!! ONLY USE THIS IF YOU ARE ABSOLUTELY SURE !!!
+    void UNSAFE_release_without_dtor() {
+        PRISM_DEBUG_ASSERT_CONDITION(_ref_count == nullptr || *_ref_count == 1);
+
+        delete _ref_count;
+        _value     = nullptr;
+        _ref_count = nullptr;
+    }
+
   protected:
     // These are simply additional member functions that can be used in the case that another class
     // derives from this one. They are not used by the base class itself.
@@ -173,7 +187,7 @@ class Shared<T*, Dtor> {
     void replace_value(T* new_value) {
         // This is the only copy, reuse the stored ref_count to avoid both a deallocation and
         // an allocation.
-        if (_ref_count != nullptr && _ref_count == 1) {
+        if (_ref_count != nullptr && *_ref_count == 1) {
             Dtor::call(_value);
             _value = new_value;
             return;

@@ -100,7 +100,7 @@ void Context::start_frame() { _encoder = common::start_frame(_device); }
 
 void Context::present_frame() {
     common::present_frame(_device, _swap_chain, _encoder, _queue);
-    _encoder.UNSAFE_already_released();
+    _encoder.UNSAFE_release_without_dtor();
 }
 
 TextureView Context::swap_chain_view() {
@@ -116,7 +116,7 @@ RenderPassEncoder Context::begin_render_pass(const RenderPassDescriptor& render_
 
 void Context::end_render_pass(const RenderPassEncoder& render_pass) {
     common::end_render_pass(_device, render_pass);
-    const_cast<RenderPassEncoder&>(render_pass).UNSAFE_already_released();
+    const_cast<RenderPassEncoder&>(render_pass).UNSAFE_release_without_dtor();
 }
 
 void Context::set_pipeline(const RenderPassEncoder& render_pass, const RenderPipeline& pipeline) {

@@ -8,8 +8,8 @@
 namespace prism::graphics {
 
 struct ChainedStruct {
-    const ChainedStruct* next;
-    uint32_t             sType;
+    const ChainedStruct* next   = nullptr;
+    WGPUSType            s_type = WGPUSType_Invalid;
 };
 
 struct Chainable {

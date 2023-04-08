@@ -98,8 +98,7 @@ WGPUAdapter request_adapter(WGPUInstance instance, WGPUSurface surface) {
                 return;
             }
 
-            ::prism::common::log_message("Request adapter failed: ", message);
-            exit(EXIT_FAILURE);
+            ::prism::common::log_fatal("Request adapter failed: ", message);
         },
         &adapter);
     PRISM_DEBUG_RESULT(adapter);
@@ -107,19 +106,19 @@ WGPUAdapter request_adapter(WGPUInstance instance, WGPUSurface surface) {
 }
 
 WGPUDevice create_device(WGPUAdapter adapter) {
-    const WGPURequiredLimits limits = {
-        .nextInChain = nullptr,
-        .limits =
-            {
-                .minUniformBufferOffsetAlignment = 256,
-                .minStorageBufferOffsetAlignment = 256,
-            },
-    };
+    // const WGPURequiredLimits limits = {
+    //     .nextInChain = nullptr,
+    //     .limits =
+    //         {
+    //             .minUniformBufferOffsetAlignment = 256,
+    //             .minStorageBufferOffsetAlignment = 256,
+    //         },
+    // };
 
     const WGPUFeatureName required_features[] = {
-        // #if defined(PRISM_BACKEND_WGPU)
+#if defined(PRISM_BACKEND_WGPU)
         static_cast<WGPUFeatureName>(0x60000003),  // WGPUNativeFeature_MULTI_DRAW_INDIRECT,
-                                                   // #endif
+#endif
     };
 
     const WGPUDeviceDescriptor device_desc{
@@ -146,8 +145,7 @@ WGPUDevice create_device(WGPUAdapter adapter) {
                 return;
             }
 
-            ::prism::common::log_error("Request device failed: ", message);
-            exit(EXIT_FAILURE);
+            ::prism::common::log_fatal("Request device failed: ", message);
         },
         &device);
     PRISM_DEBUG_RESULT(device);

@@ -18,6 +18,7 @@ prism_cc_library(
     ] + select({
         "@platforms//os:windows": ["@com_github_gfxrs_wgpu//:lib-windows-x86_64"],
         "@platforms//os:macos": ["@com_github_gfxrs_wgpu//:lib-macos-x86_64"],
+        "@platforms//os:linux": ["@com_github_gfxrs_wgpu//:lib-linux-x86_64"],
         # "@platforms//os:ios": ["@com_github_gfxrs_wgpu//:lib-ios_sim-x86_64"],
         "@platforms//os:ios": ["@com_github_gfxrs_wgpu//:lib-ios-arm64"],
     }),
