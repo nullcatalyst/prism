@@ -38,7 +38,7 @@ build:wasm              --define gpu_backend=web
 build:wasm              --config=posix
 
 # POSIX
-build:posix             --cxxopt=-std=c++20 --cxxopt=-D__wasm__=1
+build:posix             --cxxopt=-std=c++20
 build:posix             --cxxopt=-fno-rtti
 build:posix             --cxxopt=-fno-exceptions
 build:posix             --action_env=BAZEL_CXXOPTS=-std=c++20

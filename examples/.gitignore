@@ -1,0 +1,10 @@
+# bazel
+/bazel-*
+.bazelrc.user
+
+# npm
+node_modules
+
+# macos
+.DS_Store
+*.xcodeproj

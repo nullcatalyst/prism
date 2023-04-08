@@ -34,22 +34,26 @@ SDL_Window* create_window(const char* const title, uint32_t width, uint32_t heig
         SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
 
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
-            ::prism::common::log_error("[SDL2] failed to initialize");
-            exit(EXIT_FAILURE);
+            ::prism::common::log_fatal("[SDL2] failed to initialize");
         }
 
         return true;
     });
 
-    return SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                            static_cast<int>(width), static_cast<int>(height),
-                            SDL_WINDOW_HIDDEN | SDL_WINDOW_ALLOW_HIGHDPI
+    auto* window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                    static_cast<int>(width), static_cast<int>(height),
+                                    SDL_WINDOW_HIDDEN | SDL_WINDOW_ALLOW_HIGHDPI
 #if defined(PRISM_PLATFORM_IOS)
-                                | SDL_WINDOW_FULLSCREEN
+                                        | SDL_WINDOW_FULLSCREEN
 #elif defined(PRISM_PLATFORM_LINUX)
-                                | SDL_WINDOW_VULKAN
+                                        | SDL_WINDOW_VULKAN
 #endif
     );
+
+    if (window == nullptr) {
+        ::prism::common::log_fatal("[SDL2] failed to create window: ", SDL_GetError());
+    }
+    return window;
 }
 
 WGPUSurface create_surface_for_window(WGPUInstance instance, SDL_Window* const window) {
@@ -68,17 +72,17 @@ WGPUSurface create_surface_for_window(WGPUInstance instance, SDL_Window* const w
         .hwnd      = wm_info.info.win.window,
     };
     const WGPUChainedStruct* surface_chain = &windows_surface_desc.chain;
-#elif defined(GPU_USE_X11)
+#elif defined(PRISM_PLATFORM_LINUX)
     const WGPUSurfaceDescriptorFromXlibWindow x11_surface_desc{
         .chain =
             {
                 .next = nullptr,
                 .sType = WGPUSType_SurfaceDescriptorFromXlibWindow,
             },
-        .display = glfwGetX11Display(),
-        .window = glfwGetX11Window(window),
+        .display = wm_info.info.x11.display,
+        .window = static_cast<uint32_t>(wm_info.info.x11.window),
     };
-    const WGPUChainedStruct* surface_chain = &x11_surface_desc;
+    const WGPUChainedStruct* surface_chain = &x11_surface_desc.chain;
 #elif defined(PRISM_PLATFORM_MACOS) || defined(PRISM_PLATFORM_IOS)
     auto*      metal_layer        = SDL_Metal_GetLayer(SDL_Metal_CreateView(window));
     const auto metal_surface_desc = WGPUSurfaceDescriptorFromMetalLayer{
