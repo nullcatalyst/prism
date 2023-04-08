@@ -6,8 +6,8 @@
   ],
   "files.insertFinalNewline": true,
   "files.exclude": {
-    // "bazel-*": true,
-    // "**/bazel-*": true,
+    "**/bazel-*": true,
+    "**/node_modules": true,
   },
   "files.associations": {
     "*.ejs": "html",

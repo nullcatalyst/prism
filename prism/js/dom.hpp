@@ -12,28 +12,28 @@ namespace detail {
 // The functions in this namespace aren't intended to be used directly. Instead, use instances of
 // the classes HtmlElement and HtmlCanvasElement defined below.
 
-WASM_IMPORT(dom, getById)
+WASM_IMPORT("dom", "getById")
 uint32_t dom_get_by_id(const char* id);
 
-WASM_IMPORT(dom, onMouseMoved)
+WASM_IMPORT("dom", "onMouseMoved")
 uint32_t dom_on_mouse_moved(uint32_t element_obj,
                             void (*callback)(double x, double y, void* user_data), void* user_data);
 
-WASM_IMPORT(dom, onMouseButtonDown)
+WASM_IMPORT("dom", "onMouseButtonDown")
 uint32_t dom_on_mouse_button_down(uint32_t element_obj,
                                   void (*callback)(uint32_t button, void* user_data),
                                   void* user_data);
 
-WASM_IMPORT(dom, onMouseButtonUp)
+WASM_IMPORT("dom", "onMouseButtonUp")
 uint32_t dom_on_mouse_button_up(uint32_t element_obj,
                                 void (*callback)(uint32_t button, void* user_data),
                                 void* user_data);
 
-WASM_IMPORT(dom, onKeyDown)
+WASM_IMPORT("dom", "onKeyDown")
 uint32_t dom_on_key_down(uint32_t element_obj, void (*callback)(uint32_t key_code, void* user_data),
                          void*    user_data);
 
-WASM_IMPORT(dom, onKeyUp)
+WASM_IMPORT("dom", "onKeyUp")
 uint32_t dom_on_key_up(uint32_t element_obj, void (*callback)(uint32_t key_code, void* user_data),
                        void*    user_data);
 

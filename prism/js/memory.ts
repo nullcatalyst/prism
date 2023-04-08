@@ -76,8 +76,8 @@ export class Memory {
         return decoder.decode(this._memory.buffer.slice(ptr, ptr + len));
     }
 
-    createJsBuffer(ptr: number, len: number): ArrayBuffer {
-        return this._memory.buffer.slice(ptr, ptr + len);
+    createJsBuffer(ptr: number, len?: number): ArrayBuffer {
+        return this._memory.buffer.slice(ptr, len ? ptr + len : undefined);
     }
 
     createJsFunction(funcPtr: number): Function {

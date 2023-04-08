@@ -7,11 +7,11 @@ prism_cc_library(
     defines = ["PRISM_BACKEND_WEB=1"],
     visibility = ["//prism:__subpackages__"],
     deps = [
-        "//base:result",
-        "//base/wasm/dom:dom_cpp",
-        "//base/wasm/object:object_cpp",
         "//prism/app:input",
         "//prism/common:debug",
         "//prism/common:platform",
+        "//prism/js:dom",
+        "//prism/js:gpu",
+        "//prism/js:object",
     ],
 )

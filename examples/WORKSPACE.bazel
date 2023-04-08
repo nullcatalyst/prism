@@ -14,6 +14,19 @@ prism_config(
 
 prism_dependencies()
 
+#### WebAssembly Compiler Toolchain ####
+
+http_archive(
+    name = "bazel_wasm_toolchain",
+    sha256 = "b4c517a5d0225607b9c713b79854ade288d350e19e1e6c5dc60d03a9c215b54f",
+    strip_prefix = "bazel_wasm_toolchain-adb60ff783bee6445e8ca70800800a4da0eb1cd8",
+    url = "https://github.com/nullcatalyst/bazel_wasm_toolchain/archive/adb60ff783bee6445e8ca70800800a4da0eb1cd8.tar.gz",
+)
+
+load("@bazel_wasm_toolchain//toolchain:toolchain.bzl", "wasm_toolchain")
+
+wasm_toolchain(name = "wasm_toolchain")
+
 #### Typescript ####
 
 _RULES_TS_VERSION = "1.3.3"

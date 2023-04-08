@@ -53,7 +53,7 @@ class Context final {
     void   update_buffer(const Buffer& buffer, const void* data, const uint64_t data_size,
                          const uint64_t data_offset_into_buffer = 0);
 
-    Texture create_texture_2d(const uint32_t usage, const WGPUTextureFormat format,
+    Texture create_texture_2d(const uint32_t usage, const TextureFormat format,
                               const uint32_t width, const uint32_t height);
     void    update_texture_2d(const Texture& texture, const uint32_t width, const uint32_t height,
                               const void* data, const uint64_t data_size);

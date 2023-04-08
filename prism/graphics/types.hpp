@@ -127,7 +127,7 @@ struct StencilFaceState {
 
 struct DepthStencilState : public Chainable {
     TextureFormat    format;
-    bool             depth_writeE_enabled;
+    bool             depth_write_enabled;
     CompareFunction  depth_compare;
     StencilFaceState stencil_front;
     StencilFaceState stencil_back;

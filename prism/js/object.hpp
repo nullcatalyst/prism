@@ -17,55 +17,56 @@ namespace detail {
 
 using ObjectId = uint32_t;
 
-WASM_IMPORT(object, createNull) ObjectId object_create_null();
-WASM_IMPORT(object, createBoolean) ObjectId object_create_boolean(bool value);
-WASM_IMPORT(object, createNumber) ObjectId object_create_number(double value);
-WASM_IMPORT(object, createString) ObjectId object_create_string(const char* value);
-WASM_IMPORT(object, createObject) ObjectId object_create_object();
-WASM_IMPORT(object, createArray) ObjectId object_create_array();
-WASM_IMPORT(object, release) ObjectId object_release(ObjectId object_id);
+WASM_IMPORT("object", "createNull") ObjectId object_create_null();
+WASM_IMPORT("object", "createBoolean") ObjectId object_create_boolean(bool value);
+WASM_IMPORT("object", "createNumber") ObjectId object_create_number(double value);
+WASM_IMPORT("object", "createString") ObjectId object_create_string(const char* value);
+WASM_IMPORT("object", "createObject") ObjectId object_create_object();
+WASM_IMPORT("object", "createArray") ObjectId object_create_array();
+WASM_IMPORT("object", "release") ObjectId object_release(ObjectId object_id);
 
-WASM_IMPORT(object, parse) ObjectId object_parse(const char* json_str);
-WASM_IMPORT(object, stringify) const char* object_stringify(ObjectId object_id);
+WASM_IMPORT("object", "parse") ObjectId object_parse(const char* json_str);
+WASM_IMPORT("object", "stringify") const char* object_stringify(ObjectId object_id);
 
-WASM_IMPORT(object, isNull) bool object_is_null(const ObjectId object_id);
-WASM_IMPORT(object, isBoolean) bool object_is_boolean(const ObjectId object_id);
-WASM_IMPORT(object, isNumber) bool object_is_number(const ObjectId object_id);
-WASM_IMPORT(object, isString) bool object_is_string(const ObjectId object_id);
-WASM_IMPORT(object, isObject) bool object_is_object(const ObjectId object_id);
-WASM_IMPORT(object, isArray) bool object_is_array(const ObjectId object_id);
+WASM_IMPORT("object", "isNull") bool object_is_null(const ObjectId object_id);
+WASM_IMPORT("object", "isBoolean") bool object_is_boolean(const ObjectId object_id);
+WASM_IMPORT("object", "isNumber") bool object_is_number(const ObjectId object_id);
+WASM_IMPORT("object", "isString") bool object_is_string(const ObjectId object_id);
+WASM_IMPORT("object", "isObject") bool object_is_object(const ObjectId object_id);
+WASM_IMPORT("object", "isArray") bool object_is_array(const ObjectId object_id);
 
-WASM_IMPORT(object, asBoolean) bool object_as_boolean(const ObjectId object_id);
-WASM_IMPORT(object, asNumber) double object_as_number(const ObjectId object_id);
-WASM_IMPORT(object, asString) const char* object_as_string(const ObjectId object_id);
+WASM_IMPORT("object", "asBoolean") bool object_as_boolean(const ObjectId object_id);
+WASM_IMPORT("object", "asNumber") double object_as_number(const ObjectId object_id);
+WASM_IMPORT("object", "asString") const char* object_as_string(const ObjectId object_id);
 
-WASM_IMPORT(object, has) bool object_has_property(const ObjectId object_id, const char* property);
-WASM_IMPORT(object, get)
+WASM_IMPORT("object", "has")
+bool object_has_property(const ObjectId object_id, const char* property);
+WASM_IMPORT("object", "get")
 ObjectId object_get_property(const ObjectId object_id, const char* property);
 
-WASM_IMPORT(object, setNullProperty)
+WASM_IMPORT("object", "setNullProperty")
 void object_set_null_property(const ObjectId object_id, const char* property_name);
-WASM_IMPORT(object, setBooleanProperty)
+WASM_IMPORT("object", "setBooleanProperty")
 void object_set_boolean_property(const ObjectId object_id, const char* property_name,
                                  const bool value);
-WASM_IMPORT(object, setNumberProperty)
+WASM_IMPORT("object", "setNumberProperty")
 void object_set_number_property(const ObjectId object_id, const char* property_name,
                                 const double value);
-WASM_IMPORT(object, setStringProperty)
+WASM_IMPORT("object", "setStringProperty")
 void object_set_string_property(const ObjectId object_id, const char* property_name,
                                 const char* value);
-WASM_IMPORT(object, setObjectProperty)
+WASM_IMPORT("object", "setObjectProperty")
 void object_set_object_property(const ObjectId object_id, const char* property_name,
                                 const ObjectId other_id);
 
-WASM_IMPORT(object, equalsString)
+WASM_IMPORT("object", "equalsString")
 bool object_equals_string(const ObjectId object_id, const char* str);
 
-WASM_IMPORT(object, arrayPushObject)
+WASM_IMPORT("object", "arrayPushObject")
 void array_push_object(const ObjectId object_id, const ObjectId other_id);
-WASM_IMPORT(object, arrayPop) void array_pop(const ObjectId object_id);
-WASM_IMPORT(object, arrayLength) uint32_t array_length(const ObjectId object_id);
-WASM_IMPORT(object, arrayAt) ObjectId array_at(const ObjectId object_id, const uint32_t index);
+WASM_IMPORT("object", "arrayPop") void array_pop(const ObjectId object_id);
+WASM_IMPORT("object", "arrayLength") uint32_t array_length(const ObjectId object_id);
+WASM_IMPORT("object", "arrayAt") ObjectId array_at(const ObjectId object_id, const uint32_t index);
 
 }  // namespace detail
 

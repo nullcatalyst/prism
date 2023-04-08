@@ -6,7 +6,7 @@ namespace prism {
 
 #if defined(PRISM_BACKEND_WEB)
 std::tuple<app::Application, graphics::Context> create_for_canvas(const char* canvas_id) {
-    const auto canvas = base::wasm::dom::HtmlCanvasElement::get_by_id(canvas_id);
+    const auto canvas = js::HtmlCanvasElement::get_by_id(canvas_id);
     return std::make_tuple(app::Application{canvas}, graphics::Context{canvas});
 }
 #endif

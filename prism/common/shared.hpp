@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "prism/common/debug.hpp"
+
 namespace prism::common {
 
 template <typename T>

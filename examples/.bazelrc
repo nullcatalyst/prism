@@ -1,6 +1,6 @@
 # This setting is very useful for getting up and running fast, but unfortunately needs to be removed
 # in order to support cross compiling.
-common                  --enable_platform_specific_config
+# common                  --enable_platform_specific_config
 
 build                   --enable_runfiles=yes
 run                     --enable_runfiles=yes
@@ -45,6 +45,10 @@ build:posix             --action_env=BAZEL_CXXOPTS=-std=c++20
 build:posix             --linkopt=-flto     # Link-time optimizations
 
 build:host_posix        --host_cxxopt=-std=c++20
+
+# Useful for debugging the build process
+build:sandbox           --verbose_failures
+build:sandbox           --sandbox_debug
 
 # Turn off legacy external runfiles on all platforms except Windows
 # This prevents accidentally dependening on this feature, which Bazel will remove

@@ -19,17 +19,17 @@ WASM_IMPORT("console", "error") void console_error(const char* message);
 
 template <typename... Args>
 void log_message(Args&&... args) {
-    console_log(absl::StrCat(std::forward<Args>(args)...));
+    console_log(absl::StrCat(std::forward<Args>(args)...).c_str());
 }
 
 template <typename... Args>
 void log_error(Args&&... args) {
-    console_error(absl::StrCat(std::forward<Args>(args)...));
+    console_error(absl::StrCat(std::forward<Args>(args)...).c_str());
 }
 
 template <typename... Args>
-void log_fatal(Args&&... args) {
-    std::cerr << absl::StrCat(std::forward<Args>(args)...) << "\n";
+[[noreturn]] void log_fatal(Args&&... args) {
+    console_error(absl::StrCat(std::forward<Args>(args)...).c_str());
     std::abort();
 }
 
@@ -46,7 +46,7 @@ void log_error(Args&&... args) {
 }
 
 template <typename... Args>
-void log_fatal(Args&&... args) {
+[[noreturn]] void log_fatal(Args&&... args) {
     std::cerr << absl::StrCat(std::forward<Args>(args)...) << "\n";
     exit(EXIT_FAILURE);
 }

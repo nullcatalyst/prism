@@ -79,16 +79,16 @@ export class Context {
         return this._pipelines.create(this._device.createRenderPipeline(desc));
     }
 
-    createBuffer(usage: GPUBufferUsageFlags, fullSize: number, offset: number, data: ArrayBuffer) {
+    createBuffer(usage: GPUBufferUsageFlags, bufferSize: number, data: ArrayBuffer, dataOffsetIntoBuffer: number) {
         const copy = data.byteLength > 0;
         const buffer = this._device.createBuffer({
             "usage": usage,
-            "size": fullSize,
+            "size": bufferSize,
             "mappedAtCreation": copy,
         });
         if (copy) {
             const writeArray = new Uint8Array(buffer.getMappedRange());
-            writeArray.set(new Uint8Array(data), offset);
+            writeArray.set(new Uint8Array(data), dataOffsetIntoBuffer);
             buffer.unmap();
         }
         return this._buffers.create(buffer);
@@ -275,10 +275,10 @@ export function createGpuWasmImport(gpuDevice: GPUDevice, memory: Memory, objLib
                 const desc = objLib.get(descObjId) as GPURenderPipelineDescriptor;
                 return objLib.create(ctx.createRenderPipeline(desc));
             },
-            "createBuffer": (ctxObjId: number, usage: number, fullSize: number, offset: number, dataPtr: number, dataSize: number) => {
+            "createBuffer": (ctxObjId: number, usage: number, bufferSize: number, dataPtr: number, dataSize: number, dataOffsetIntoBuffer: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
                 const data = memory.createJsBuffer(dataPtr, dataSize);
-                return objLib.create(ctx.createBuffer(usage, fullSize, offset, data));
+                return objLib.create(ctx.createBuffer(usage, bufferSize, memory.createJsBuffer(dataPtr, dataSize >= 0 ? dataSize : undefined), dataOffsetIntoBuffer));
             },
             "updateBuffer": (ctxObjId: number, bufferId: number, offset: number, dataPtr: number, dataSize: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;

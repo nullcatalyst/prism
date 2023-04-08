@@ -1,12 +1,5 @@
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
-
-_PLATFORM_WINDOWS = "@platforms//os:windows"
-
-_PLATFORM_MACOS = "@platforms//os:macos"
-
-_PLATFORM_IOS = "@platforms//os:ios"
-
-_PLATFORM_LINUX = "@platforms//os:linux"
+load("@prism_config//:platforms.bzl", "IOS_PLATFORM", "LINUX_PLATFORM", "MACOS_PLATFORM", "WINDOWS_PLATFORM")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -14,10 +7,10 @@ cc_library(
     name = "sdl2",
     visibility = ["//visibility:public"],
     deps = select({
-        _PLATFORM_WINDOWS: [":sdl2_windows"],
-        _PLATFORM_MACOS: [":sdl2_macos"],
-        _PLATFORM_IOS: [":sdl2_ios"],
-        _PLATFORM_LINUX: [":sdl2_linux"],
+        WINDOWS_PLATFORM: [":sdl2_windows"],
+        MACOS_PLATFORM: [":sdl2_macos"],
+        IOS_PLATFORM: [":sdl2_ios"],
+        LINUX_PLATFORM: [":sdl2_linux"],
     }),
 )
 
@@ -27,13 +20,13 @@ cc_library(
         ["include/*.h"],
         exclude = ["include/SDL_config.h"],
     ) + select({
-        _PLATFORM_LINUX: [],
+        LINUX_PLATFORM: [],
         "//conditions:default": ["include/SDL_config.h"],
     }),
     strip_include_prefix = "include",
     visibility = ["//visibility:public"],
     deps = select({
-        _PLATFORM_LINUX: [":linux_config_hdrs"],
+        LINUX_PLATFORM: [":linux_config_hdrs"],
         "//conditions:default": [],
     }),
 )

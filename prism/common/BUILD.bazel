@@ -27,4 +27,5 @@ prism_cc_library(
     name = "shared",
     hdrs = ["shared.hpp"],
     visibility = ["//prism:__subpackages__"],
+    deps = [":debug"],
 )

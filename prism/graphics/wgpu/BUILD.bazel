@@ -1,4 +1,5 @@
 load("@prism_config//:cc.bzl", "prism_cc_library")
+load("@prism_config//:platforms.bzl", "IOS_PLATFORM", "LINUX_PLATFORM", "MACOS_PLATFORM", "WINDOWS_PLATFORM")
 
 prism_cc_library(
     name = "wgpu",
@@ -16,10 +17,10 @@ prism_cc_library(
         "//prism/graphics/common:webgpu",
         "@com_github_gfxrs_wgpu//:hdrs",
     ] + select({
-        "@platforms//os:windows": ["@com_github_gfxrs_wgpu//:lib-windows-x86_64"],
-        "@platforms//os:macos": ["@com_github_gfxrs_wgpu//:lib-macos-x86_64"],
-        "@platforms//os:linux": ["@com_github_gfxrs_wgpu//:lib-linux-x86_64"],
-        # "@platforms//os:ios": ["@com_github_gfxrs_wgpu//:lib-ios_sim-x86_64"],
-        "@platforms//os:ios": ["@com_github_gfxrs_wgpu//:lib-ios-arm64"],
+        WINDOWS_PLATFORM: ["@com_github_gfxrs_wgpu//:lib-windows-x86_64"],
+        MACOS_PLATFORM: ["@com_github_gfxrs_wgpu//:lib-macos-x86_64"],
+        # IOS_PLATFORM: ["@com_github_gfxrs_wgpu//:lib-ios_sim-x86_64"],
+        IOS_PLATFORM: ["@com_github_gfxrs_wgpu//:lib-ios-arm64"],
+        LINUX_PLATFORM: ["@com_github_gfxrs_wgpu//:lib-linux-x86_64"],
     }),
 )

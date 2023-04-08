@@ -1,12 +1,25 @@
 load("@prism_config//:cc.bzl", "prism_cc_library")
+load("@prism_config//:platforms.bzl", "IOS_PLATFORM", "LINUX_PLATFORM", "MACOS_PLATFORM", "WASM_PLATFORM", "WINDOWS_PLATFORM")
 
 prism_cc_library(
     name = "graphics",
     hdrs = ["context.hpp"],
     visibility = ["//prism:__subpackages__"],
     deps = [":defines"] + select({
+        "//prism:backend_wgpu": ["//prism/graphics/wgpu"],
         "//prism:backend_web": ["//prism/graphics/web"],
-        "//conditions:default": ["//prism/graphics/wgpu"],
+        "//conditions:default": [":graphics_deps_defaults"],
+    }),
+)
+
+prism_cc_library(
+    name = "graphics_deps_defaults",
+    deps = select({
+        WINDOWS_PLATFORM: ["//prism/graphics/wgpu"],
+        MACOS_PLATFORM: ["//prism/graphics/wgpu"],
+        IOS_PLATFORM: ["//prism/graphics/wgpu"],
+        LINUX_PLATFORM: ["//prism/graphics/wgpu"],
+        WASM_PLATFORM: ["//prism/graphics/web"],
     }),
 )
 
@@ -36,8 +49,25 @@ prism_cc_library(
 prism_cc_library(
     name = "defines",
     defines = select({
+        "//prism:backend_wgpu": ["PRISM_BACKEND_WGPU=1"],
         "//prism:backend_web": ["PRISM_BACKEND_WEB=1"],
-        "//conditions:default": ["PRISM_BACKEND_WGPU=1"],
+        "//conditions:default": [],
     }),
     visibility = ["//prism:__subpackages__"],
+    deps = select({
+        "//prism:backend_wgpu": [],
+        "//prism:backend_web": [],
+        "//conditions:default": [":defines_defaults"],
+    }),
+)
+
+prism_cc_library(
+    name = "defines_defaults",
+    defines = select({
+        WINDOWS_PLATFORM: ["PRISM_BACKEND_WGPU=1"],
+        MACOS_PLATFORM: ["PRISM_BACKEND_WGPU=1"],
+        IOS_PLATFORM: ["PRISM_BACKEND_WGPU=1"],
+        LINUX_PLATFORM: ["PRISM_BACKEND_WGPU=1"],
+        WASM_PLATFORM: ["PRISM_BACKEND_WEB=1"],
+    }),
 )

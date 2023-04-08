@@ -1,0 +1,26 @@
+package(default_visibility = ["//visibility:public"])
+
+config_setting(
+    name = "platform_windows",
+    define_values = {"platform": "windows"},
+)
+
+config_setting(
+    name = "platform_macos",
+    define_values = {"platform": "macos"},
+)
+
+config_setting(
+    name = "platform_ios",
+    define_values = {"platform": "ios"},
+)
+
+config_setting(
+    name = "platform_linux",
+    define_values = {"platform": "linux"},
+)
+
+config_setting(
+    name = "platform_wasm",
+    define_values = {"platform": "wasm"},
+)

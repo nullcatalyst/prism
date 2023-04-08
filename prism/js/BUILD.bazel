@@ -1,6 +1,7 @@
-load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@prism_config//:cc.bzl", "prism_cc_library")
+
+package(default_visibility = ["//visibility:public"])
 
 prism_cc_library(
     name = "dom",
@@ -44,12 +45,4 @@ ts_project(
     declaration = True,
     supports_workers = False,
     tsconfig = "tsconfig.json",
-    visibility = ["//visibility:public"],
-)
-
-npm_package(
-    name = "js_lib",
-    srcs = [":js"],
-    package = "@com_nullcatalyst_prism/prism",
-    visibility = ["//visibility:public"],
 )

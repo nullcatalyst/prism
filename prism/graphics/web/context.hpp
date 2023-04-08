@@ -12,14 +12,13 @@ namespace prism::graphics::inline web {
 class Context final {
     js::Object _context;
 
-    TextureFormat _surface_format = WGPUTextureFormat_Undefined;
+    TextureFormat _surface_format = TextureFormat::Undefined;
 
   public:
-    static void enable_debug();
+    static void enable_debug() {}
 
     constexpr Context() = default;
-    Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_width,
-            uint32_t surface_height);
+    Context(js::HtmlCanvasElement canvas);
 
     Context(const Context& other)            = delete;
     Context& operator=(const Context& other) = delete;
@@ -48,7 +47,7 @@ class Context final {
     void   update_buffer(const Buffer& buffer, const void* data, const uint64_t data_size,
                          const uint64_t data_offset_into_buffer = 0);
 
-    Texture create_texture_2d(const uint32_t usage, const WGPUTextureFormat format,
+    Texture create_texture_2d(const uint32_t usage, const TextureFormat format,
                               const uint32_t width, const uint32_t height);
     void    update_texture_2d(const Texture& texture, const uint32_t width, const uint32_t height,
                               const void* data, const uint64_t data_size);

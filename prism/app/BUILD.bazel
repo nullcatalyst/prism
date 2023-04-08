@@ -1,6 +1,5 @@
 load("@prism_config//:cc.bzl", "prism_cc_library")
-
-_DEFAULT_BACKEND = "//prism/app/sdl2"
+load("@prism_config//:platforms.bzl", "IOS_PLATFORM", "LINUX_PLATFORM", "MACOS_PLATFORM", "WASM_PLATFORM", "WINDOWS_PLATFORM")
 
 prism_cc_library(
     name = "app",
@@ -11,7 +10,18 @@ prism_cc_library(
     ] + select({
         "//prism:backend_sdl2": ["//prism/app/sdl2"],
         "//prism:backend_web": ["//prism/app/web"],
-        "//conditions:default": [_DEFAULT_BACKEND],
+        "//conditions:default": [":app_deps_defaults"],
+    }),
+)
+
+prism_cc_library(
+    name = "app_deps_defaults",
+    deps = select({
+        WINDOWS_PLATFORM: ["//prism/app/sdl2"],
+        MACOS_PLATFORM: ["//prism/app/sdl2"],
+        IOS_PLATFORM: ["//prism/app/sdl2"],
+        LINUX_PLATFORM: ["//prism/app/sdl2"],
+        WASM_PLATFORM: ["//prism/app/web"],
     }),
 )
 

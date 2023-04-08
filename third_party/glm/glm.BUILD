@@ -6,7 +6,7 @@ cc_library(
         "glm/**/*.h",
     ]),
     copts = select({
-        "@platforms//os:windows": [],  # TODO: Find windows equivalent
+        "@platforms//os:windows": [],  # TODO: Find windows equivalent of -Wno-deprecated-volatile
         "//conditions:default": ["-Wno-deprecated-volatile"],
     }),
     defines = ["GLM_FORCE_DEPTH_ZERO_TO_ONE=1"],

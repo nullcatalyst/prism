@@ -1,282 +1,282 @@
 #pragma once
 
 #include "prism/common/log.hpp"
-#include "webgpu-headers/webgpu.h"
+#include "prism/graphics/types.hpp"
 
 namespace prism::graphics::inline web {
 
 namespace {
 
-const char* enum_to_string(WGPULoadOp load_op) {
+const char* enum_to_string(LoadOp load_op) {
     switch (load_op) {
-        case WGPULoadOp_Clear:
+        case LoadOp::Clear:
             return "clear";
-        case WGPULoadOp_Load:
+        case LoadOp::Load:
             return "load";
         default:
             common::log_fatal("unknown load op (", load_op, ")");
     }
 }
 
-const char* enum_to_string(WGPUStoreOp store_op) {
+const char* enum_to_string(StoreOp store_op) {
     switch (store_op) {
-        case WGPUStoreOp_Store:
+        case StoreOp::Store:
             return "store";
-        case WGPUStoreOp_Discard:
+        case StoreOp::Discard:
             return "discard";
         default:
             common::log_fatal("unknown store op (", store_op, ")");
     }
 }
 
-const char* enum_to_string(WGPUPrimitiveTopology topology) {
+const char* enum_to_string(PrimitiveTopology topology) {
     switch (topology) {
-        case WGPUPrimitiveTopology_PointList:
+        case PrimitiveTopology::PointList:
             return "point-list";
-        case WGPUPrimitiveTopology_LineList:
+        case PrimitiveTopology::LineList:
             return "line-list";
-        case WGPUPrimitiveTopology_LineStrip:
+        case PrimitiveTopology::LineStrip:
             return "line-strip";
-        case WGPUPrimitiveTopology_TriangleList:
+        case PrimitiveTopology::TriangleList:
             return "triangle-list";
-        case WGPUPrimitiveTopology_TriangleStrip:
+        case PrimitiveTopology::TriangleStrip:
             return "triangle-strip";
         default:
             common::log_fatal("unknown topology (", topology, ")");
     }
 }
 
-const char* enum_to_string(WGPUIndexFormat index_format) {
+const char* enum_to_string(IndexFormat index_format) {
     switch (index_format) {
-        case WGPUIndexFormat_Uint16:
+        case IndexFormat::Uint16:
             return "uint16";
-        case WGPUIndexFormat_Uint32:
+        case IndexFormat::Uint32:
             return "uint32";
         default:
             common::log_fatal("unknown index format (", index_format, ")");
     }
 }
 
-const char* enum_to_string(WGPUFrontFace front_face) {
+const char* enum_to_string(FrontFace front_face) {
     switch (front_face) {
-        case WGPUFrontFace_CCW:
+        case FrontFace::CCW:
             return "ccw";
-        case WGPUFrontFace_CW:
+        case FrontFace::CW:
             return "cw";
         default:
             common::log_fatal("unknown front face (", front_face, ")");
     }
 }
 
-const char* enum_to_string(WGPUCullMode cull_mode) {
+const char* enum_to_string(CullMode cull_mode) {
     switch (cull_mode) {
-        case WGPUCullMode_None:
+        case CullMode::None:
             return "none";
-        case WGPUCullMode_Front:
+        case CullMode::Front:
             return "front";
-        case WGPUCullMode_Back:
+        case CullMode::Back:
             return "back";
         default:
             common::log_fatal("unknown cull mode (", cull_mode, ")");
     }
 }
 
-const char* enum_to_string(WGPUTextureFormat format) {
+const char* enum_to_string(TextureFormat format) {
     switch (format) {
-        case WGPUTextureFormat_R16Uint:
+        case TextureFormat::R16Uint:
             return "r16uint";
-        case WGPUTextureFormat_R32Uint:
+        case TextureFormat::R32Uint:
             return "r32uint";
-        case WGPUTextureFormat_RGBA8Unorm:
+        case TextureFormat::RGBA8Unorm:
             return "rgba8unorm";
-        case WGPUTextureFormat_RGBA8UnormSrgb:
+        case TextureFormat::RGBA8UnormSrgb:
             return "rgba8unorm-srgb";
-        case WGPUTextureFormat_BGRA8Unorm:
+        case TextureFormat::BGRA8Unorm:
             return "bgra8unorm";
-        case WGPUTextureFormat_BGRA8UnormSrgb:
+        case TextureFormat::BGRA8UnormSrgb:
             return "bgra8unorm-srgb";
-        case WGPUTextureFormat_RGBA16Float:
+        case TextureFormat::RGBA16Float:
             return "rgba16float";
-        case WGPUTextureFormat_RGBA32Float:
+        case TextureFormat::RGBA32Float:
             return "rgba32float";
-        case WGPUTextureFormat_Depth32Float:
+        case TextureFormat::Depth32Float:
             return "depth32float";
         default:
             common::log_fatal("unknown texture format (", format, ")");
     }
 }
 
-const char* enum_to_string(WGPUAddressMode address_mode) {
+const char* enum_to_string(AddressMode address_mode) {
     switch (address_mode) {
-        case WGPUAddressMode_Repeat:
+        case AddressMode::Repeat:
             return "repeat";
-        case WGPUAddressMode_MirrorRepeat:
+        case AddressMode::MirrorRepeat:
             return "mirror-repeat";
-        case WGPUAddressMode_ClampToEdge:
+        case AddressMode::ClampToEdge:
             return "clamp-to-edge";
         default:
             common::log_fatal("unknown address mode (", address_mode, ")");
     }
 }
 
-const char* enum_to_string(WGPUFilterMode filter_mode) {
+const char* enum_to_string(FilterMode filter_mode) {
     switch (filter_mode) {
-        case WGPUFilterMode_Nearest:
+        case FilterMode::Nearest:
             return "nearest";
-        case WGPUFilterMode_Linear:
+        case FilterMode::Linear:
             return "linear";
         default:
             common::log_fatal("unknown filter mode (", filter_mode, ")");
     }
 }
 
-const char* enum_to_string(WGPUBufferBindingType buffer_binding_type) {
+const char* enum_to_string(BufferBindingType buffer_binding_type) {
     switch (buffer_binding_type) {
-        case WGPUBufferBindingType_Uniform:
+        case BufferBindingType::Uniform:
             return "uniform";
-        case WGPUBufferBindingType_Storage:
+        case BufferBindingType::Storage:
             return "storage";
-        case WGPUBufferBindingType_ReadOnlyStorage:
+        case BufferBindingType::ReadOnlyStorage:
             return "read-only-storage";
         default:
             common::log_fatal("unknown buffer binding type (", buffer_binding_type, ")");
     }
 }
 
-const char* enum_to_string(WGPUSamplerBindingType sampler_binding_type) {
+const char* enum_to_string(SamplerBindingType sampler_binding_type) {
     switch (sampler_binding_type) {
-        case WGPUSamplerBindingType_Filtering:
+        case SamplerBindingType::Filtering:
             return "filtering";
-        case WGPUSamplerBindingType_NonFiltering:
+        case SamplerBindingType::NonFiltering:
             return "non-filtering";
-        case WGPUSamplerBindingType_Comparison:
+        case SamplerBindingType::Comparison:
             return "comparison";
         default:
             common::log_fatal("unknown sampler binding type (", sampler_binding_type, ")");
     }
 }
 
-const char* enum_to_string(WGPUTextureSampleType texture_sample_type) {
+const char* enum_to_string(TextureSampleType texture_sample_type) {
     switch (texture_sample_type) {
-        case WGPUTextureSampleType_Float:
+        case TextureSampleType::Float:
             return "float";
-        case WGPUTextureSampleType_UnfilterableFloat:
+        case TextureSampleType::UnfilterableFloat:
             return "unfilterable-float";
-        case WGPUTextureSampleType_Depth:
+        case TextureSampleType::Depth:
             return "depth";
-        case WGPUTextureSampleType_Sint:
+        case TextureSampleType::Sint:
             return "sint";
-        case WGPUTextureSampleType_Uint:
+        case TextureSampleType::Uint:
             return "uint";
         default:
             common::log_fatal("unknown texture sample type (", texture_sample_type, ")");
     }
 }
 
-const char* enum_to_string(WGPUTextureViewDimension texture_view_dimension) {
+const char* enum_to_string(TextureViewDimension texture_view_dimension) {
     switch (texture_view_dimension) {
-        case WGPUTextureViewDimension_1D:
+        case TextureViewDimension::_1D:
             return "1d";
-        case WGPUTextureViewDimension_2D:
+        case TextureViewDimension::_2D:
             return "2d";
-        case WGPUTextureViewDimension_2DArray:
+        case TextureViewDimension::_2DArray:
             return "2d-array";
-        case WGPUTextureViewDimension_Cube:
+        case TextureViewDimension::Cube:
             return "cube";
-        case WGPUTextureViewDimension_CubeArray:
+        case TextureViewDimension::CubeArray:
             return "cube-array";
-        case WGPUTextureViewDimension_3D:
+        case TextureViewDimension::_3D:
             return "3d";
         default:
             common::log_fatal("unknown texture view dimension (", texture_view_dimension, ")");
     }
 }
 
-const char* enum_to_string(WGPUVertexFormat vertex_format) {
+const char* enum_to_string(VertexFormat vertex_format) {
     switch (vertex_format) {
-        case WGPUVertexFormat_Float32x4:
+        case VertexFormat::Float32x4:
             return "float32x4";
         default:
             common::log_fatal("unknown vertex format (", vertex_format, ")");
     }
 }
 
-const char* enum_to_string(WGPUVertexStepMode vertex_step_mode) {
+const char* enum_to_string(VertexStepMode vertex_step_mode) {
     switch (vertex_step_mode) {
-        case WGPUVertexStepMode_Vertex:
+        case VertexStepMode::Vertex:
             return "vertex";
-        case WGPUVertexStepMode_Instance:
+        case VertexStepMode::Instance:
             return "instance";
         default:
             common::log_fatal("unknown vertex step mode (", vertex_step_mode, ")");
     }
 }
 
-const char* enum_to_string(WGPUCompareFunction compare_function) {
+const char* enum_to_string(CompareFunction compare_function) {
     switch (compare_function) {
-        case WGPUCompareFunction_Never:
+        case CompareFunction::Never:
             return "never";
-        case WGPUCompareFunction_Less:
+        case CompareFunction::Less:
             return "less";
-        case WGPUCompareFunction_LessEqual:
+        case CompareFunction::LessEqual:
             return "less-equal";
-        case WGPUCompareFunction_Greater:
+        case CompareFunction::Greater:
             return "greater";
-        case WGPUCompareFunction_GreaterEqual:
+        case CompareFunction::GreaterEqual:
             return "greater-equal";
-        case WGPUCompareFunction_Equal:
+        case CompareFunction::Equal:
             return "equal";
-        case WGPUCompareFunction_NotEqual:
+        case CompareFunction::NotEqual:
             return "not-equal";
-        case WGPUCompareFunction_Always:
+        case CompareFunction::Always:
             return "always";
         default:
             common::log_fatal("unknown compare function (", compare_function, ")");
     }
 }
 
-const char* enum_to_string(WGPUBlendOperation blend_operation) {
+const char* enum_to_string(BlendOperation blend_operation) {
     switch (blend_operation) {
-        case WGPUBlendOperation_Add:
+        case BlendOperation::Add:
             return "add";
-        case WGPUBlendOperation_Subtract:
+        case BlendOperation::Subtract:
             return "subtract";
-        case WGPUBlendOperation_ReverseSubtract:
+        case BlendOperation::ReverseSubtract:
             return "reverse-subtract";
-        case WGPUBlendOperation_Min:
+        case BlendOperation::Min:
             return "min";
-        case WGPUBlendOperation_Max:
+        case BlendOperation::Max:
             return "max";
         default:
             common::log_fatal("unknown blend operation (", blend_operation, ")");
     }
 }
 
-const char* enum_to_string(WGPUBlendFactor blend_factor) {
+const char* enum_to_string(BlendFactor blend_factor) {
     switch (blend_factor) {
-        case WGPUBlendFactor_Zero:
+        case BlendFactor::Zero:
             return "zero";
-        case WGPUBlendFactor_One:
+        case BlendFactor::One:
             return "one";
-        case WGPUBlendFactor_OneMinusSrc:
+        case BlendFactor::OneMinusSrc:
             return "one-minus-src";
-        case WGPUBlendFactor_SrcAlpha:
+        case BlendFactor::SrcAlpha:
             return "src-alpha";
-        case WGPUBlendFactor_OneMinusSrcAlpha:
+        case BlendFactor::OneMinusSrcAlpha:
             return "one-minus-src-alpha";
-        case WGPUBlendFactor_Dst:
+        case BlendFactor::Dst:
             return "dst";
-        case WGPUBlendFactor_OneMinusDst:
+        case BlendFactor::OneMinusDst:
             return "one-minus-dst";
-        case WGPUBlendFactor_DstAlpha:
+        case BlendFactor::DstAlpha:
             return "dst-alpha";
-        case WGPUBlendFactor_OneMinusDstAlpha:
+        case BlendFactor::OneMinusDstAlpha:
             return "one-minus-dst-alpha";
-        case WGPUBlendFactor_SrcAlphaSaturated:
+        case BlendFactor::SrcAlphaSaturated:
             return "src-alpha-saturated";
-        case WGPUBlendFactor_Constant:
+        case BlendFactor::Constant:
             return "constant";
-        case WGPUBlendFactor_OneMinusConstant:
+        case BlendFactor::OneMinusConstant:
             return "one-minus-constant";
         default:
             common::log_fatal("unknown blend factor (", blend_factor, ")");

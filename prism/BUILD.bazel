@@ -21,6 +21,12 @@ config_setting(
 )
 
 config_setting(
+    name = "backend_wgpu",
+    define_values = {"prism_backend": "wgpu"},
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
     name = "backend_web",
     define_values = {"prism_backend": "web"},
     visibility = ["//visibility:public"],

@@ -15,7 +15,7 @@ Application::Application(js::HtmlCanvasElement canvas) : _canvas{canvas} {}
     return {_canvas.width(), _canvas.height()};
 }
 
-[[nodiscard]] float Application::pixel_ratio() const { return _gpu_get_pixel_ratio(); }
+[[nodiscard]] float Application::pixel_ratio() const { return js::detail::gpu_get_pixel_ratio(); }
 
 void Application::show() {
     // Do nothing
