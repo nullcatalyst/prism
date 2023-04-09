@@ -83,22 +83,80 @@ const char* enum_to_string(CullMode cull_mode) {
 
 const char* enum_to_string(TextureFormat format) {
     switch (format) {
+        case TextureFormat::R8Unorm:
+            return "r8unorm";
+        case TextureFormat::R8Snorm:
+            return "r8snorm";
+        case TextureFormat::R8Uint:
+            return "r8uint";
+        case TextureFormat::R8Sint:
+            return "r8sint";
         case TextureFormat::R16Uint:
             return "r16uint";
+        case TextureFormat::R16Sint:
+            return "r16sint";
+        case TextureFormat::R16Float:
+            return "r16float";
+        case TextureFormat::RG8Unorm:
+            return "rg8unorm";
+        case TextureFormat::RG8Snorm:
+            return "rg8snorm";
+        case TextureFormat::RG8Uint:
+            return "rg8uint";
+        case TextureFormat::RG8Sint:
+            return "rg8sint";
+        case TextureFormat::R32Float:
+            return "r32float";
         case TextureFormat::R32Uint:
             return "r32uint";
+        case TextureFormat::R32Sint:
+            return "r32sint";
+        case TextureFormat::RG16Uint:
+            return "rg16uint";
+        case TextureFormat::RG16Sint:
+            return "rg16sint";
+        case TextureFormat::RG16Float:
+            return "rg16float";
         case TextureFormat::RGBA8Unorm:
             return "rgba8unorm";
         case TextureFormat::RGBA8UnormSrgb:
             return "rgba8unorm-srgb";
+        case TextureFormat::RGBA8Snorm:
+            return "rgba8snorm";
+        case TextureFormat::RGBA8Uint:
+            return "rgba8uint";
+        case TextureFormat::RGBA8Sint:
+            return "rgba8sint";
         case TextureFormat::BGRA8Unorm:
             return "bgra8unorm";
         case TextureFormat::BGRA8UnormSrgb:
             return "bgra8unorm-srgb";
+        // case RGB10A2Unorm:
+        //     return "rgb10a2unorm";
+        // case RG11B10Ufloat:
+        //     return "rg11b10ufloat";
+        // case RGB9E5Ufloat:
+        //     return "rgb9e5ufloat";
+        case TextureFormat::RG32Float:
+            return "rg32float";
+        case TextureFormat::RG32Uint:
+            return "rg32uint";
+        case TextureFormat::RG32Sint:
+            return "rg32sint";
+        case TextureFormat::RGBA16Uint:
+            return "rgba16uint";
+        case TextureFormat::RGBA16Sint:
+            return "rgba16sint";
         case TextureFormat::RGBA16Float:
             return "rgba16float";
         case TextureFormat::RGBA32Float:
             return "rgba32float";
+        case TextureFormat::RGBA32Uint:
+            return "rgba32uint";
+        case TextureFormat::RGBA32Sint:
+            return "rgba32sint";
+        case TextureFormat::Depth16Unorm:
+            return "depth16unorm";
         case TextureFormat::Depth32Float:
             return "depth32float";
         default:

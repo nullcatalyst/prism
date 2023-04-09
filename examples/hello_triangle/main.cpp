@@ -48,26 +48,18 @@ fn fs_main(v: Varyings) -> @location(0) vec4<f32> {
 
 WASM_EXPORT("init")
 void init() {
-    // Here we create a window and a graphics context.
-    // We need to use a separate function for this because WASM WebGPU requires an asynchronous
-    // callback, and async/await is not yet supported in WebAssembly.
-
-    // So instead, we call `init()`, await the promise resolving, and then call `start()`.
-
 #if defined(PRISM_BACKEND_SDL2)
     auto [new_app, new_ctx] = prism::create_window("hello_triangle", 1280, 720);
+    app                     = std::move(new_app);
+    ctx                     = std::move(new_ctx);
 #elif defined(PRISM_BACKEND_WEB)
     auto [new_app, new_ctx] = prism::create_for_canvas("hello_triangle");
+    app                     = std::move(new_app);
+    ctx                     = std::move(new_ctx);
 #else
 #error "No prism platform defined"
 #endif
 
-    app = std::move(new_app);
-    ctx = std::move(new_ctx);
-}
-
-WASM_EXPORT("start")
-void start() {
 #if defined(EXAMPLES_VERBOSE_DEBUG)
     prism::Context::enable_debug();
 #endif
@@ -105,10 +97,8 @@ void start() {
     app.on_mouse_button_up([&](const prism::app::input::MouseButton button) {});
     app.on_key_down([&](const prism::app::input::KeyCode key_code) {});
     app.on_key_up([&](const prism::app::input::KeyCode key_code) {});
-
 #if defined(PRISM_BACKEND_WEB)
-    // TODO: Temporary workaround
-    app.show();
+    app.attach_event_listeners();
 #endif
 }
 
@@ -155,11 +145,8 @@ WASM_EXPORT("memFree") void memory_free(void* ptr) { return free(ptr); }
 // DO NOT CHANGE main arg types.
 // They must match SDL_main args for SDL to work.
 int main(const int argc, char** const argv) {
-    // Create the window and graphics context.
+    // Create the window and graphics context, and initialize resources.
     init();
-
-    // Load resources.
-    start();
 
     // Render the first frame then call show to prevent a flash of garbage contents that sometimes
     // happens on some systems.

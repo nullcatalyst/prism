@@ -24,6 +24,8 @@ class Application final {
 
     js::HtmlCanvasElement canvas() const { return _canvas; }
 
+    void attach_event_listeners();
+
     ////////////////////////////////
     // General
     constexpr Application() = default;

@@ -7,19 +7,7 @@ namespace prism::app::inline web {
 
 Application::Application(js::HtmlCanvasElement canvas) : _canvas{canvas} {}
 
-[[nodiscard]] std::tuple<uint32_t, uint32_t> Application::window_size() const {
-    return {_canvas.width(), _canvas.height()};
-}
-
-[[nodiscard]] std::tuple<uint32_t, uint32_t> Application::drawable_size() const {
-    return {_canvas.width(), _canvas.height()};
-}
-
-[[nodiscard]] float Application::pixel_ratio() const { return js::detail::gpu_get_pixel_ratio(); }
-
-void Application::show() {
-    // Do nothing
-
+void Application::attach_event_listeners() {
     _canvas.on_mouse_moved(
         [](double x, double y, void* user_data) {
             auto* app = static_cast<Application*>(user_data);
@@ -64,6 +52,20 @@ void Application::show() {
             }
         },
         this);
+}
+
+[[nodiscard]] std::tuple<uint32_t, uint32_t> Application::window_size() const {
+    return {_canvas.width(), _canvas.height()};
+}
+
+[[nodiscard]] std::tuple<uint32_t, uint32_t> Application::drawable_size() const {
+    return {_canvas.width(), _canvas.height()};
+}
+
+[[nodiscard]] float Application::pixel_ratio() const { return js::detail::gpu_get_pixel_ratio(); }
+
+void Application::show() {
+    // Do nothing
 }
 
 void Application::hide() {

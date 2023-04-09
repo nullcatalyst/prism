@@ -16,16 +16,33 @@ prism_dependencies()
 
 #### WebAssembly Compiler Toolchain ####
 
+_WASMTOOLCHAIN_COMMIT = "48d85bb87be20820f65a4b4f7afb877362ad55af"
+
 http_archive(
-    name = "bazel_wasm_toolchain",
-    sha256 = "b4c517a5d0225607b9c713b79854ade288d350e19e1e6c5dc60d03a9c215b54f",
-    strip_prefix = "bazel_wasm_toolchain-adb60ff783bee6445e8ca70800800a4da0eb1cd8",
-    url = "https://github.com/nullcatalyst/bazel_wasm_toolchain/archive/adb60ff783bee6445e8ca70800800a4da0eb1cd8.tar.gz",
+    name = "com_nullcatalyst_wasmtoolchain",
+    sha256 = "1fe02add01a6c21903fffed1be6851fd1e69ddfc94b937d1b4a392d9374ca53e",
+    strip_prefix = "wasmtoolchain-{}".format(_WASMTOOLCHAIN_COMMIT),
+    url = "https://github.com/nullcatalyst/wasmtoolchain/archive/{}.tar.gz".format(_WASMTOOLCHAIN_COMMIT),
 )
 
-load("@bazel_wasm_toolchain//toolchain:toolchain.bzl", "wasm_toolchain")
+load("@com_nullcatalyst_wasmtoolchain//toolchain:toolchain.bzl", "wasm_toolchain")
 
 wasm_toolchain(name = "wasm_toolchain")
+#### Package Rules (zip) ####
+
+_RULES_PKG_VERSION = "0.8.1"
+
+http_archive(
+    name = "rules_pkg",
+    sha256 = "8c20f74bca25d2d442b327ae26768c02cf3c99e93fad0381f32be9aab1967675",
+    urls = [
+        "https://github.com/bazelbuild/rules_pkg/releases/download/{version}/rules_pkg-{version}.tar.gz".format(version = _RULES_PKG_VERSION),
+    ],
+)
+
+load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+
+rules_pkg_dependencies()
 
 #### Typescript ####
 

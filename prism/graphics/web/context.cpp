@@ -8,8 +8,8 @@ namespace prism::graphics::inline web {
 
 Context::Context(js::HtmlCanvasElement canvas)
     : _context{js::Object::from_raw(js::detail::gpu_create_context(canvas.obj_id()))} {
-    // TODO: Fetch this properly instead of assuming, even if this is true in chrome at the moment.
-    _surface_format = TextureFormat::BGRA8Unorm;
+    _surface_format =
+        static_cast<TextureFormat>(js::detail::gpu_get_surface_format(_context.obj_id()));
 }
 
 BindGroupLayout Context::create_bind_group_layout(const BindGroupLayoutDescriptor& layout_desc) {
@@ -117,9 +117,14 @@ PipelineLayout Context::create_pipeline_layout(const PipelineLayoutDescriptor& l
 
 RenderPipeline Context::create_render_pipeline(const RenderPipelineDescriptor& pipeline_desc) {
     js::Object js_desc = js::Object::object();
-    js::detail::gpu_set_object_pipeline_layout_property(
-        _context.obj_id(), js_desc.obj_id(), "layout",
-        reinterpret_cast<uintptr_t>(pipeline_desc.layout));
+
+    if (pipeline_desc.layout != nullptr) {
+        js::detail::gpu_set_object_pipeline_layout_property(
+            _context.obj_id(), js_desc.obj_id(), "layout",
+            reinterpret_cast<uintptr_t>(pipeline_desc.layout));
+    } else {
+        js_desc.set("layout", "auto");
+    }
 
     {  // desc.vertex
         js::Object vertex_desc = js::Object::object();
@@ -272,10 +277,11 @@ Sampler Context::create_sampler(AddressMode address_mode, FilterMode min_filter,
 Sampler Context::create_sampler_comparison(CompareFunction compare, AddressMode address_mode,
                                            FilterMode min_filter, FilterMode mag_filter,
                                            FilterMode mipmap_filter) {
-    return Sampler{_context.obj_id(), js::detail::gpu_create_sampler_comparison(
-                                          _context.obj_id(), enum_to_string(address_mode),
-                                          enum_to_string(min_filter), enum_to_string(mag_filter),
-                                          enum_to_string(mipmap_filter), enum_to_string(compare))};
+    return Sampler{
+        _context.obj_id(),
+        js::detail::gpu_create_sampler_comparison(
+            _context.obj_id(), enum_to_string(compare), enum_to_string(address_mode),
+            enum_to_string(min_filter), enum_to_string(mag_filter), enum_to_string(mipmap_filter))};
 }
 
 void Context::start_frame() { js::detail::gpu_start_frame(_context.obj_id()); }

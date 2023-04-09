@@ -2,6 +2,7 @@ load("@aspect_rules_rollup//rollup:defs.bzl", "rollup")
 load("@aspect_rules_terser//terser:defs.bzl", "terser")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@prism_config//:cc.bzl", "prism_cc_binary")
+load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
 
 prism_cc_binary(
     name = "hello_triangle",
@@ -40,4 +41,15 @@ terser(
     config_file = "terser.config.json",
     node_modules = "//:node_modules",
     sourcemap = 0,
+)
+
+pkg_zip(
+    name = "website",
+    srcs = [
+        "index.html",
+        ":hello_triangle",
+        ":hello_triangle.bundle",
+    ],
+    out = "website.zip",
+    strip_prefix = "hello_triangle/",
 )

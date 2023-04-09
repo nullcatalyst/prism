@@ -9,18 +9,17 @@ namespace prism::js {
 namespace detail {
 
 WASM_IMPORT("gpu", "getPixelRatio") float gpu_get_pixel_ratio();
+WASM_IMPORT("gpu", "getSurfaceFormat") uint32_t gpu_get_surface_format(uint32_t ctx_obj);
 
 WASM_IMPORT("gpu", "createContext")
 uint32_t gpu_create_context(uint32_t canvas);
-
-WASM_IMPORT("gpu", "getSurfaceFormat") uint32_t gpu_get_surface_format(uint32_t ctx_obj);
 
 WASM_IMPORT("gpu", "createBindGroupLayout")
 uint32_t gpu_create_bind_group_layout(uint32_t ctx_obj, uint32_t bind_group_layout_desc_obj);
 WASM_IMPORT("gpu", "createBindGroup")
 uint32_t gpu_create_bind_group(uint32_t ctx_obj, uint32_t bind_group_desc_obj);
 WASM_IMPORT("gpu", "createShaderModule")
-uint32_t gpu_create_shader_module(uint32_t ctx_obj, const char* source_url);
+uint32_t gpu_create_shader_module(uint32_t ctx_obj, const char* source);
 WASM_IMPORT("gpu", "createPipelineLayout")
 uint32_t gpu_create_pipeline_layout(uint32_t ctx_obj, uint32_t pipeline_layout_obj);
 WASM_IMPORT("gpu", "createRenderPipeline")
@@ -43,12 +42,22 @@ WASM_IMPORT("gpu", "createSampler")
 uint32_t gpu_create_sampler(uint32_t ctx_obj, const char* address_mode, const char* min_filter,
                             const char* mag_filter, const char* mipmap_filter);
 WASM_IMPORT("gpu", "createSamplerComparison")
-uint32_t gpu_create_sampler_comparison(uint32_t ctx_obj, const char* address_mode,
-                                       const char* min_filter, const char* mag_filter,
-                                       const char* mipmap_filter, const char* compare_function);
+uint32_t gpu_create_sampler_comparison(uint32_t ctx_obj, const char* compare_function,
+                                       const char* address_mode, const char* min_filter,
+                                       const char* mag_filter, const char* mipmap_filter);
 
 WASM_IMPORT("gpu", "getSwapChainView")
 uint32_t gpu_get_swap_chain_view(uint32_t ctx_obj);
+WASM_IMPORT("gpu", "startFrame")
+void gpu_start_frame(uint32_t ctx_obj);
+WASM_IMPORT("gpu", "presentFrame")
+void gpu_present_frame(uint32_t ctx_obj);
+
+WASM_IMPORT("gpu", "beginRenderPass")
+uint32_t gpu_begin_render_pass(uint32_t ctx_obj, uint32_t desc_obj, uint32_t width,
+                               uint32_t height);
+WASM_IMPORT("gpu", "endRenderPass")
+void gpu_end_render_pass(uint32_t ctx_obj, uint32_t render_pass_obj);
 WASM_IMPORT("gpu", "setPipeline")
 void gpu_set_pipeline(uint32_t ctx_obj, uint32_t render_pass_obj, uint32_t pipeline_obj);
 WASM_IMPORT("gpu", "setBindGroup")
@@ -64,11 +73,6 @@ WASM_IMPORT("gpu", "setIndexU32Buffer")
 void gpu_set_index_u32_buffer(uint32_t ctx_obj, uint32_t render_pass_obj, uint32_t buffer_obj,
                               uint32_t offset, int32_t size);
 
-WASM_IMPORT("gpu", "beginRenderPass")
-uint32_t gpu_begin_render_pass(uint32_t ctx_obj, uint32_t desc_obj, uint32_t width,
-                               uint32_t height);
-WASM_IMPORT("gpu", "endRenderPass")
-void gpu_end_render_pass(uint32_t ctx_obj, uint32_t render_pass_obj);
 WASM_IMPORT("gpu", "draw")
 void gpu_draw(uint32_t ctx_obj, uint32_t render_pass_obj, uint32_t vertex_count,
               uint32_t instance_count, uint32_t first_vertex, const uint32_t first_instance);
@@ -82,11 +86,6 @@ void gpu_draw_indirect(uint32_t ctx_obj, uint32_t render_pass_obj, uint32_t indi
 WASM_IMPORT("gpu", "drawIndexedIndirect")
 void gpu_draw_indexed_indirect(uint32_t ctx_obj, uint32_t render_pass_obj,
                                uint32_t indirect_buffer_obj, uint32_t indirect_offset);
-
-WASM_IMPORT("gpu", "startFrame")
-void gpu_start_frame(uint32_t ctx_obj);
-WASM_IMPORT("gpu", "presentFrame")
-void gpu_present_frame(uint32_t ctx_obj);
 
 ////////////////////////////////
 // Object property setters

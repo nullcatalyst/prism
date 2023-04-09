@@ -18,6 +18,47 @@ export async function getWebgpuDevice(): Promise<GPUDevice> {
     return adapter.requestDevice();
 }
 
+const textureFormats /*: { [name in GPUTextureFormat]: number }*/ = {
+    "r8unorm": 0x00000001,
+    "r8snorm": 0x00000002,
+    "r8uint": 0x00000003,
+    "r8sint": 0x00000004,
+    "r16uint": 0x00000005,
+    "r16sint": 0x00000006,
+    "r16float": 0x00000007,
+    "rg8unorm": 0x00000008,
+    "rg8snorm": 0x00000009,
+    "rg8uint": 0x0000000A,
+    "rg8sint": 0x0000000B,
+    "r32float": 0x0000000C,
+    "r32uint": 0x0000000D,
+    "r32sint": 0x0000000E,
+    "rg16uint": 0x0000000F,
+    "rg16sint": 0x00000010,
+    "rg16float": 0x00000011,
+    "rgba8unorm": 0x00000012,
+    "rgba8unorm-srgb": 0x00000013,
+    "rgba8snorm": 0x00000014,
+    "rgba8uint": 0x00000015,
+    "rgba8sint": 0x00000016,
+    "bgra8unorm": 0x00000017,
+    "bgra8unorm-srgb": 0x00000018,
+    // "rgb10a2unorm": 0x00000019,
+    // "rg11b10ufloat": 0x0000001A,
+    // "rgb9e5ufloat": 0x0000001B,
+    "rg32float": 0x0000001C,
+    "rg32uint": 0x0000001D,
+    "rg32sint": 0x0000001E,
+    "rgba16uint": 0x0000001F,
+    "rgba16sint": 0x00000020,
+    "rgba16float": 0x00000021,
+    "rgba32float": 0x00000022,
+    "rgba32uint": 0x00000023,
+    "rgba32sint": 0x00000024,
+    "depth16unorm": 0x00000026,
+    "depth32float": 0x00000029,
+};
+
 export class Context {
     private _device: GPUDevice = null!;
     private _context: GPUCanvasContext = null!;
@@ -34,12 +75,17 @@ export class Context {
     private readonly _samplers = new RefMap<GPUSampler>();
     private readonly _renderPasses = new RefMap<GPURenderPassEncoder>();
 
-    constructor(device: GPUDevice, canvas: HTMLCanvasElement) {
+    private readonly _surfaceFormat: GPUTextureFormat;
+
+    // TODO: At this time, it appears that chrome does not support sRGB, even though the spec says
+    // it's required to support the format: "bgra8unorm-srgb", which would be the better default.
+    constructor(device: GPUDevice, canvas: HTMLCanvasElement, surfaceFormat: GPUTextureFormat = "bgra8unorm") {
         const devicePixelRatio = (window.devicePixelRatio || 1);
         const clientWidth = canvas.clientWidth;
         const clientHeight = canvas.clientHeight;
         canvas.style.width = `${clientWidth / devicePixelRatio}px`;
         canvas.style.height = `${clientHeight / devicePixelRatio}px`;
+
 
         const context = canvas.getContext("webgpu");
         if (context == null) {
@@ -47,14 +93,17 @@ export class Context {
         }
         context.configure({
             "device": device,
-            // TODO: At this time, it appears that chrome does not support sRGB, even though the spec says it's required to
-            // format: "bgra8unorm-srgb",
-            "format": "bgra8unorm",
+            "format": surfaceFormat,
             "alphaMode": "opaque",
         });
 
         this._device = device;
         this._context = context;
+        this._surfaceFormat = surfaceFormat;
+    }
+
+    getSurfaceFormat() {
+        return this._surfaceFormat;
     }
 
     createBindGroupLayout(desc: GPUBindGroupLayoutDescriptor) {
@@ -94,8 +143,8 @@ export class Context {
         return this._buffers.create(buffer);
     }
 
-    updateBuffer(bufferId: number, offset: number, data: ArrayBuffer) {
-        this._device.queue.writeBuffer(this._buffers.get(bufferId), offset, data);
+    updateBuffer(bufferId: number, data: ArrayBuffer, dataOffsetIntoBuffer: number) {
+        this._device.queue.writeBuffer(this._buffers.get(bufferId), dataOffsetIntoBuffer, data);
     }
 
     createTexture2d(usage: number, format: GPUTextureFormat, width: number, height: number) {
@@ -159,7 +208,7 @@ export class Context {
         }));
     }
 
-    createSamplerComparison(addressMode: GPUAddressMode, minFilter: GPUFilterMode, magFilter: GPUFilterMode, mipmapFilter: GPUFilterMode, compare: GPUCompareFunction) {
+    createSamplerComparison(compare: GPUCompareFunction, addressMode: GPUAddressMode, minFilter: GPUFilterMode, magFilter: GPUFilterMode, mipmapFilter: GPUFilterMode) {
         return this._samplers.create(this._device.createSampler({
             "addressModeU": addressMode,
             "addressModeV": addressMode,
@@ -228,7 +277,8 @@ export class Context {
 
 export function createGpuWasmImport(gpuDevice: GPUDevice, memory: Memory, objLib: ObjectLibrary) {
     function createSetObjectPropertyFromContextValue(getter: (ctx: Context, value: number) => any) {
-        return (ctx: Context, objId: number, namePtr: number, value: number) => {
+        return (ctxObjId: number, objId: number, namePtr: number, value: number) => {
+            const ctx = objLib.get(ctxObjId) as Context;
             const valueObj = getter(ctx, value);
             if (namePtr === 0) {
                 // If the name is null, then the object must be an array that we are pushing onto
@@ -242,6 +292,13 @@ export function createGpuWasmImport(gpuDevice: GPUDevice, memory: Memory, objLib
     return {
         "gpu": {
             "getPixelRatio": () => window.devicePixelRatio,
+            "getSurfaceFormat": (ctxObjId: number) => {
+                const ctx = objLib.get(ctxObjId) as Context;
+                // Not all formats supported by the browser are currently supported by us, so we
+                // need to do a cast to appease the type checker.
+                const format = ctx.getSurfaceFormat() as keyof typeof textureFormats;
+                return textureFormats[format] || 0;
+            },
 
             "createContext": (canvasObjId: number) => {
                 const canvas = objLib.get(canvasObjId) as HTMLCanvasElement;
@@ -253,41 +310,42 @@ export function createGpuWasmImport(gpuDevice: GPUDevice, memory: Memory, objLib
             "createBindGroupLayout": (ctxObjId: number, descObjId: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
                 const desc = objLib.get(descObjId) as GPUBindGroupLayoutDescriptor;
-                return objLib.create(ctx.createBindGroupLayout(desc));
+                return ctx.createBindGroupLayout(desc);
             },
             "createBindGroup": (ctxObjId: number, descObjId: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
                 const desc = objLib.get(descObjId) as GPUBindGroupDescriptor;
-                return objLib.create(ctx.createBindGroup(desc));
+                return ctx.createBindGroup(desc);
             },
-            "createShaderModule": (ctxObjId: number, sourceUrlPtr: number) => {
+            "createShaderModule": (ctxObjId: number, sourcePtr: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
-                const sourceUrl = memory.createJsString(sourceUrlPtr);
-                return objLib.create(ctx.createShaderModule(sourceUrl));
+                const source = memory.createJsString(sourcePtr);
+                return ctx.createShaderModule(source);
             },
             "createPipelineLayout": (ctxObjId: number, descObjId: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
                 const desc = objLib.get(descObjId) as GPUPipelineLayoutDescriptor;
-                return objLib.create(ctx.createPipelineLayout(desc));
+                return ctx.createPipelineLayout(desc);
             },
             "createRenderPipeline": (ctxObjId: number, descObjId: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
                 const desc = objLib.get(descObjId) as GPURenderPipelineDescriptor;
-                return objLib.create(ctx.createRenderPipeline(desc));
+                return ctx.createRenderPipeline(desc);
             },
             "createBuffer": (ctxObjId: number, usage: number, bufferSize: number, dataPtr: number, dataSize: number, dataOffsetIntoBuffer: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
-                const data = memory.createJsBuffer(dataPtr, dataSize);
-                return objLib.create(ctx.createBuffer(usage, bufferSize, memory.createJsBuffer(dataPtr, dataSize >= 0 ? dataSize : undefined), dataOffsetIntoBuffer));
+                const data = memory.createJsBuffer(dataPtr, dataSize >= 0 ? dataSize : undefined);
+                return ctx.createBuffer(usage, bufferSize, data, dataOffsetIntoBuffer);
             },
-            "updateBuffer": (ctxObjId: number, bufferId: number, offset: number, dataPtr: number, dataSize: number) => {
+            "updateBuffer": (ctxObjId: number, bufferId: number, dataPtr: number, dataSize: number, dataOffsetIntoBuffer: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
                 const data = memory.createJsBuffer(dataPtr, dataSize);
-                ctx.updateBuffer(bufferId, offset, data);
+                ctx.updateBuffer(bufferId, data, dataOffsetIntoBuffer);
             },
-            "createTexture2d": (ctxObjId: number, usage: number, format: GPUTextureFormat, width: number, height: number) => {
+            "createTexture2d": (ctxObjId: number, usage: number, formatStrPtr: number, width: number, height: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
-                return objLib.create(ctx.createTexture2d(usage, format, width, height));
+                const format = memory.createJsString(formatStrPtr) as GPUTextureFormat;
+                return ctx.createTexture2d(usage, format, width, height);
             },
             "updateTexture2d": (ctxObjId: number, textureId: number, width: number, height: number, dataPtr: number, dataSize: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
@@ -297,7 +355,7 @@ export function createGpuWasmImport(gpuDevice: GPUDevice, memory: Memory, objLib
             "createTextureView2d": (ctxObjId: number, textureId: number, formatStrPtr: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
                 const format = memory.createJsString(formatStrPtr) as GPUTextureFormat;
-                return objLib.create(ctx.createTextureView2d(textureId, format));
+                return ctx.createTextureView2d(textureId, format);
             },
             "createSampler": (ctxObjId: number, addressModeStrPtr: number, minFilterStrPtr: number, magFilterStrPtr: number, mipmapFilterStrPtr: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
@@ -305,17 +363,21 @@ export function createGpuWasmImport(gpuDevice: GPUDevice, memory: Memory, objLib
                 const minFilter = memory.createJsString(minFilterStrPtr) as GPUFilterMode;
                 const magFilter = memory.createJsString(magFilterStrPtr) as GPUFilterMode;
                 const mipmapFilter = memory.createJsString(mipmapFilterStrPtr) as GPUFilterMode;
-                return objLib.create(ctx.createSampler(addressMode, minFilter, magFilter, mipmapFilter));
+                return ctx.createSampler(addressMode, minFilter, magFilter, mipmapFilter);
             },
-            "createSamplerComparison": (ctxObjId: number, addressModeStrPtr: number, minFilterStrPtr: number, magFilterStrPtr: number, mipmapFilterStrPtr: number, compareStrPtr: number) => {
+            "createSamplerComparison": (ctxObjId: number, compareStrPtr: number, addressModeStrPtr: number, minFilterStrPtr: number, magFilterStrPtr: number, mipmapFilterStrPtr: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
+                const compare = memory.createJsString(compareStrPtr) as GPUCompareFunction;
                 const addressMode = memory.createJsString(addressModeStrPtr) as GPUAddressMode;
                 const minFilter = memory.createJsString(minFilterStrPtr) as GPUFilterMode;
                 const magFilter = memory.createJsString(magFilterStrPtr) as GPUFilterMode;
                 const mipmapFilter = memory.createJsString(mipmapFilterStrPtr) as GPUFilterMode;
-                const compare = memory.createJsString(compareStrPtr) as GPUCompareFunction;
-                return objLib.create(ctx.createSamplerComparison(addressMode, minFilter, magFilter, mipmapFilter, compare));
+                return ctx.createSamplerComparison(compare, addressMode, minFilter, magFilter, mipmapFilter);
             },
+
+            "getSwapChainView": (ctxObjId: number) => (objLib.get(ctxObjId) as Context).getSwapChainView(),
+            "startFrame": (ctxObjId: number) => (objLib.get(ctxObjId) as Context).startFrame(),
+            "presentFrame": (ctxObjId: number) => (objLib.get(ctxObjId) as Context).presentFrame(),
 
             ////////////////////////////////
             // Render pass
@@ -348,27 +410,23 @@ export function createGpuWasmImport(gpuDevice: GPUDevice, memory: Memory, objLib
                 const ctx = objLib.get(ctxObjId) as Context;
                 ctx.setIndexU32Buffer(renderPassId, bufferId, offset, size);
             },
+
             "draw": (ctxObjId: number, renderPassId: number, vertexCount: number, instanceCount: number, firstVertex: number, firstInstance: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
                 ctx.draw(renderPassId, vertexCount, instanceCount, firstVertex, firstInstance);
             },
-            "drawIndexed": (ctxObjId: number, renderPassId: number, vertexCount: number, instanceCount: number, firstIndex: number, baseVertex: number, firstInstance: number) => {
+            "drawIndexed": (ctxObjId: number, renderPassId: number, indexCount: number, instanceCount: number, firstIndex: number, baseVertex: number, firstInstance: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
-                ctx.drawIndexed(renderPassId, vertexCount, instanceCount, firstIndex, baseVertex, firstInstance);
+                ctx.drawIndexed(renderPassId, indexCount, instanceCount, firstIndex, baseVertex, firstInstance);
             },
-            "drawIndirect": (ctxObjId: number, renderPassId: number, bufferId: number, indirectOffset: number) => {
+            "drawIndirect": (ctxObjId: number, renderPassId: number, indirectBufferId: number, indirectOffset: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
-                ctx.drawIndirect(renderPassId, bufferId, indirectOffset);
+                ctx.drawIndirect(renderPassId, indirectBufferId, indirectOffset);
             },
-            "drawIndexedIndirect": (ctxObjId: number, renderPassId: number, bufferId: number, indirectOffset: number) => {
+            "drawIndexedIndirect": (ctxObjId: number, renderPassId: number, indirectBufferId: number, indirectOffset: number) => {
                 const ctx = objLib.get(ctxObjId) as Context;
-                ctx.drawIndexedIndirect(renderPassId, bufferId, indirectOffset);
+                ctx.drawIndexedIndirect(renderPassId, indirectBufferId, indirectOffset);
             },
-
-            "getSwapChainView": (ctxObjId: number) => objLib.create((objLib.get(ctxObjId) as Context).getSwapChainView()),
-            "startFrame": (ctxObjId: number) => (objLib.get(ctxObjId) as Context).startFrame(),
-            "presentFrame": (ctxObjId: number) => (objLib.get(ctxObjId) as Context).presentFrame(),
-
 
             ////////////////////////////////
             // Set object property to GPU resource
