@@ -7,10 +7,9 @@
   "files.insertFinalNewline": true,
   "files.exclude": {
     "**/bazel-*": true,
-    "**/node_modules": true,
+    "**/node_modules": true
   },
   "files.associations": {
-    "*.ejs": "html",
     "algorithm": "cpp",
     "any": "cpp",
     "array": "cpp",
@@ -94,6 +93,7 @@
     "xstring": "cpp",
     "xtr1common": "cpp",
     "xtree": "cpp",
-    "xutility": "cpp"
+    "xutility": "cpp",
+    "__locale": "cpp"
   }
 }
