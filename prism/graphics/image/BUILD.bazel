@@ -1,0 +1,46 @@
+load("@prism_config//:cc.bzl", "prism_cc_library")
+
+prism_cc_library(
+    name = "load",
+    srcs = ["load.cpp"],
+    hdrs = ["load.hpp"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//prism/graphics",
+        "@com_github_nothings_stb//:image",
+        "@com_phoboslab_qoi//:qoi",
+    ],
+)
+
+prism_cc_library(
+    name = "qoi",
+    srcs = ["qoi.cpp"],
+    hdrs = ["qoi.hpp"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//prism/graphics",
+        "@com_phoboslab_qoi//:qoi",
+    ],
+)
+
+prism_cc_library(
+    name = "png",
+    srcs = ["png.cpp"],
+    hdrs = ["png.hpp"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//prism/graphics",
+        "@com_github_nothings_stb//:image",
+    ],
+)
+
+prism_cc_library(
+    name = "jpg",
+    srcs = ["jpg.cpp"],
+    hdrs = ["jpg.hpp"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//prism/graphics",
+        "@com_github_nothings_stb//:image",
+    ],
+)

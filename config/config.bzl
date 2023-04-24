@@ -61,6 +61,15 @@ def prism_config(copts = [], linkopts = []):
     )
 
 def prism_dependencies():
+    _SKYLIB_VERSION = "1.2.1"
+    maybe(
+        http_archive,
+        name = "bazel_skylib",
+        sha256 = "710c2ca4b4d46250cdce2bf8f5aa76ea1f0cba514ab368f2988f70e864cfaf51",
+        strip_prefix = "bazel-skylib-{version}".format(version = _SKYLIB_VERSION),
+        url = "https://github.com/bazelbuild/bazel-skylib/archive/refs/tags/{version}.tar.gz".format(version = _SKYLIB_VERSION),
+    )
+
     _ABSEIL_VERSION = "20211102.0"
     maybe(
         http_archive,
@@ -117,11 +126,22 @@ def prism_dependencies():
         url = "https://github.com/g-truc/glm/archive/refs/tags/{version}.tar.gz".format(version = _GLM_VERSION),
     )
 
-    _GLM_VERSION = "0.9.9.8"
+    _QOI_COMMIT = "f6dffaf1e8170cdd79945a4fb60f6403e447e020"
     maybe(
         http_archive,
-        name = "com_nullcatalyst_wasmtoolchain",
-        sha256 = "7d508ab72cb5d43227a3711420f06ff99b0a0cb63ee2f93631b162bfe1fe9592",
-        strip_prefix = "glm-{version}".format(version = _GLM_VERSION),
-        url = "https://github.com/g-truc/glm/archive/refs/tags/{version}.tar.gz".format(version = _GLM_VERSION),
+        name = "com_phoboslab_qoi",
+        build_file = "//third_party/qoi:qoi.BUILD",
+        sha256 = "946ed7adb128ed12924c83cf89717d37e9059353d327b5f6bf778413351f7907",
+        strip_prefix = "qoi-{commit}".format(commit = _QOI_COMMIT),
+        url = "https://github.com/phoboslab/qoi/archive/{commit}.tar.gz".format(commit = _QOI_COMMIT),
+    )
+
+    _STB_COMMIT = "5736b15f7ea0ffb08dd38af21067c314d6a3aae9"
+    maybe(
+        http_archive,
+        name = "com_github_nothings_stb",
+        build_file = "//third_party/stb:stb.BUILD",
+        sha256 = "d00921d49b06af62aa6bfb97c1b136bec661dd11dd4eecbcb0da1f6da7cedb4c",
+        strip_prefix = "stb-{commit}".format(commit = _STB_COMMIT),
+        url = "https://github.com/nothings/stb/archive/{commit}.tar.gz".format(commit = _STB_COMMIT),
     )
