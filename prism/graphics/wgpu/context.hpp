@@ -47,13 +47,13 @@ class Context final {
     PipelineLayout create_pipeline_layout(const PipelineLayoutDescriptor& pipeline_layout_desc);
     RenderPipeline create_render_pipeline(const RenderPipelineDescriptor& render_pipeline_desc);
 
-    Buffer create_buffer(const uint32_t usage, const uint64_t buffer_size,
+    Buffer create_buffer(const BufferUsage usage, const uint64_t buffer_size,
                          const void* data = nullptr, const uint64_t data_size = 0,
                          const uint64_t data_offset_into_buffer = 0);
     void   update_buffer(const Buffer& buffer, const void* data, const uint64_t data_size,
                          const uint64_t data_offset_into_buffer = 0);
 
-    Texture create_texture_2d(const uint32_t usage, const TextureFormat format,
+    Texture create_texture_2d(const TextureUsage usage, const TextureFormat format,
                               const uint32_t width, const uint32_t height);
     void    update_texture_2d(const Texture& texture, const uint32_t width, const uint32_t height,
                               const void* data, const uint64_t data_size);

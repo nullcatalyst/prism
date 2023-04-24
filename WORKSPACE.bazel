@@ -1,7 +1,7 @@
 workspace(name = "com_nullcatalyst_prism")
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@com_nullcatalyst_prism//config:config.bzl", "prism_config", "prism_dependencies")
+load("@com_nullcatalyst_prism//config:config.bzl", "prism_config")
+load("@com_nullcatalyst_prism//config:deps.bzl", "prism_dependencies", "prism_wasm_dependencies")
 
 prism_config(
     copts = [],
@@ -10,52 +10,9 @@ prism_config(
 
 prism_dependencies()
 
-#### Typescript ####
+prism_wasm_dependencies()
 
-_RULES_TS_VERSION = "1.3.3"
-
-http_archive(
-    name = "aspect_rules_ts",
-    sha256 = "8eb25d1fdafc0836f5778d33fb8eaac37c64176481d67872b54b0a05de5be5c0",
-    strip_prefix = "rules_ts-{version}".format(version = _RULES_TS_VERSION),
-    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v{version}.tar.gz".format(version = _RULES_TS_VERSION),
-)
-
-load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies", _TS_VERSION = "LATEST_VERSION")
-
-rules_ts_dependencies(ts_version = _TS_VERSION)
-
-#### Rollup ####
-
-_ROLLUP_RULES_VERSION = "0.14.0"
-
-http_archive(
-    name = "aspect_rules_rollup",
-    sha256 = "3777f196b7ced25241a6ccdc41551de6bd0817630cce1924919b9e9816676e43",
-    strip_prefix = "rules_rollup-{}".format(_ROLLUP_RULES_VERSION),
-    url = "https://github.com/aspect-build/rules_rollup/archive/refs/tags/v{}.tar.gz".format(_ROLLUP_RULES_VERSION),
-)
-
-load("@aspect_rules_rollup//rollup:dependencies.bzl", "rules_rollup_dependencies")
-
-rules_rollup_dependencies()
-
-#### Terser ####
-
-_TERSER_RULES_VERSION = "0.14.1"
-
-http_archive(
-    name = "aspect_rules_terser",
-    sha256 = "f30ec7ceff6a01deaf68e501233eba01a339a8d305376706a31de4201d7a260b",
-    strip_prefix = "rules_terser-{version}".format(version = _TERSER_RULES_VERSION),
-    url = "https://github.com/aspect-build/rules_terser/archive/refs/tags/v{version}.tar.gz".format(version = _TERSER_RULES_VERSION),
-)
-
-load("@aspect_rules_terser//terser:dependencies.bzl", "rules_terser_dependencies")
-
-rules_terser_dependencies()
-
-#### NodeJS ####
+# NodeJS toolchain, needed for using rollup and terser rules
 
 load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains", _NODE_VERSION = "DEFAULT_NODE_VERSION")
 

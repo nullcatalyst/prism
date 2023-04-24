@@ -53,10 +53,10 @@ BindGroup Context::create_bind_group(const BindGroupDescriptor& bind_group_desc)
         _device, reinterpret_cast<const WGPUBindGroupDescriptor&>(bind_group_desc))};
 }
 
-Buffer Context::create_buffer(const uint32_t usage, const uint64_t buffer_size, const void* data,
+Buffer Context::create_buffer(const BufferUsage usage, const uint64_t buffer_size, const void* data,
                               const uint64_t data_size, const uint64_t data_offset_into_buffer) {
-    return Buffer{common::create_buffer(_device, usage, buffer_size, data, data_size,
-                                        data_offset_into_buffer)};
+    return Buffer{common::create_buffer(_device, static_cast<WGPUBufferUsageFlags>(usage),
+                                        buffer_size, data, data_size, data_offset_into_buffer)};
 }
 
 void Context::update_buffer(const Buffer& buffer, const void* data, const uint64_t data_size,
@@ -64,10 +64,11 @@ void Context::update_buffer(const Buffer& buffer, const void* data, const uint64
     common::update_buffer(_device, _queue, buffer, data, data_size, data_offset_into_buffer);
 }
 
-Texture Context::create_texture_2d(const uint32_t usage, const TextureFormat format,
+Texture Context::create_texture_2d(const TextureUsage usage, const TextureFormat format,
                                    const uint32_t width, const uint32_t height) {
-    return Texture{common::create_texture_2d(_device, usage, static_cast<WGPUTextureFormat>(format),
-                                             width, height)};
+    return Texture{common::create_texture_2d(_device, static_cast<WGPUTextureUsageFlags>(usage),
+                                             static_cast<WGPUTextureFormat>(format), width,
+                                             height)};
 }
 
 void Context::update_texture_2d(const Texture& texture, const uint32_t width, const uint32_t height,

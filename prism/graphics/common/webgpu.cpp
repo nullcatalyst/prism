@@ -257,14 +257,14 @@ WGPUBindGroup create_bind_group(WGPUDevice device, const WGPUBindGroupDescriptor
     return bind_group;
 }
 
-WGPUBuffer create_buffer(WGPUDevice device, const uint32_t usage, const uint64_t buffer_size,
-                         const void* data, const uint64_t data_size,
+WGPUBuffer create_buffer(WGPUDevice device, const WGPUBufferUsageFlags usage,
+                         const uint64_t buffer_size, const void* data, const uint64_t data_size,
                          const uint64_t data_offset_into_buffer) {
     const auto                 mapped = data != nullptr && data_size > 0;
     const WGPUBufferDescriptor desc{
         .nextInChain      = nullptr,
         .label            = nullptr,
-        .usage            = static_cast<WGPUBufferUsageFlags>(usage),
+        .usage            = usage,
         .size             = buffer_size,
         .mappedAtCreation = mapped,
     };
@@ -291,13 +291,13 @@ void update_buffer(WGPUDevice device, WGPUQueue queue, WGPUBuffer buffer, const 
     PRISM_DEBUG_SCOPE_END(device, "updating buffer");
 }
 
-WGPUTexture create_texture_2d(WGPUDevice device, const uint32_t usage,
+WGPUTexture create_texture_2d(WGPUDevice device, const WGPUTextureUsageFlags usage,
                               const WGPUTextureFormat format, const uint32_t width,
                               const uint32_t height) {
     const WGPUTextureDescriptor texture_desc{
         .nextInChain     = nullptr,
         .label           = nullptr,
-        .usage           = static_cast<WGPUTextureUsageFlags>(usage),
+        .usage           = usage,
         .dimension       = WGPUTextureDimension_2D,
         .size            = WGPUExtent3D{width, height, 1},
         .format          = format,

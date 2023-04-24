@@ -23,13 +23,13 @@ WGPUPipelineLayout create_pipeline_layout(WGPUDevice                          de
 WGPURenderPipeline create_render_pipeline(WGPUDevice                          device,
                                           const WGPURenderPipelineDescriptor& pipeline_desc);
 
-WGPUBuffer create_buffer(WGPUDevice device, const uint32_t usage, const uint64_t buffer_size,
-                         const void* data = nullptr, const uint64_t data_size = 0,
-                         const uint64_t data_offset_into_buffer = 0);
+WGPUBuffer create_buffer(WGPUDevice device, const WGPUBufferUsageFlags usage,
+                         const uint64_t buffer_size, const void* data = nullptr,
+                         const uint64_t data_size = 0, const uint64_t data_offset_into_buffer = 0);
 void       update_buffer(WGPUDevice device, WGPUQueue queue, WGPUBuffer buffer, const void* data,
                          const uint64_t data_size, const uint64_t data_offset_into_buffer = 0);
 
-WGPUTexture     create_texture_2d(WGPUDevice device, const uint32_t usage,
+WGPUTexture     create_texture_2d(WGPUDevice device, const WGPUTextureUsageFlags usage,
                                   const WGPUTextureFormat format, const uint32_t width,
                                   const uint32_t height);
 void            update_texture_2d(WGPUDevice device, WGPUQueue queue, WGPUTexture texture,

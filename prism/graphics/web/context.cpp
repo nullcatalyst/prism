@@ -234,11 +234,12 @@ RenderPipeline Context::create_render_pipeline(const RenderPipelineDescriptor& p
                                                  _context.obj_id(), js_desc.obj_id())};
 }
 
-Buffer Context::create_buffer(const uint32_t usage, const uint64_t buffer_size, const void* data,
+Buffer Context::create_buffer(const BufferUsage usage, const uint64_t buffer_size, const void* data,
                               const uint64_t data_size, const uint64_t data_offset_into_buffer) {
-    return Buffer{_context.obj_id(),
-                  js::detail::gpu_create_buffer(_context.obj_id(), usage, buffer_size, data,
-                                                data_size, data_offset_into_buffer)};
+    return Buffer{
+        _context.obj_id(),
+        js::detail::gpu_create_buffer(_context.obj_id(), static_cast<WGPUBufferUsageFlags>(usage),
+                                      buffer_size, data, data_size, data_offset_into_buffer)};
 }
 
 void Context::update_buffer(const Buffer& buffer, const void* data, const uint64_t data_size,
@@ -247,10 +248,11 @@ void Context::update_buffer(const Buffer& buffer, const void* data, const uint64
                                   data_offset_into_buffer);
 }
 
-Texture Context::create_texture_2d(const uint32_t usage, const TextureFormat format,
+Texture Context::create_texture_2d(const TextureUsage usage, const TextureFormat format,
                                    const uint32_t width, const uint32_t height) {
     return Texture{_context.obj_id(),
-                   js::detail::gpu_create_texture_2d(_context.obj_id(), usage,
+                   js::detail::gpu_create_texture_2d(_context.obj_id(),
+                                                     static_cast<WGPUTextureUsageFlags>(usage),
                                                      enum_to_string(format), width, height)};
 }
 

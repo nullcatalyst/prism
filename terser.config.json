@@ -1,0 +1,11 @@
+{
+    "compress": {
+        "defaults": true
+    },
+    "mangle": {
+        "properties": {
+            "keep_quoted": "strict",
+            "regex": "^_"
+        }
+    }
+}
