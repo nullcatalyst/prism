@@ -3,6 +3,7 @@
         "@rollup/plugin-alias": "^5.0.0",
         "@rollup/plugin-node-resolve": "^15.0.2",
         "rollup": "^3.20.2",
-        "terser": "^5.16.8"
+        "terser": "^5.16.8",
+        "typescript": "^5.1.6"
     }
 }

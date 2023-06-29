@@ -12,24 +12,17 @@ prism_dependencies()
 
 prism_wasm_dependencies()
 
-# NodeJS toolchain, needed for using rollup and terser rules
+#### WebAssembly Compiler Toolchain ####
 
-load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains", _NODE_VERSION = "DEFAULT_NODE_VERSION")
+_WASMTOOLCHAIN_COMMIT = "48d85bb87be20820f65a4b4f7afb877362ad55af"
 
-nodejs_register_toolchains(
-    name = "node",
-    node_version = _NODE_VERSION,
+http_archive(
+    name = "com_nullcatalyst_wasmtoolchain",
+    sha256 = "1fe02add01a6c21903fffed1be6851fd1e69ddfc94b937d1b4a392d9374ca53e",
+    strip_prefix = "wasmtoolchain-{}".format(_WASMTOOLCHAIN_COMMIT),
+    url = "https://github.com/nullcatalyst/wasmtoolchain/archive/{}.tar.gz".format(_WASMTOOLCHAIN_COMMIT),
 )
 
-load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")
+load("@com_nullcatalyst_wasmtoolchain//toolchain:toolchain.bzl", "wasm_toolchain")
 
-npm_translate_lock(
-    name = "npm",
-    npmrc = "//:.npmrc",
-    pnpm_lock = "//:pnpm-lock.yaml",
-    verify_node_modules_ignored = "//:.bazelignore",
-)
-
-load("@npm//:repositories.bzl", "npm_repositories")
-
-npm_repositories()
+wasm_toolchain(name = "wasm_toolchain")

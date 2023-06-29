@@ -88,46 +88,47 @@ def prism_dependencies():
     )
 
 def prism_wasm_dependencies():
-    _BAZEL_LIB_VERSION = "1.29.2"
+    _BAZEL_LIB_VERSION = "1.32.1"
     maybe(
         http_archive,
         name = "aspect_bazel_lib",
-        sha256 = "ee95bbc80f9ca219b93a8cc49fa19a2d4aa8649ddc9024f46abcdd33935753ca",
+        sha256 = "e3151d87910f69cf1fc88755392d7c878034a69d6499b287bcfc00b1cf9bb415",
         strip_prefix = "bazel-lib-{version}".format(version = _BAZEL_LIB_VERSION),
         url = "https://github.com/aspect-build/bazel-lib/archive/refs/tags/v{version}.tar.gz".format(version = _BAZEL_LIB_VERSION),
     )
 
-    _JS_RULES_VERSION = "1.23.1"
+    _JS_RULES_VERSION = "1.28.0"
     maybe(
         http_archive,
         name = "aspect_rules_js",
-        sha256 = "2a1e5d4400e2b49f6d36785aa894412670a0babfe7054e733b6a8f23c1b41e26",
+        sha256 = "2a88d837f8fb7bfe46b1d9f413df9a777ec2973e1f812929b597c1971a3a1da5",
         strip_prefix = "rules_js-{version}".format(version = _JS_RULES_VERSION),
         url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v{version}.tar.gz".format(version = _JS_RULES_VERSION),
     )
 
-    _NODEJS_RULES_VERSION = "5.8.2"
+    _NODEJS_RULES_VERSION = "5.8.3"
     maybe(
         http_archive,
         name = "rules_nodejs",
-        sha256 = "764a3b3757bb8c3c6a02ba3344731a3d71e558220adcb0cf7e43c9bba2c37ba8",
+        strip_prefix = "rules_nodejs-{version}".format(version = _NODEJS_RULES_VERSION),
+        sha256 = "53305bf2d5084ffc8d4d92d28c7db3447a4cc44922721492de909b3d27d733a2",
         url = "https://github.com/bazelbuild/rules_nodejs/archive/refs/tags/{version}.tar.gz".format(version = _NODEJS_RULES_VERSION),
     )
 
-    _TS_RULES_VERSION = "1.3.3"
+    _TS_RULES_VERSION = "1.4.2"
     maybe(
         http_archive,
         name = "aspect_rules_ts",
-        sha256 = "8eb25d1fdafc0836f5778d33fb8eaac37c64176481d67872b54b0a05de5be5c0",
+        sha256 = "40ab6d3d9cc3259da54fe2f162588aba92244af0f151fbc905dcc8e7b8744296",
         strip_prefix = "rules_ts-{version}".format(version = _TS_RULES_VERSION),
         url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v{version}.tar.gz".format(version = _TS_RULES_VERSION),
     )
 
-    _ROLLUP_RULES_VERSION = "0.14.0"
+    _ROLLUP_RULES_VERSION = "0.15.0"
     maybe(
         http_archive,
         name = "aspect_rules_rollup",
-        sha256 = "3777f196b7ced25241a6ccdc41551de6bd0817630cce1924919b9e9816676e43",
+        sha256 = "55aec79b04d84b489895ac6f57a7ed7e4a1ef94dc4680701634463dd1720802d",
         strip_prefix = "rules_rollup-{}".format(_ROLLUP_RULES_VERSION),
         url = "https://github.com/aspect-build/rules_rollup/archive/refs/tags/v{}.tar.gz".format(_ROLLUP_RULES_VERSION),
     )

@@ -5,12 +5,14 @@ specifiers:
   '@rollup/plugin-node-resolve': ^15.0.2
   rollup: ^3.20.2
   terser: ^5.16.8
+  typescript: ^5.1.6
 
 dependencies:
   '@rollup/plugin-alias': 5.0.0_rollup@3.20.2
   '@rollup/plugin-node-resolve': 15.0.2_rollup@3.20.2
   rollup: 3.20.2
   terser: 5.16.8
+  typescript: 5.1.6
 
 packages:
 
@@ -230,4 +232,10 @@ packages:
       acorn: 8.8.2
       commander: 2.20.3
       source-map-support: 0.5.21
+    dev: false
+
+  /typescript/5.1.6:
+    resolution: {integrity: sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==}
+    engines: {node: '>=14.17'}
+    hasBin: true
     dev: false
