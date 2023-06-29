@@ -32,7 +32,11 @@ rollup(
     entry_point = ":main.js",
     node_modules = "//:node_modules",
     sourcemap = "false",
-    deps = [":js"],
+    deps = [
+        ":js",
+        "//:node_modules/@rollup/plugin-alias",
+        "//:node_modules/@rollup/plugin-node-resolve",
+    ],
 )
 
 terser(
