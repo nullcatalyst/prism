@@ -11,11 +11,11 @@ def prism_dependencies():
         url = "https://github.com/bazelbuild/bazel-skylib/archive/refs/tags/{version}.tar.gz".format(version = _SKYLIB_VERSION),
     )
 
-    _ABSEIL_VERSION = "20211102.0"
+    _ABSEIL_VERSION = "20230125.3"
     maybe(
         http_archive,
         name = "com_google_absl",
-        sha256 = "dcf71b9cba8dc0ca9940c4b316a0c796be8fab42b070bb6b7cab62b48f0e66c4",
+        sha256 = "5366d7e7fa7ba0d915014d387b66d0d002c03236448e1ba9ef98122c13b35c36",
         strip_prefix = "abseil-cpp-{version}".format(version = _ABSEIL_VERSION),
         url = "https://github.com/abseil/abseil-cpp/archive/refs/tags/{version}.tar.gz".format(version = _ABSEIL_VERSION),
     )
