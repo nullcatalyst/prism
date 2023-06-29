@@ -28,5 +28,5 @@ prism_cc_library(
 prism_cc_library(
     name = "input",
     hdrs = ["input.hpp"],
-    visibility = ["//prism:__subpackages__"],
+    visibility = ["//visibility:public"],
 )

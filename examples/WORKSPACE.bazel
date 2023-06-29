@@ -5,7 +5,8 @@ local_repository(
     path = "..",
 )
 
-load("@com_nullcatalyst_prism//config:config.bzl", "prism_config", "prism_dependencies")
+load("@com_nullcatalyst_prism//config:config.bzl", "prism_config")
+load("@com_nullcatalyst_prism//config:deps.bzl", "prism_dependencies")
 
 prism_config(
     copts = [],
@@ -28,6 +29,7 @@ http_archive(
 load("@com_nullcatalyst_wasmtoolchain//toolchain:toolchain.bzl", "wasm_toolchain")
 
 wasm_toolchain(name = "wasm_toolchain")
+
 #### Package Rules (zip) ####
 
 _RULES_PKG_VERSION = "0.8.1"
