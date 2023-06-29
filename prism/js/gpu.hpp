@@ -14,6 +14,9 @@ WASM_IMPORT("gpu", "getSurfaceFormat") uint32_t gpu_get_surface_format(uint32_t 
 WASM_IMPORT("gpu", "createContext")
 uint32_t gpu_create_context(uint32_t canvas);
 
+WASM_IMPORT("gpu", "resizeContext")
+uint32_t gpu_resize_context(uint32_t canvas, uint32_t width, uint32_t height);
+
 WASM_IMPORT("gpu", "createBindGroupLayout")
 uint32_t gpu_create_bind_group_layout(uint32_t ctx_obj, uint32_t bind_group_layout_desc_obj);
 WASM_IMPORT("gpu", "createBindGroup")

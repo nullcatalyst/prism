@@ -106,6 +106,12 @@ export class Context {
         return this._surfaceFormat;
     }
 
+    resize(width: number, height: number) {
+        const canvas = this._context.canvas as HTMLCanvasElement;
+        canvas.width = width;
+        canvas.height = height;
+    }
+
     createBindGroupLayout(desc: GPUBindGroupLayoutDescriptor) {
         return this._bindGroupLayouts.create(this._device.createBindGroupLayout(desc));
     }

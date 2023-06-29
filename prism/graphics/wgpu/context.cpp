@@ -26,6 +26,11 @@ Context::Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_wi
     _surface_format = static_cast<TextureFormat>(wgpuSurfaceGetPreferredFormat(_surface, _adapter));
 }
 
+void Context::resize(const uint32_t surface_width, const uint32_t surface_height) {
+    _swap_chain = SwapChain{
+        common::create_swap_chain(_device, _surface, _adapter, surface_width, surface_height)};
+}
+
 BindGroupLayout Context::create_bind_group_layout(
     const BindGroupLayoutDescriptor& bind_group_layout_desc) {
     return BindGroupLayout{common::create_bind_group_layout(

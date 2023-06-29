@@ -31,6 +31,8 @@ class Context final {
         return _surface_format;
     }
 
+    void resize(const uint32_t surface_width, const uint32_t surface_height);
+
     ////////////////////////////////
     // Initialization functions
 

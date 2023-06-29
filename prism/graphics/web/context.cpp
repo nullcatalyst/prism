@@ -12,6 +12,10 @@ Context::Context(js::HtmlCanvasElement canvas)
         static_cast<TextureFormat>(js::detail::gpu_get_surface_format(_context.obj_id()));
 }
 
+void Context::resize(const uint32_t surface_width, const uint32_t surface_height) {
+    js::detail::gpu_resize_context(_context.obj_id(), surface_width, surface_height);
+}
+
 BindGroupLayout Context::create_bind_group_layout(const BindGroupLayoutDescriptor& layout_desc) {
     js::Object js_desc = js::Object::object();
 
