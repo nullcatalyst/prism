@@ -1,4 +1,4 @@
-# prism
+# Prism
 
 ## About
 
@@ -13,7 +13,7 @@ implementations under the hood, like GLFW or Dawn, should not be too difficult.
 Prism uses [bazel](https://bazel.build/) to manage dependencies and to compile the library. There
 are plenty of better tutorials on how to install bazel, so that won't be included here.
 
-#### Running the hello_triangle example
+### Running the hello_triangle example
 
 If you are starting with a terminal pointing to the prism directory, then you can start by `cd`ing
 into the `examples` directory.
@@ -33,3 +33,13 @@ bazel run //hello_triangle --config macos
 
 And that's it. There is no step 3. Your game should be running, and you should see a window appear
 that is rendering a static RGB triangle.
+
+Similarly, a web compatible application can be compiled using:
+
+```sh
+bazel build //hello_triangle:website --config wasm
+```
+
+Note that there may be difficulties compiling the web version of the app on Windows, due to the fact
+that some of the build scripts require `bash` to run. If you need to compile on Windows, it is
+recommended to try loading the project in a WSL or Docker VM, and compile it there instead.
