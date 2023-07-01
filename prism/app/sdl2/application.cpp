@@ -76,11 +76,11 @@ WGPUSurface create_surface_for_window(WGPUInstance instance, SDL_Window* const w
     const WGPUSurfaceDescriptorFromXlibWindow x11_surface_desc{
         .chain =
             {
-                .next = nullptr,
+                .next  = nullptr,
                 .sType = WGPUSType_SurfaceDescriptorFromXlibWindow,
             },
         .display = wm_info.info.x11.display,
-        .window = static_cast<uint32_t>(wm_info.info.x11.window),
+        .window  = static_cast<uint32_t>(wm_info.info.x11.window),
     };
     const WGPUChainedStruct* surface_chain = &x11_surface_desc.chain;
 #elif defined(PRISM_PLATFORM_MACOS) || defined(PRISM_PLATFORM_IOS)
