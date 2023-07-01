@@ -22,13 +22,10 @@ into the `examples` directory.
 cd examples
 ```
 
-Tell `bazel` which target you want to run. Note that you need to pass `--config macos` or your
-current OS name (eg: `--config windows`, `--config linux`, or `--config wasm`). This is needed
-because there is no way to autodetect that you are intending to compile for WebAssembly, and
-auto-detecting the current platform is on the TODO list.
+Tell `bazel` which target you want to run.
 
 ```sh
-bazel run //hello_triangle --config macos
+bazel run //hello_triangle
 ```
 
 And that's it. There is no step 3. Your game should be running, and you should see a window appear
@@ -40,6 +37,10 @@ Similarly, a web compatible application can be compiled using:
 bazel build //hello_triangle:website --config wasm
 ```
 
-Note that there may be difficulties compiling the web version of the app on Windows, due to the fact
-that some of the build scripts require `bash` to run. If you need to compile on Windows, it is
-recommended to try loading the project in a WSL or Docker VM, and compile it there instead.
+This will build a zip file containing an HTML file, a javascript file, and the WebAssembly binary.
+If instead all you need is the `.wasm` file, you can instead compile the same as running the app
+natively (above). Just add the flag `--config wasm`.
+
+```sh
+bazel run //hello_triangle --config wasm
+```
