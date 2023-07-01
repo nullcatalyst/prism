@@ -4,31 +4,8 @@ load("@com_nullcatalyst_prism//config:platforms.bzl", "select_platform")
 prism_cc_library(
     name = "graphics",
     hdrs = ["context.hpp"],
-    visibility = ["//prism:__subpackages__"],
+    visibility = ["//visibility:public"],
     deps = [":backend"],
-)
-
-prism_cc_library(
-    name = "enums",
-    hdrs = [
-        "enums.hpp",
-        "enums_validate.hpp",
-    ],
-    visibility = ["//prism:__subpackages__"],
-    deps = ["@com_github_gfxrs_wgpu//:webgpu-hdrs"],
-)
-
-prism_cc_library(
-    name = "types",
-    hdrs = [
-        "types.hpp",
-        "types_validate.hpp",
-    ],
-    visibility = ["//prism:__subpackages__"],
-    deps = [
-        ":enums",
-        "@com_github_gfxrs_wgpu//:webgpu-hdrs",
-    ],
 )
 
 prism_cc_library(
@@ -62,31 +39,24 @@ prism_cc_library(
 )
 
 prism_cc_library(
-    name = "defines",
-    deps = select({
-        "//prism:backend_wgpu": [":wgpu_backend"],
-        "//prism:backend_web": [":web_backend"],
-        "//conditions:default": [":default_backend"],
-    }),
+    name = "enums",
+    hdrs = [
+        "enums.hpp",
+        "enums_validate.hpp",
+    ],
+    visibility = ["//prism:__subpackages__"],
+    deps = ["@com_github_gfxrs_wgpu//:webgpu-hdrs"],
 )
 
 prism_cc_library(
-    name = "default_defines",
-    deps = select_platform(
-        ios = [":wgpu_backend"],
-        linux = [":wgpu_backend"],
-        macos = [":wgpu_backend"],
-        wasm = [":web_backend"],
-        windows = [":wgpu_backend"],
-    ),
-)
-
-prism_cc_library(
-    name = "wgpu_defines",
-    defines = ["PRISM_BACKEND_WGPU=1"],
-)
-
-prism_cc_library(
-    name = "web_defines",
-    defines = ["PRISM_BACKEND_WEB=1"],
+    name = "types",
+    hdrs = [
+        "types.hpp",
+        "types_validate.hpp",
+    ],
+    visibility = ["//prism:__subpackages__"],
+    deps = [
+        ":enums",
+        "@com_github_gfxrs_wgpu//:webgpu-hdrs",
+    ],
 )

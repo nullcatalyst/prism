@@ -7,7 +7,6 @@ run                     --enable_runfiles=yes
 test                    --test_output=all
 
 # Windows
-build:windows           --action_env=BAZEL_CXXOPTS=/std:c++20
 build:windows           --host_cxxopt=/std:c++20
 
 # MacOS
@@ -27,7 +26,6 @@ build:wasm              --define platform=wasm
 build:wasm              --config=posix
 
 # POSIX
-build:posix             --action_env=BAZEL_CXXOPTS=-std=c++20
 build:posix             --host_cxxopt=-std=c++20
 
 # Useful for debugging the build process

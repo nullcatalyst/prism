@@ -6,14 +6,39 @@ prism_cc_library(
     hdrs = ["application.hpp"],
     visibility = ["//visibility:public"],
     deps = [
+        ":backend",
         ":input",
-    ] + select_platform(
-        ios = ["//prism/app/sdl2"],
-        linux = ["//prism/app/sdl2"],
-        macos = ["//prism/app/sdl2"],
-        wasm = ["//prism/app/web"],
-        windows = ["//prism/app/sdl2"],
+    ],
+)
+
+prism_cc_library(
+    name = "backend",
+    deps = select({
+        "//prism:backend_sdl2": [":sdl2_backend"],
+        "//prism:backend_web": [":web_backend"],
+        "//conditions:default": [":default_backend"],
+    }),
+)
+
+prism_cc_library(
+    name = "default_backend",
+    deps = select_platform(
+        ios = [":sdl2_backend"],
+        linux = [":sdl2_backend"],
+        macos = [":sdl2_backend"],
+        wasm = [":web_backend"],
+        windows = [":sdl2_backend"],
     ),
+)
+
+prism_cc_library(
+    name = "sdl2_backend",
+    deps = ["//prism/app/sdl2"],
+)
+
+prism_cc_library(
+    name = "web_backend",
+    deps = ["//prism/app/web"],
 )
 
 prism_cc_library(
