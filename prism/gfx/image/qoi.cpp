@@ -1,8 +1,8 @@
-#include "prism/graphics/image/qoi.hpp"
+#include "prism/gfx/image/qoi.hpp"
 
 #include "qoi.h"
 
-namespace prism::graphics::image {
+namespace prism::gfx::image {
 
 TextureView load_qoi(Context& ctx, const void* data, const size_t data_size) {
     qoi_desc out_desc{};
@@ -19,4 +19,4 @@ TextureView load_qoi(Context& ctx, const void* data, const size_t data_size) {
     return ctx.create_texture_view_2d(texture, TextureFormat::RGBA8Unorm);
 }
 
-}  // namespace prism::graphics::image
+}  // namespace prism::gfx::image

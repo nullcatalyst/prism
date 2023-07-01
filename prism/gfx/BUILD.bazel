@@ -2,7 +2,7 @@ load("@com_nullcatalyst_prism//config:cc.bzl", "prism_cc_library")
 load("@com_nullcatalyst_prism//config:platforms.bzl", "select_platform")
 
 prism_cc_library(
-    name = "graphics",
+    name = "gfx",
     hdrs = ["context.hpp"],
     visibility = ["//visibility:public"],
     deps = [":backend"],
@@ -30,12 +30,12 @@ prism_cc_library(
 
 prism_cc_library(
     name = "wgpu_backend",
-    deps = ["//prism/graphics/wgpu"],
+    deps = ["//prism/gfx/wgpu"],
 )
 
 prism_cc_library(
     name = "web_backend",
-    deps = ["//prism/graphics/web"],
+    deps = ["//prism/gfx/web"],
 )
 
 prism_cc_library(

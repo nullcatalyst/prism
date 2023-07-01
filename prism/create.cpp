@@ -5,14 +5,14 @@
 namespace prism {
 
 #if defined(PRISM_BACKEND_WEB)
-std::tuple<app::Application, graphics::Context> create_for_canvas(const char* canvas_id) {
+std::tuple<app::Application, gfx::Context> create_for_canvas(const char* canvas_id) {
     const auto canvas = js::HtmlCanvasElement::get_by_id(canvas_id);
-    return std::make_tuple(app::Application{canvas}, graphics::Context{canvas});
+    return std::make_tuple(app::Application{canvas}, gfx::Context{canvas});
 }
 #endif
 
 #if defined(PRISM_BACKEND_SDL2) && defined(PRISM_BACKEND_WGPU)
-std::tuple<app::Application, graphics::Context> create_window(const char*    title,
+std::tuple<app::Application, gfx::Context> create_window(const char*    title,
                                                               const uint32_t width,
                                                               const uint32_t height) {
 #if defined(PRISM_PLATFORM_WINDOWS)
@@ -39,7 +39,7 @@ std::tuple<app::Application, graphics::Context> create_window(const char*    tit
     const auto [surface_width, surface_height] = app.drawable_size();
 
     return std::make_tuple(std::move(app),
-                           graphics::Context{instance, surface, surface_width, surface_height});
+                           gfx::Context{instance, surface, surface_width, surface_height});
 }
 #endif  // defined(PRISM_BACKEND_SDL2) && defined(PRISM_BACKEND_WGPU)
 

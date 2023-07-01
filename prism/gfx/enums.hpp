@@ -10,7 +10,7 @@
         return static_cast<$type>(static_cast<uint32_t>(a) & static_cast<uint32_t>(b)); \
     }
 
-namespace prism::graphics {
+namespace prism::gfx {
 
 // Enum type names are sorted alphabetically for easier lookup.
 
@@ -290,8 +290,8 @@ enum class VertexStepMode : uint32_t {
     VertexBufferNotUsed = 0x00000002,
 };
 
-}  // namespace prism::graphics
+}  // namespace prism::gfx
 
 #if !defined(NDEBUG)
-#include "prism/graphics/enums_validate.hpp"
+#include "prism/gfx/enums_validate.hpp"
 #endif

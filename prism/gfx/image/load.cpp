@@ -1,9 +1,9 @@
-#include "prism/graphics/image/load.hpp"
+#include "prism/gfx/image/load.hpp"
 
 #include "qoi.h"
 #include "stb_image.h"
 
-namespace prism::graphics::image {
+namespace prism::gfx::image {
 
 TextureView load(Context& ctx, const void* data, const size_t data_size) {
     int width  = 0;
@@ -40,4 +40,4 @@ TextureView load(Context& ctx, const void* data, const size_t data_size) {
     return ctx.create_texture_view_2d(texture, TextureFormat::RGBA8Unorm);
 }
 
-}  // namespace prism::graphics::image
+}  // namespace prism::gfx::image

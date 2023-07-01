@@ -2,11 +2,11 @@
 
 #include <span>
 
-#include "prism/graphics/enums.hpp"
-#include "prism/graphics/types.hpp"
-#include "prism/graphics/wgpu/types.hpp"
+#include "prism/gfx/enums.hpp"
+#include "prism/gfx/types.hpp"
+#include "prism/gfx/wgpu/types.hpp"
 
-namespace prism::graphics::inline wgpu {
+namespace prism::gfx::inline wgpu {
 
 class Context final {
     Instance       _instance   = nullptr;
@@ -111,4 +111,4 @@ class Context final {
                                      const uint32_t           indirect_count  = 1);
 };
 
-}  // namespace prism::graphics::inline wgpu
+}  // namespace prism::gfx::inline wgpu

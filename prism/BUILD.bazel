@@ -10,7 +10,7 @@ prism_cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//prism/app",
-        "//prism/graphics",
+        "//prism/gfx",
     ],
 )
 

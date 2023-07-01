@@ -7,8 +7,8 @@ prism_cc_library(
     deps = [
         "//prism/common:debug",
         "//prism/common:log",
-        "//prism/graphics:enums",
-        "//prism/graphics:types",
+        "//prism/gfx:enums",
+        "//prism/gfx:types",
         "@com_github_gfxrs_wgpu//:hdrs",
         "@com_google_absl//absl/strings:str_format",
     ],

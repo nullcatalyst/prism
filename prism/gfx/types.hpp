@@ -2,10 +2,10 @@
 
 #include <cstdint>
 
-#include "prism/graphics/enums.hpp"
+#include "prism/gfx/enums.hpp"
 #include "webgpu-headers/webgpu.h"
 
-namespace prism::graphics {
+namespace prism::gfx {
 
 struct ChainedStruct {
     const ChainedStruct* next   = nullptr;
@@ -240,8 +240,8 @@ struct DrawIndexedIndirectCommand {
     uint32_t first_instance;
 };
 
-}  // namespace prism::graphics
+}  // namespace prism::gfx
 
 #if !defined(NDEBUG)
-#include "prism/graphics/types_validate.hpp"
+#include "prism/gfx/types_validate.hpp"
 #endif

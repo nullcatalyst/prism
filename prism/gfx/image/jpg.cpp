@@ -1,4 +1,4 @@
-#include "prism/graphics/image/jpg.hpp"
+#include "prism/gfx/image/jpg.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_NO_STDIO
@@ -6,7 +6,7 @@
 #define STBI_ONLY_JPEG
 #include "stb_image.h"
 
-namespace prism::graphics::image {
+namespace prism::gfx::image {
 
 TextureView load_jpg(Context& ctx, const void* data, const size_t data_size) {
     stbi__context s{};
@@ -32,4 +32,4 @@ TextureView load_jpg(Context& ctx, const void* data, const size_t data_size) {
     return ctx.create_texture_view_2d(texture, TextureFormat::RGBA8Unorm);
 }
 
-}  // namespace prism::graphics::image
+}  // namespace prism::gfx::image

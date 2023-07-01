@@ -6,7 +6,7 @@ prism_cc_library(
     hdrs = ["load.hpp"],
     visibility = ["//visibility:public"],
     deps = [
-        "//prism/graphics",
+        "//prism/gfx",
         "@com_github_nothings_stb//:image",
         "@com_phoboslab_qoi//:qoi",
     ],
@@ -18,7 +18,7 @@ prism_cc_library(
     hdrs = ["qoi.hpp"],
     visibility = ["//visibility:public"],
     deps = [
-        "//prism/graphics",
+        "//prism/gfx",
         "@com_phoboslab_qoi//:qoi",
     ],
 )
@@ -29,7 +29,7 @@ prism_cc_library(
     hdrs = ["png.hpp"],
     visibility = ["//visibility:public"],
     deps = [
-        "//prism/graphics",
+        "//prism/gfx",
         "@com_github_nothings_stb//:image",
     ],
 )
@@ -40,7 +40,7 @@ prism_cc_library(
     hdrs = ["jpg.hpp"],
     visibility = ["//visibility:public"],
     deps = [
-        "//prism/graphics",
+        "//prism/gfx",
         "@com_github_nothings_stb//:image",
     ],
 )

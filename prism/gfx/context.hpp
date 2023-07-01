@@ -3,14 +3,14 @@
 #include <concepts>
 
 #if defined(PRISM_BACKEND_WGPU)
-#include "prism/graphics/wgpu/context.hpp"
+#include "prism/gfx/wgpu/context.hpp"
 #elif defined(PRISM_BACKEND_WEB)
-#include "prism/graphics/web/context.hpp"
+#include "prism/gfx/web/context.hpp"
 #else
 #error "No GPU graphics backend defined"
 #endif
 
-namespace prism::graphics::internal {
+namespace prism::gfx::internal {
 #if 0
 template <typename T>
 concept Context =
@@ -71,6 +71,6 @@ concept Context =
         { ctx.present_frame() };
     };
 
-static_assert(Context<::prism::graphics::Context>);
+static_assert(Context<::prism::gfx::Context>);
 #endif
-}  // namespace prism::graphics::internal
+}  // namespace prism::gfx::internal

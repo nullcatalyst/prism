@@ -7,7 +7,7 @@
 #include "prism/js/object.hpp"
 #include "webgpu-headers/webgpu.h"
 
-namespace prism::graphics::inline web {
+namespace prism::gfx::inline web {
 
 template <typename T, typename Dtor>
 class WebGpuObject
@@ -45,4 +45,4 @@ GPU_TYPE_REF(Texture, js::detail::gpu_release_texture);
 GPU_TYPE_REF(TextureView, js::detail::gpu_release_texture_view);
 GPU_TYPE_REF(Sampler, js::detail::gpu_release_sampler);
 
-}  // namespace prism::graphics::inline web
+}  // namespace prism::gfx::inline web

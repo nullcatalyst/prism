@@ -1,9 +1,9 @@
 #pragma once
 
 #include "prism/common/log.hpp"
-#include "prism/graphics/types.hpp"
+#include "prism/gfx/types.hpp"
 
-namespace prism::graphics::inline web {
+namespace prism::gfx::inline web {
 
 namespace {
 
@@ -343,4 +343,4 @@ const char* enum_to_string(BlendFactor blend_factor) {
 
 }  // namespace
 
-}  // namespace prism::graphics::inline web
+}  // namespace prism::gfx::inline web

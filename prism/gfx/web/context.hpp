@@ -2,12 +2,12 @@
 
 #include <span>
 
-#include "prism/graphics/enums.hpp"
-#include "prism/graphics/types.hpp"
-#include "prism/graphics/web/types.hpp"
+#include "prism/gfx/enums.hpp"
+#include "prism/gfx/types.hpp"
+#include "prism/gfx/web/types.hpp"
 #include "prism/js/dom.hpp"
 
-namespace prism::graphics::inline web {
+namespace prism::gfx::inline web {
 
 class Context final {
     js::Object _context;
@@ -104,4 +104,4 @@ class Context final {
                                      const uint32_t           indirect_count  = 1);
 };
 
-}  // namespace prism::graphics::inline web
+}  // namespace prism::gfx::inline web

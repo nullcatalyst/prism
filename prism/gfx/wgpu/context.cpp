@@ -1,4 +1,4 @@
-#include "prism/graphics/wgpu/context.hpp"
+#include "prism/gfx/wgpu/context.hpp"
 
 #include <string>
 #include <type_traits>
@@ -9,9 +9,9 @@
 #include "prism/common/platform.hpp"
 #include "webgpu-headers/webgpu.h"
 
-namespace prism::graphics::inline wgpu {
+namespace prism::gfx::inline wgpu {
 
-#include "prism/graphics/common/webgpu.inl"
+#include "prism/gfx/common/webgpu.inl"
 
 void Context::enable_debug() {
 #if defined(PRISM_BACKEND_WGPU)
@@ -205,4 +205,4 @@ void Context::draw_multi_indexed_indirect(const RenderPassEncoder& render_pass,
     // PRISM_DEBUG_SCOPE_END(device, "drawing multi indexed indirect");
 }
 
-}  // namespace prism::graphics::inline wgpu
+}  // namespace prism::gfx::inline wgpu

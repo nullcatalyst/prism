@@ -6,7 +6,7 @@
 #include "webgpu-headers/webgpu.h"
 #include "wgpu/wgpu.h"
 
-namespace prism::graphics::inline wgpu {
+namespace prism::gfx::inline wgpu {
 
 // Smart ptr types for WGPU objects.
 
@@ -39,4 +39,4 @@ PRISM_WGPU_TYPE_REF(Sampler, wgpuSamplerDrop);
 
 #undef PRISM_WGPU_TYPE_REF
 
-}  // namespace prism::graphics::inline wgpu
+}  // namespace prism::gfx::inline wgpu

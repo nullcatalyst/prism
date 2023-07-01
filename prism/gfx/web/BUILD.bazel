@@ -15,8 +15,8 @@ prism_cc_library(
     deps = [
         "//prism/common:debug",
         "//prism/common:platform",
-        "//prism/graphics:enums",
-        "//prism/graphics:types",
+        "//prism/gfx:enums",
+        "//prism/gfx:types",
         "//prism/js:dom",
         "//prism/js:gpu",
         "@com_github_gfxrs_wgpu//:webgpu-hdrs",

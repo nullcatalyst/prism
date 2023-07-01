@@ -1,10 +1,10 @@
-#include "prism/graphics/web/context.hpp"
+#include "prism/gfx/web/context.hpp"
 
 #include "prism/common/log.hpp"
-#include "prism/graphics/web/enum_strings.hpp"
+#include "prism/gfx/web/enum_strings.hpp"
 #include "prism/js/gpu.hpp"
 
-namespace prism::graphics::inline web {
+namespace prism::gfx::inline web {
 
 Context::Context(js::HtmlCanvasElement canvas)
     : _context{js::Object::from_raw(js::detail::gpu_create_context(canvas.obj_id()))} {
@@ -428,4 +428,4 @@ void Context::draw_multi_indexed_indirect(const RenderPassEncoder& render_pass,
     }
 }
 
-}  // namespace prism::graphics::inline web
+}  // namespace prism::gfx::inline web
