@@ -1,4 +1,4 @@
-load("@prism_config//:cc.bzl", "prism_cc_library")
+load("@com_nullcatalyst_prism//config:cc.bzl", "prism_cc_library")
 
 prism_cc_library(
     name = "debug",

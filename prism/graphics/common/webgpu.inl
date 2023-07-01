@@ -1,15 +1,15 @@
-#include "prism/graphics/common/webgpu.hpp"
+// These are the #includes that need to be included prior to this one in order for this file to
+// compile without errors:
 
-#include <cstring>
-#include <string>
-#include <type_traits>
+// #include <string>
+// #include <type_traits>
 
-#include "absl/strings/str_format.h"
-#include "prism/common/debug.hpp"
-#include "prism/common/log.hpp"
-#include "webgpu-headers/webgpu.h"
+// #include "absl/strings/str_format.h"
+// #include "prism/common/debug.hpp"
+// #include "prism/common/log.hpp"
+// #include "webgpu-headers/webgpu.h"
 
-namespace prism::graphics::common {
+namespace common {
 
 namespace {
 
@@ -684,4 +684,4 @@ void draw_multi_indexed_indirect(WGPUDevice device, WGPURenderPassEncoder render
     PRISM_DEBUG_SCOPE_END(device, "multi drawing indexed indirect");
 }
 
-}  // namespace prism::graphics::common
+}  // namespace common

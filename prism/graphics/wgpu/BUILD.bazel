@@ -1,5 +1,5 @@
-load("@prism_config//:cc.bzl", "prism_cc_library")
-load("@prism_config//:platforms.bzl", "IOS_PLATFORM", "LINUX_PLATFORM", "MACOS_PLATFORM", "WINDOWS_PLATFORM")
+load("@com_nullcatalyst_prism//config:cc.bzl", "prism_cc_library")
+load("@com_nullcatalyst_prism//config:platforms.bzl", "select_platform")
 
 prism_cc_library(
     name = "wgpu",
@@ -8,19 +8,18 @@ prism_cc_library(
         "context.hpp",
         "types.hpp",
     ],
+    defines = ["PRISM_BACKEND_WGPU=1"],
     visibility = ["//prism:__subpackages__"],
     deps = [
-        "//prism/graphics:defines",
         "//prism/common:debug",
-        "//prism/common:shared",
         "//prism/common:platform",
+        "//prism/common:shared",
         "//prism/graphics/common:webgpu",
         "@com_github_gfxrs_wgpu//:hdrs",
-    ] + select({
-        WINDOWS_PLATFORM: ["@com_github_gfxrs_wgpu//:lib-windows-x86_64"],
-        MACOS_PLATFORM: ["@com_github_gfxrs_wgpu//:lib-macos-x86_64"],
-        # IOS_PLATFORM: ["@com_github_gfxrs_wgpu//:lib-ios_sim-x86_64"],
-        IOS_PLATFORM: ["@com_github_gfxrs_wgpu//:lib-ios-arm64"],
-        LINUX_PLATFORM: ["@com_github_gfxrs_wgpu//:lib-linux-x86_64"],
-    }),
+    ] + select_platform(
+        ios = ["@com_github_gfxrs_wgpu//:lib-ios-arm64"],  # ["@com_github_gfxrs_wgpu//:lib-ios_sim-x86_64"],
+        linux = ["@com_github_gfxrs_wgpu//:lib-linux-x86_64"],
+        macos = ["@com_github_gfxrs_wgpu//:lib-macos-x86_64"],
+        windows = ["@com_github_gfxrs_wgpu//:lib-windows-x86_64"],
+    ),
 )

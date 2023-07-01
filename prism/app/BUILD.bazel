@@ -1,5 +1,5 @@
-load("@prism_config//:cc.bzl", "prism_cc_library")
-load("@prism_config//:platforms.bzl", "IOS_PLATFORM", "LINUX_PLATFORM", "MACOS_PLATFORM", "WASM_PLATFORM", "WINDOWS_PLATFORM")
+load("@com_nullcatalyst_prism//config:cc.bzl", "prism_cc_library")
+load("@com_nullcatalyst_prism//config:platforms.bzl", "select_platform")
 
 prism_cc_library(
     name = "app",
@@ -7,22 +7,13 @@ prism_cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":input",
-    ] + select({
-        "//prism:backend_sdl2": ["//prism/app/sdl2"],
-        "//prism:backend_web": ["//prism/app/web"],
-        "//conditions:default": [":app_deps_defaults"],
-    }),
-)
-
-prism_cc_library(
-    name = "app_deps_defaults",
-    deps = select({
-        WINDOWS_PLATFORM: ["//prism/app/sdl2"],
-        MACOS_PLATFORM: ["//prism/app/sdl2"],
-        IOS_PLATFORM: ["//prism/app/sdl2"],
-        LINUX_PLATFORM: ["//prism/app/sdl2"],
-        WASM_PLATFORM: ["//prism/app/web"],
-    }),
+    ] + select_platform(
+        ios = ["//prism/app/sdl2"],
+        linux = ["//prism/app/sdl2"],
+        macos = ["//prism/app/sdl2"],
+        wasm = ["//prism/app/web"],
+        windows = ["//prism/app/sdl2"],
+    ),
 )
 
 prism_cc_library(

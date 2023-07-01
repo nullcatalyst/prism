@@ -1,7 +1,7 @@
 load("@aspect_rules_rollup//rollup:defs.bzl", "rollup")
 load("@aspect_rules_terser//terser:defs.bzl", "terser")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@prism_config//:cc.bzl", "prism_cc_binary")
+load("@com_nullcatalyst_prism//config:cc.bzl", "prism_cc_binary")
 load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
 
 prism_cc_binary(

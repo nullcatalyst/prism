@@ -1,9 +1,17 @@
 #include "prism/graphics/wgpu/context.hpp"
 
+#include <string>
+#include <type_traits>
+
+#include "absl/strings/str_format.h"
+#include "prism/common/debug.hpp"
+#include "prism/common/log.hpp"
 #include "prism/common/platform.hpp"
-#include "prism/graphics/common/webgpu.hpp"
+#include "webgpu-headers/webgpu.h"
 
 namespace prism::graphics::inline wgpu {
+
+#include "prism/graphics/common/webgpu.inl"
 
 void Context::enable_debug() {
 #if defined(PRISM_BACKEND_WGPU)

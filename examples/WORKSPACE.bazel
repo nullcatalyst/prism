@@ -5,13 +5,7 @@ local_repository(
     path = "..",
 )
 
-load("@com_nullcatalyst_prism//config:config.bzl", "prism_config")
 load("@com_nullcatalyst_prism//config:deps.bzl", "prism_dependencies", "prism_wasm_dependencies")
-
-prism_config(
-    copts = [],
-    linkopts = [],
-)
 
 prism_dependencies()
 

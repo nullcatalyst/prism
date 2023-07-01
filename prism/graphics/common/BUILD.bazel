@@ -1,14 +1,12 @@
-load("@prism_config//:cc.bzl", "prism_cc_library")
+load("@com_nullcatalyst_prism//config:cc.bzl", "prism_cc_library")
 
 prism_cc_library(
     name = "webgpu",
-    srcs = ["webgpu.cpp"],
-    hdrs = ["webgpu.hpp"],
+    textual_hdrs = ["webgpu.inl"],
     visibility = ["//prism:__subpackages__"],
     deps = [
         "//prism/common:debug",
         "//prism/common:log",
-        "//prism/graphics:defines",
         "//prism/graphics:enums",
         "//prism/graphics:types",
         "@com_github_gfxrs_wgpu//:hdrs",

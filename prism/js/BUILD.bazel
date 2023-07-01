@@ -1,5 +1,5 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@prism_config//:cc.bzl", "prism_cc_library")
+load("@com_nullcatalyst_prism//config:cc.bzl", "prism_cc_library")
 
 package(default_visibility = ["//visibility:public"])
 

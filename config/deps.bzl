@@ -11,13 +11,26 @@ def prism_dependencies():
         url = "https://github.com/bazelbuild/bazel-skylib/archive/refs/tags/{version}.tar.gz".format(version = _SKYLIB_VERSION),
     )
 
-    _ABSEIL_VERSION = "20230125.3"
+    # Abseil does not handle being compiled with one version of C++ and linked to another very well.
+    # Instead of using the default version of Abseil, we use a fork that has been modified to force
+    # it to be compiled with C++20. Otherwise, it is identical to the upstream version,
+    # "LTS version 20230125.3".
+
+    # _ABSEIL_VERSION = "20230125.3"
+    # maybe(
+    #     http_archive,
+    #     name = "com_google_absl",
+    #     sha256 = "5366d7e7fa7ba0d915014d387b66d0d002c03236448e1ba9ef98122c13b35c36",
+    #     strip_prefix = "abseil-cpp-{version}".format(version = _ABSEIL_VERSION),
+    #     url = "https://github.com/abseil/abseil-cpp/archive/refs/tags/{version}.tar.gz".format(version = _ABSEIL_VERSION),
+    # )
+    _ABSEIL_COMMIT = "b71ebb2d41e68936b58f6fc1d4ade961891019be"
     maybe(
         http_archive,
         name = "com_google_absl",
-        sha256 = "5366d7e7fa7ba0d915014d387b66d0d002c03236448e1ba9ef98122c13b35c36",
-        strip_prefix = "abseil-cpp-{version}".format(version = _ABSEIL_VERSION),
-        url = "https://github.com/abseil/abseil-cpp/archive/refs/tags/{version}.tar.gz".format(version = _ABSEIL_VERSION),
+        sha256 = "7693018c675120fcda0d9c9afed8f3bff309815880858a28bdbfd56d2977b47b",
+        strip_prefix = "abseil-cpp-{commit}".format(commit = _ABSEIL_COMMIT),
+        url = "https://github.com/nullcatalyst/abseil-cpp/archive/{commit}.tar.gz".format(commit = _ABSEIL_COMMIT),
     )
 
     _RE2_VERSION = "2022-06-01"
