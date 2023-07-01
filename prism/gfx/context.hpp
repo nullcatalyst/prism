@@ -74,3 +74,7 @@ concept Context =
 static_assert(Context<::prism::gfx::Context>);
 #endif
 }  // namespace prism::gfx::internal
+
+namespace prism {
+using namespace ::prism::gfx;
+}  // namespace prism
