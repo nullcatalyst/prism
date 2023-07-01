@@ -4,13 +4,24 @@
       "name": "Win32",
       "includePath": [
         "${workspaceFolder}",
-        "${workspaceFolder}/third_party/webgpu-headers/include",
-        "${workspaceFolder}/third_party/wgpu/include",
+        // External dependencies are duplicated so that VSCode can find them, whether you are
+        // modifying either the library itself or one of the examples.
+        // ---- Prism ----
+        "${workspaceFolder}/bazel-prism/external/com_github_gfxrs_wgpu/include",
+        "${workspaceFolder}/bazel-prism/external/com_github_nothings_stb",
         "${workspaceFolder}/bazel-prism/external/com_google_absl",
         "${workspaceFolder}/bazel-prism/external/com_googlesource_code_re2",
-        "${workspaceFolder}/bazel-prism/external/com_github_nothings_stb",
         "${workspaceFolder}/bazel-prism/external/com_phoboslab_qoi",
-        "${workspaceFolder}/bazel-prism/external/glm"
+        "${workspaceFolder}/bazel-prism/external/glm",
+        "${workspaceFolder}/bazel-prism/external/org_libsdl_sdl2/include",
+        // ---- Examples ----
+        "${workspaceFolder}/examples/bazel-examples/external/com_github_gfxrs_wgpu/include",
+        "${workspaceFolder}/examples/bazel-examples/external/com_github_nothings_stb",
+        "${workspaceFolder}/examples/bazel-examples/external/com_google_absl",
+        "${workspaceFolder}/examples/bazel-examples/external/com_googlesource_code_re2",
+        "${workspaceFolder}/examples/bazel-examples/external/com_phoboslab_qoi",
+        "${workspaceFolder}/examples/bazel-examples/external/glm",
+        "${workspaceFolder}/examples/bazel-examples/external/org_libsdl_sdl2/include",
       ],
       "defines": [
         "_DEBUG",
@@ -29,15 +40,29 @@
       "name": "Mac",
       "includePath": [
         "${workspaceFolder}",
-        "${workspaceFolder}/third_party/webgpu-headers/include",
-        "${workspaceFolder}/third_party/wgpu/include",
+        // External dependencies are duplicated so that VSCode can find them, whether you are
+        // modifying either the library itself or one of the examples.
+        // ---- Prism ----
+        "${workspaceFolder}/bazel-prism/external/com_github_gfxrs_wgpu/include",
+        "${workspaceFolder}/bazel-prism/external/com_github_nothings_stb",
         "${workspaceFolder}/bazel-prism/external/com_google_absl",
         "${workspaceFolder}/bazel-prism/external/com_googlesource_code_re2",
-        "${workspaceFolder}/bazel-prism/external/com_github_nothings_stb",
         "${workspaceFolder}/bazel-prism/external/com_phoboslab_qoi",
-        "${workspaceFolder}/bazel-prism/external/glm"
+        "${workspaceFolder}/bazel-prism/external/glm",
+        "${workspaceFolder}/bazel-prism/external/org_libsdl_sdl2/include",
+        // ---- Examples ----
+        "${workspaceFolder}/examples/bazel-examples/external/com_github_gfxrs_wgpu/include",
+        "${workspaceFolder}/examples/bazel-examples/external/com_github_nothings_stb",
+        "${workspaceFolder}/examples/bazel-examples/external/com_google_absl",
+        "${workspaceFolder}/examples/bazel-examples/external/com_googlesource_code_re2",
+        "${workspaceFolder}/examples/bazel-examples/external/com_phoboslab_qoi",
+        "${workspaceFolder}/examples/bazel-examples/external/glm",
+        "${workspaceFolder}/examples/bazel-examples/external/org_libsdl_sdl2/include",
       ],
-      "defines": ["PRISM_BACKEND_WGPU", "PRISM_BACKEND_SDL2"],
+      "defines": [
+        "PRISM_BACKEND_WGPU",
+        "PRISM_BACKEND_SDL2"
+      ],
       "macFrameworkPath": [
         "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
       ],
@@ -50,15 +75,29 @@
       "name": "Linux",
       "includePath": [
         "${workspaceFolder}",
-        "${workspaceFolder}/third_party/webgpu-headers/include",
-        "${workspaceFolder}/third_party/wgpu/include",
+        // External dependencies are duplicated so that VSCode can find them, whether you are
+        // modifying either the library itself or one of the examples.
+        // ---- Prism ----
+        "${workspaceFolder}/bazel-prism/external/com_github_gfxrs_wgpu/include",
+        "${workspaceFolder}/bazel-prism/external/com_github_nothings_stb",
         "${workspaceFolder}/bazel-prism/external/com_google_absl",
         "${workspaceFolder}/bazel-prism/external/com_googlesource_code_re2",
-        "${workspaceFolder}/bazel-prism/external/com_github_nothings_stb",
         "${workspaceFolder}/bazel-prism/external/com_phoboslab_qoi",
-        "${workspaceFolder}/bazel-prism/external/glm"
+        "${workspaceFolder}/bazel-prism/external/glm",
+        "${workspaceFolder}/bazel-prism/external/org_libsdl_sdl2/include",
+        // ---- Examples ----
+        "${workspaceFolder}/examples/bazel-examples/external/com_github_gfxrs_wgpu/include",
+        "${workspaceFolder}/examples/bazel-examples/external/com_github_nothings_stb",
+        "${workspaceFolder}/examples/bazel-examples/external/com_google_absl",
+        "${workspaceFolder}/examples/bazel-examples/external/com_googlesource_code_re2",
+        "${workspaceFolder}/examples/bazel-examples/external/com_phoboslab_qoi",
+        "${workspaceFolder}/examples/bazel-examples/external/glm",
+        "${workspaceFolder}/examples/bazel-examples/external/org_libsdl_sdl2/include",
       ],
-      "defines": ["PRISM_BACKEND_WGPU", "PRISM_BACKEND_SDL2"],
+      "defines": [
+        "PRISM_BACKEND_WGPU",
+        "PRISM_BACKEND_SDL2"
+      ],
       "compilerPath": "clang",
       "cStandard": "c17",
       "cppStandard": "c++20",
