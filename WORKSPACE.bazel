@@ -1,12 +1,7 @@
 workspace(name = "com_nullcatalyst_prism")
 
-load("@com_nullcatalyst_prism//config:config.bzl", "prism_config")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@com_nullcatalyst_prism//config:deps.bzl", "prism_dependencies", "prism_wasm_dependencies")
-
-prism_config(
-    copts = [],
-    linkopts = [],
-)
 
 prism_dependencies()
 
