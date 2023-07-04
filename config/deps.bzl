@@ -84,7 +84,7 @@ def prism_dependencies():
     maybe(
         http_archive,
         name = "com_phoboslab_qoi",
-        build_file = "//third_party/qoi:qoi.BUILD",
+        build_file = "@com_nullcatalyst_prism//third_party/qoi:qoi.BUILD",
         sha256 = "946ed7adb128ed12924c83cf89717d37e9059353d327b5f6bf778413351f7907",
         strip_prefix = "qoi-{commit}".format(commit = _QOI_COMMIT),
         url = "https://github.com/phoboslab/qoi/archive/{commit}.tar.gz".format(commit = _QOI_COMMIT),
@@ -94,7 +94,7 @@ def prism_dependencies():
     maybe(
         http_archive,
         name = "com_github_nothings_stb",
-        build_file = "//third_party/stb:stb.BUILD",
+        build_file = "@com_nullcatalyst_prism//third_party/stb:stb.BUILD",
         sha256 = "d00921d49b06af62aa6bfb97c1b136bec661dd11dd4eecbcb0da1f6da7cedb4c",
         strip_prefix = "stb-{commit}".format(commit = _STB_COMMIT),
         url = "https://github.com/nothings/stb/archive/{commit}.tar.gz".format(commit = _STB_COMMIT),
