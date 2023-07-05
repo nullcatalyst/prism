@@ -2,121 +2,80 @@
 
 #include "webgpu-headers/webgpu.h"
 
-// static_assert(sizeof(prism::gfx::common::ChainedStruct) == sizeof(WGPUChainedStruct));
-// static_assert(offsetof(prism::gfx::common::ChainedStruct, next) ==
-//               offsetof(WGPUChainedStruct, next));
-// static_assert(offsetof(prism::gfx::common::ChainedStruct, sType) ==
-//               offsetof(WGPUChainedStruct, sType));
+// This header exists entirely to validate that the structs in the prism::gfx namespace match the
+// structs in by the WGPU C headers. Duplicating the structs into C++ allows us to introduce sane
+// defaults to properties of the struct, making it easier to use by not requiring the user to set
+// every field every time.
 
-// static_assert(sizeof(prism::gfx::common::Chainable) == sizeof(WGPUChainable));
-// static_assert(offsetof(prism::gfx::common::Chainable, next_in_chain) ==
-//               offsetof(WGPUChainable, nextInChain));
+#define ASSERT_STRUCT_SIZE_EQ($type) \
+    static_assert(sizeof(::prism::gfx::$type) == sizeof(WGPU##$type))
+#define ASSERT_STRUCT_MEMBER_EQ($type, $member)                                               \
+    static_assert(offsetof(::prism::gfx::$type, $member) == offsetof(WGPU##$type, $member) && \
+                  sizeof(std::declval<prism::gfx::$type>().$member) ==                        \
+                      sizeof(std::declval<WGPU##$type>().$member))
+#define ASSERT_RENAMED_STRUCT_MEMBER_EQ($type, $member, $wgpu_member)                              \
+    static_assert(offsetof(::prism::gfx::$type, $member) == offsetof(WGPU##$type, $wgpu_member) && \
+                  sizeof(std::declval<prism::gfx::$type>().$member) ==                             \
+                      sizeof(std::declval<WGPU##$type>().$wgpu_member))
 
-// static_assert(sizeof(prism::gfx::common::Labelable) == sizeof(WGPULabelable));
-// static_assert(offsetof(prism::gfx::common::Labelable, label) ==
-//               offsetof(WGPULabelable, label));
+ASSERT_STRUCT_SIZE_EQ(ChainedStruct);
+ASSERT_STRUCT_MEMBER_EQ(ChainedStruct, next);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(ChainedStruct, s_type, sType);
 
-// static_assert(sizeof(prism::gfx::common::BufferBindingLayout) ==
-//               sizeof(WGPUBufferBindingLayout));
-// static_assert(offsetof(prism::gfx::common::BufferBindingLayout, next_in_chain) ==
-//               offsetof(WGPUBufferBindingLayout, nextInChain));
-// static_assert(offsetof(prism::gfx::common::BufferBindingLayout, type) ==
-//               offsetof(WGPUBufferBindingLayout, type));
-// static_assert(offsetof(prism::gfx::common::BufferBindingLayout, has_dynamic_offset) ==
-//               offsetof(WGPUBufferBindingLayout, hasDynamicOffset));
-// static_assert(offsetof(prism::gfx::common::BufferBindingLayout, min_binding_size) ==
-//               offsetof(WGPUBufferBindingLayout, minBindingSize));
+ASSERT_STRUCT_SIZE_EQ(BufferBindingLayout);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BufferBindingLayout, next_in_chain, nextInChain);
+ASSERT_STRUCT_MEMBER_EQ(BufferBindingLayout, type);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BufferBindingLayout, has_dynamic_offset, hasDynamicOffset);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BufferBindingLayout, min_binding_size, minBindingSize);
 
-// static_assert(sizeof(prism::gfx::common::SamplerBindingLayout) ==
-//               sizeof(WGPUSamplerBindingLayout));
-// static_assert(offsetof(prism::gfx::common::SamplerBindingLayout, next_in_chain) ==
-//               offsetof(WGPUSamplerBindingLayout, nextInChain));
-// static_assert(offsetof(prism::gfx::common::SamplerBindingLayout, type) ==
-//               offsetof(WGPUSamplerBindingLayout, type));
+ASSERT_STRUCT_SIZE_EQ(SamplerBindingLayout);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(SamplerBindingLayout, next_in_chain, nextInChain);
+ASSERT_STRUCT_MEMBER_EQ(SamplerBindingLayout, type);
 
-// static_assert(sizeof(prism::gfx::common::TextureBindingLayout) ==
-//               sizeof(WGPUTextureBindingLayout));
-// static_assert(offsetof(prism::gfx::common::TextureBindingLayout, next_in_chain) ==
-//               offsetof(WGPUTextureBindingLayout, nextInChain));
-// static_assert(offsetof(prism::gfx::common::TextureBindingLayout, sample_type) ==
-//               offsetof(WGPUTextureBindingLayout, sampleType));
-// static_assert(offsetof(prism::gfx::common::TextureBindingLayout, view_dimension) ==
-//               offsetof(WGPUTextureBindingLayout, viewDimension));
-// static_assert(offsetof(prism::gfx::common::TextureBindingLayout, multisampled) ==
-//               offsetof(WGPUTextureBindingLayout, multisampled));
+ASSERT_STRUCT_SIZE_EQ(TextureBindingLayout);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(TextureBindingLayout, next_in_chain, nextInChain);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(TextureBindingLayout, sample_type, sampleType);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(TextureBindingLayout, view_dimension, viewDimension);
+ASSERT_STRUCT_MEMBER_EQ(TextureBindingLayout, multisampled);
 
-// static_assert(sizeof(prism::gfx::common::StorageTextureBindingLayout) ==
-//               sizeof(WGPUStorageTextureBindingLayout));
-// static_assert(offsetof(prism::gfx::common::StorageTextureBindingLayout, next_in_chain) ==
-//               offsetof(WGPUStorageTextureBindingLayout, nextInChain));
-// static_assert(offsetof(prism::gfx::common::StorageTextureBindingLayout, access) ==
-//               offsetof(WGPUStorageTextureBindingLayout, access));
-// static_assert(offsetof(prism::gfx::common::StorageTextureBindingLayout, format) ==
-//               offsetof(WGPUStorageTextureBindingLayout, format));
-// static_assert(offsetof(prism::gfx::common::StorageTextureBindingLayout, view_dimension) ==
-//               offsetof(WGPUStorageTextureBindingLayout, viewDimension));
+ASSERT_STRUCT_SIZE_EQ(StorageTextureBindingLayout);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(StorageTextureBindingLayout, next_in_chain, nextInChain);
+ASSERT_STRUCT_MEMBER_EQ(StorageTextureBindingLayout, access);
+ASSERT_STRUCT_MEMBER_EQ(StorageTextureBindingLayout, format);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(StorageTextureBindingLayout, view_dimension, viewDimension);
 
-// static_assert(sizeof(prism::gfx::common::BindGroupLayoutEntry) ==
-//               sizeof(WGPUBindGroupLayoutEntry));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutEntry, next_in_chain) ==
-//               offsetof(WGPUBindGroupLayoutEntry, nextInChain));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutEntry, binding) ==
-//               offsetof(WGPUBindGroupLayoutEntry, binding));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutEntry, visibility) ==
-//               offsetof(WGPUBindGroupLayoutEntry, visibility));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutEntry, buffer) ==
-//               offsetof(WGPUBindGroupLayoutEntry, buffer));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutEntry, sampler) ==
-//               offsetof(WGPUBindGroupLayoutEntry, sampler));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutEntry, texture) ==
-//               offsetof(WGPUBindGroupLayoutEntry, texture));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutEntry, storage_texture) ==
-//               offsetof(WGPUBindGroupLayoutEntry, storageTexture));
+ASSERT_STRUCT_SIZE_EQ(BindGroupLayoutEntry);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BindGroupLayoutEntry, next_in_chain, nextInChain);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupLayoutEntry, binding);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupLayoutEntry, visibility);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupLayoutEntry, buffer);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupLayoutEntry, sampler);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupLayoutEntry, texture);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BindGroupLayoutEntry, storage_texture, storageTexture);
 
-// static_assert(sizeof(prism::gfx::common::BindGroupLayoutDescriptor) ==
-//               sizeof(WGPUBindGroupLayoutDescriptor));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutDescriptor, next_in_chain) ==
-//               offsetof(WGPUBindGroupLayoutDescriptor, nextInChain));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutDescriptor, label) ==
-//               offsetof(WGPUBindGroupLayoutDescriptor, label));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutDescriptor, entry_count) ==
-//               offsetof(WGPUBindGroupLayoutDescriptor, entryCount));
-// static_assert(offsetof(prism::gfx::common::BindGroupLayoutDescriptor, entries) ==
-//               offsetof(WGPUBindGroupLayoutDescriptor, entries));
+ASSERT_STRUCT_SIZE_EQ(BindGroupLayoutDescriptor);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BindGroupLayoutDescriptor, next_in_chain, nextInChain);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupLayoutDescriptor, label);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BindGroupLayoutDescriptor, entry_count, entryCount);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupLayoutDescriptor, entries);
 
-// static_assert(sizeof(prism::gfx::common::BindGroupEntry) == sizeof(WGPUBindGroupEntry));
-// static_assert(offsetof(prism::gfx::common::BindGroupEntry, next_in_chain) ==
-//               offsetof(WGPUBindGroupEntry, nextInChain));
-// static_assert(offsetof(prism::gfx::common::BindGroupEntry, binding) ==
-//               offsetof(WGPUBindGroupEntry, binding));
-// static_assert(offsetof(prism::gfx::common::BindGroupEntry, buffer) ==
-//               offsetof(WGPUBindGroupEntry, buffer));
-// static_assert(offsetof(prism::gfx::common::BindGroupEntry, sampler) ==
-//               offsetof(WGPUBindGroupEntry, sampler));
-// static_assert(offsetof(prism::gfx::common::BindGroupEntry, texture_view) ==
-//               offsetof(WGPUBindGroupEntry, textureView));
+ASSERT_STRUCT_SIZE_EQ(BindGroupEntry);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BindGroupEntry, next_in_chain, nextInChain);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupEntry, binding);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupEntry, buffer);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupEntry, sampler);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BindGroupEntry, texture_view, textureView);
 
-// static_assert(sizeof(prism::gfx::common::BindGroupDescriptor) ==
-//               sizeof(WGPUBindGroupDescriptor));
-// static_assert(offsetof(prism::gfx::common::BindGroupDescriptor, next_in_chain) ==
-//               offsetof(WGPUBindGroupDescriptor, nextInChain));
-// static_assert(offsetof(prism::gfx::common::BindGroupDescriptor, label) ==
-//               offsetof(WGPUBindGroupDescriptor, label));
-// static_assert(offsetof(prism::gfx::common::BindGroupDescriptor, layout) ==
-//               offsetof(WGPUBindGroupDescriptor, layout));
-// static_assert(offsetof(prism::gfx::common::BindGroupDescriptor, entry_count) ==
-//               offsetof(WGPUBindGroupDescriptor, entryCount));
-// static_assert(offsetof(prism::gfx::common::BindGroupDescriptor, entries) ==
-//               offsetof(WGPUBindGroupDescriptor, entries));
+ASSERT_STRUCT_SIZE_EQ(BindGroupDescriptor);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BindGroupDescriptor, next_in_chain, nextInChain);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupDescriptor, label);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupDescriptor, layout);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(BindGroupDescriptor, entry_count, entryCount);
+ASSERT_STRUCT_MEMBER_EQ(BindGroupDescriptor, entries);
 
-// static_assert(sizeof(prism::gfx::common::PipelineLayoutDescriptor) ==
-//               sizeof(WGPUPipelineLayoutDescriptor));
-// static_assert(offsetof(prism::gfx::common::PipelineLayoutDescriptor, next_in_chain) ==
-//               offsetof(WGPUPipelineLayoutDescriptor, nextInChain));
-// static_assert(offsetof(prism::gfx::common::PipelineLayoutDescriptor, label) ==
-//               offsetof(WGPUPipelineLayoutDescriptor, label));
-// static_assert(offsetof(prism::gfx::common::PipelineLayoutDescriptor,
-//                        bind_group_layout_count) ==
-//               offsetof(WGPUPipelineLayoutDescriptor, bindGroupLayoutCount));
-// static_assert(offsetof(prism::gfx::common::PipelineLayoutDescriptor, bind_group_layouts) ==
-//               offsetof(WGPUPipelineLayoutDescriptor, bindGroupLayouts));
+ASSERT_STRUCT_SIZE_EQ(PipelineLayoutDescriptor);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(PipelineLayoutDescriptor, next_in_chain, nextInChain);
+ASSERT_STRUCT_MEMBER_EQ(PipelineLayoutDescriptor, label);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(PipelineLayoutDescriptor, bind_group_layout_count,
+                                bindGroupLayoutCount);
+ASSERT_RENAMED_STRUCT_MEMBER_EQ(PipelineLayoutDescriptor, bind_group_layouts, bindGroupLayouts);

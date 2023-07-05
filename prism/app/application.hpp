@@ -25,14 +25,16 @@ concept Application = requires(T app) {
     { app.on_mouse_move(static_cast<void (*)(float x, float y)>(nullptr)) };
     {
         app.on_mouse_button_down(
-            static_cast<void (*)(const prism::app::input::MouseButton button)>(nullptr))
+            static_cast<void (*)(const ::prism::app::input::MouseButton button)>(nullptr))
     };
     {
         app.on_mouse_button_up(
-            static_cast<void (*)(const prism::app::input::MouseButton button)>(nullptr))
+            static_cast<void (*)(const ::prism::app::input::MouseButton button)>(nullptr))
     };
-    { app.on_key_down(static_cast<void (*)(const prism::app::input::KeyCode key_code)>(nullptr)) };
-    { app.on_key_up(static_cast<void (*)(const prism::app::input::KeyCode key_code)>(nullptr)) };
+    {
+        app.on_key_down(static_cast<void (*)(const ::prism::app::input::KeyCode key_code)>(nullptr))
+    };
+    { app.on_key_up(static_cast<void (*)(const ::prism::app::input::KeyCode key_code)>(nullptr)) };
 };
 
 static_assert(Application<::prism::app::Application>);
@@ -42,5 +44,6 @@ static_assert(Application<::prism::app::Application>);
 #endif
 
 namespace prism {
+namespace app {}  // namespace app
 using namespace ::prism::app;
 }  // namespace prism

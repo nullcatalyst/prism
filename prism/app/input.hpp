@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace prism::inline app::input {
+namespace prism::app::input {
 
 enum class MouseButton : uint32_t {
     Unknown = 0,
@@ -229,4 +229,8 @@ enum class KeyCode : uint32_t {
     RightAlt              = 230,     // Right Alt
 };
 
-}  // namespace prism::inline app::input
+}  // namespace prism::app::input
+
+namespace prism {
+using namespace ::prism::app;
+}  // namespace prism

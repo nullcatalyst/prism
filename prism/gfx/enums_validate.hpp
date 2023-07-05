@@ -9,6 +9,9 @@
 #define ASSERT_ENUM_EQ($type, $value) \
     static_assert(static_cast<uint32_t>(prism::gfx::$type::$value) == WGPU##$type##_##$value)
 
+#define ASSERT_RENAMED_ENUM_EQ($type, $value, $wgpu_value) \
+    static_assert(static_cast<uint32_t>(prism::gfx::$type::$value) == $wgpu_value)
+
 ASSERT_ENUM_EQ(BlendFactor, Zero);
 ASSERT_ENUM_EQ(BlendFactor, One);
 ASSERT_ENUM_EQ(BlendFactor, Src);
@@ -58,90 +61,70 @@ ASSERT_ENUM_EQ(PrimitiveTopology, LineStrip);
 ASSERT_ENUM_EQ(PrimitiveTopology, TriangleList);
 ASSERT_ENUM_EQ(PrimitiveTopology, TriangleStrip);
 
-// static_assert(prism::gfx::common::SamplerBindingType::Undefined ==
-//               WGPUSamplerBindingType_Undefined);
-// static_assert(prism::gfx::common::SamplerBindingType::Filtering ==
-//               WGPUSamplerBindingType_Filtering);
-// static_assert(prism::gfx::common::SamplerBindingType::NonFiltering ==
-//               WGPUSamplerBindingType_NonFiltering);
-// static_assert(prism::gfx::common::SamplerBindingType::Comparison ==
-//               WGPUSamplerBindingType_Comparison);
+ASSERT_ENUM_EQ(SamplerBindingType, Undefined);
+ASSERT_ENUM_EQ(SamplerBindingType, Filtering);
+ASSERT_ENUM_EQ(SamplerBindingType, NonFiltering);
+ASSERT_ENUM_EQ(SamplerBindingType, Comparison);
 
-// static_assert(prism::gfx::common::StoreOp::Undefined == WGPUStoreOp_Undefined);
-// static_assert(prism::gfx::common::StoreOp::Store == WGPUStoreOp_Store);
-// static_assert(prism::gfx::common::StoreOp::Discard == WGPUStoreOp_Discard);
+ASSERT_ENUM_EQ(StoreOp, Undefined);
+ASSERT_ENUM_EQ(StoreOp, Store);
+ASSERT_ENUM_EQ(StoreOp, Discard);
 
-// static_assert(prism::gfx::common::TextureComponentType::Float ==
-//               WGPUTextureComponentType_Float);
-// static_assert(prism::gfx::common::TextureComponentType::Sint ==
-// WGPUTextureComponentType_Sint); static_assert(prism::gfx::common::TextureComponentType::Uint
-// == WGPUTextureComponentType_Uint);
-// static_assert(prism::gfx::common::TextureComponentType::DepthComparison ==
-//               WGPUTextureComponentType_DepthComparison);
+ASSERT_ENUM_EQ(TextureComponentType, Float);
+ASSERT_ENUM_EQ(TextureComponentType, Sint);
+ASSERT_ENUM_EQ(TextureComponentType, Uint);
+ASSERT_ENUM_EQ(TextureComponentType, DepthComparison);
 
-// static_assert(prism::gfx::common::TextureDimension::_1D == WGPUTextureDimension_1D);
-// static_assert(prism::gfx::common::TextureDimension::_2D == WGPUTextureDimension_2D);
-// static_assert(prism::gfx::common::TextureDimension::_3D == WGPUTextureDimension_3D);
+ASSERT_RENAMED_ENUM_EQ(TextureDimension, _1D, WGPUTextureDimension_1D);
+ASSERT_RENAMED_ENUM_EQ(TextureDimension, _2D, WGPUTextureDimension_2D);
+ASSERT_RENAMED_ENUM_EQ(TextureDimension, _3D, WGPUTextureDimension_3D);
 
-// static_assert(prism::gfx::common::TextureFormat::Undefined == WGPUTextureFormat_Undefined);
-// static_assert(prism::gfx::common::TextureFormat::R8Unorm == WGPUTextureFormat_R8Unorm);
-// static_assert(prism::gfx::common::TextureFormat::R8Snorm == WGPUTextureFormat_R8Snorm);
-// static_assert(prism::gfx::common::TextureFormat::R8Uint == WGPUTextureFormat_R8Uint);
-// static_assert(prism::gfx::common::TextureFormat::R8Sint == WGPUTextureFormat_R8Sint);
-// static_assert(prism::gfx::common::TextureFormat::R16Uint == WGPUTextureFormat_R16Uint);
-// static_assert(prism::gfx::common::TextureFormat::R16Sint == WGPUTextureFormat_R16Sint);
-// static_assert(prism::gfx::common::TextureFormat::R16Float == WGPUTextureFormat_R16Float);
-// static_assert(prism::gfx::common::TextureFormat::RG8Unorm == WGPUTextureFormat_RG8Unorm);
-// static_assert(prism::gfx::common::TextureFormat::RG8Snorm == WGPUTextureFormat_RG8Snorm);
-// static_assert(prism::gfx::common::TextureFormat::RG8Uint == WGPUTextureFormat_RG8Uint);
-// static_assert(prism::gfx::common::TextureFormat::RG8Sint == WGPUTextureFormat_RG8Sint);
-// static_assert(prism::gfx::common::TextureFormat::R32Float == WGPUTextureFormat_R32Float);
-// static_assert(prism::gfx::common::TextureFormat::R32Uint == WGPUTextureFormat_R32Uint);
-// static_assert(prism::gfx::common::TextureFormat::R32Sint == WGPUTextureFormat_R32Sint);
-// static_assert(prism::gfx::common::TextureFormat::RG16Uint == WGPUTextureFormat_RG16Uint);
-// static_assert(prism::gfx::common::TextureFormat::RG16Sint == WGPUTextureFormat_RG16Sint);
-// static_assert(prism::gfx::common::TextureFormat::RG16Float == WGPUTextureFormat_RG16Float);
-// static_assert(prism::gfx::common::TextureFormat::RGBA8Unorm ==
-// WGPUTextureFormat_RGBA8Unorm);
-// static_assert(prism::gfx::common::TextureFormat::RGBA8UnormSrgb ==
-//               WGPUTextureFormat_RGBA8UnormSrgb);
-// static_assert(prism::gfx::common::TextureFormat::RGBA8Snorm ==
-// WGPUTextureFormat_RGBA8Snorm); static_assert(prism::gfx::common::TextureFormat::RGBA8Uint ==
-// WGPUTextureFormat_RGBA8Uint); static_assert(prism::gfx::common::TextureFormat::RGBA8Sint ==
-// WGPUTextureFormat_RGBA8Sint); static_assert(prism::gfx::common::TextureFormat::BGRA8Unorm ==
-// WGPUTextureFormat_BGRA8Unorm);
-// static_assert(prism::gfx::common::TextureFormat::BGRA8UnormSrgb ==
-//               WGPUTextureFormat_BGRA8UnormSrgb);
-// // static_assert(prism::gfx::common::TextureFormat::RGB10A2Unorm ==
-// //               WGPUTextureFormat_RGB10A2Unorm);
-// // static_assert(prism::gfx::common::TextureFormat::RG11B10Ufloat ==
-// //               WGPUTextureFormat_RG11B10Ufloat);
-// // static_assert(prism::gfx::common::TextureFormat::RGB9E5Ufloat ==
-// //               WGPUTextureFormat_RGB9E5Ufloat);
-// static_assert(prism::gfx::common::TextureFormat::RG32Float == WGPUTextureFormat_RG32Float);
-// static_assert(prism::gfx::common::TextureFormat::RG32Uint == WGPUTextureFormat_RG32Uint);
-// static_assert(prism::gfx::common::TextureFormat::RG32Sint == WGPUTextureFormat_RG32Sint);
-// static_assert(prism::gfx::common::TextureFormat::RGBA16Uint ==
-// WGPUTextureFormat_RGBA16Uint); static_assert(prism::gfx::common::TextureFormat::RGBA16Sint
-// == WGPUTextureFormat_RGBA16Sint);
-// static_assert(prism::gfx::common::TextureFormat::RGBA16Float ==
-// WGPUTextureFormat_RGBA16Float); static_assert(prism::gfx::common::TextureFormat::RGBA32Float
-// == WGPUTextureFormat_RGBA32Float);
-// static_assert(prism::gfx::common::TextureFormat::RGBA32Uint ==
-// WGPUTextureFormat_RGBA32Uint); static_assert(prism::gfx::common::TextureFormat::RGBA32Sint
-// == WGPUTextureFormat_RGBA32Sint);
-// static_assert(prism::gfx::common::TextureFormat::Depth16Unorm ==
-//               WGPUTextureFormat_Depth16Unorm);
-// static_assert(prism::gfx::common::TextureFormat::Depth32Float ==
-//               WGPUTextureFormat_Depth32Float);
+ASSERT_ENUM_EQ(TextureFormat, Undefined);
+ASSERT_ENUM_EQ(TextureFormat, R8Unorm);
+ASSERT_ENUM_EQ(TextureFormat, R8Snorm);
+ASSERT_ENUM_EQ(TextureFormat, R8Uint);
+ASSERT_ENUM_EQ(TextureFormat, R8Sint);
+ASSERT_ENUM_EQ(TextureFormat, R16Uint);
+ASSERT_ENUM_EQ(TextureFormat, R16Sint);
+ASSERT_ENUM_EQ(TextureFormat, R16Float);
+ASSERT_ENUM_EQ(TextureFormat, RG8Unorm);
+ASSERT_ENUM_EQ(TextureFormat, RG8Snorm);
+ASSERT_ENUM_EQ(TextureFormat, RG8Uint);
+ASSERT_ENUM_EQ(TextureFormat, RG8Sint);
+ASSERT_ENUM_EQ(TextureFormat, R32Float);
+ASSERT_ENUM_EQ(TextureFormat, R32Uint);
+ASSERT_ENUM_EQ(TextureFormat, R32Sint);
+ASSERT_ENUM_EQ(TextureFormat, RG16Uint);
+ASSERT_ENUM_EQ(TextureFormat, RG16Sint);
+ASSERT_ENUM_EQ(TextureFormat, RG16Float);
+ASSERT_ENUM_EQ(TextureFormat, RGBA8Unorm);
+ASSERT_ENUM_EQ(TextureFormat, RGBA8UnormSrgb);
+ASSERT_ENUM_EQ(TextureFormat, RGBA8Snorm);
+ASSERT_ENUM_EQ(TextureFormat, RGBA8Uint);
+ASSERT_ENUM_EQ(TextureFormat, RGBA8Sint);
+ASSERT_ENUM_EQ(TextureFormat, BGRA8Unorm);
+ASSERT_ENUM_EQ(TextureFormat, BGRA8UnormSrgb);
+// ASSERT_ENUM_EQ(TextureFormat, RGB10A2Unorm);
+// ASSERT_ENUM_EQ(TextureFormat, RG11B10Ufloat);
+// ASSERT_ENUM_EQ(TextureFormat, RGB9E5Ufloat);
+ASSERT_ENUM_EQ(TextureFormat, RG32Float);
+ASSERT_ENUM_EQ(TextureFormat, RG32Uint);
+ASSERT_ENUM_EQ(TextureFormat, RG32Sint);
+ASSERT_ENUM_EQ(TextureFormat, RGBA16Uint);
+ASSERT_ENUM_EQ(TextureFormat, RGBA16Sint);
+ASSERT_ENUM_EQ(TextureFormat, RGBA16Float);
+ASSERT_ENUM_EQ(TextureFormat, RGBA32Float);
+ASSERT_ENUM_EQ(TextureFormat, RGBA32Uint);
+ASSERT_ENUM_EQ(TextureFormat, RGBA32Sint);
+ASSERT_ENUM_EQ(TextureFormat, Depth16Unorm);
+ASSERT_ENUM_EQ(TextureFormat, Depth32Float);
 
-// static_assert(prism::gfx::common::TextureSampleType::Undefined ==
-//               WGPUTextureSampleType_Undefined);
-// static_assert(prism::gfx::common::TextureSampleType::Float == WGPUTextureSampleType_Float);
-// static_assert(prism::gfx::common::TextureSampleType::UnfilterableFloat ==
-//               WGPUTextureSampleType_UnfilterableFloat);
-// static_assert(prism::gfx::common::TextureSampleType::Depth == WGPUTextureSampleType_Depth);
-// static_assert(prism::gfx::common::TextureSampleType::Sint == WGPUTextureSampleType_Sint);
-// static_assert(prism::gfx::common::TextureSampleType::Uint == WGPUTextureSampleType_Uint);
+ASSERT_ENUM_EQ(TextureSampleType, Undefined);
+ASSERT_ENUM_EQ(TextureSampleType, Float);
+ASSERT_ENUM_EQ(TextureSampleType, UnfilterableFloat);
+ASSERT_ENUM_EQ(TextureSampleType, Depth);
+ASSERT_ENUM_EQ(TextureSampleType, Sint);
+ASSERT_ENUM_EQ(TextureSampleType, Uint);
 
+#undef ASSERT_RENAMED_ENUM_EQ
 #undef ASSERT_ENUM_EQ

@@ -1,7 +1,7 @@
 load("@com_nullcatalyst_prism//config:cc.bzl", "prism_cc_library")
 
 prism_cc_library(
-    name = "webgpu",
+    name = "webgpu_inl",
     textual_hdrs = ["webgpu.inl"],
     visibility = ["//prism:__subpackages__"],
     deps = [

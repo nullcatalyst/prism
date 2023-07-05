@@ -14,7 +14,7 @@ prism_cc_library(
         "//prism/common:debug",
         "//prism/common:platform",
         "//prism/common:shared",
-        "//prism/gfx/common:webgpu",
+        "//prism/gfx/common:webgpu_inl",
         "@com_github_gfxrs_wgpu//:hdrs",
     ] + select_platform(
         ios = ["@com_github_gfxrs_wgpu//:lib-ios-arm64"],  # ["@com_github_gfxrs_wgpu//:lib-ios_sim-x86_64"],
