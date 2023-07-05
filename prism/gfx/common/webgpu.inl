@@ -260,6 +260,16 @@ WGPUBindGroup create_bind_group(WGPUDevice device, const WGPUBindGroupDescriptor
 WGPUBuffer create_buffer(WGPUDevice device, const WGPUBufferUsageFlags usage,
                          const uint64_t buffer_size, const void* data, const uint64_t data_size,
                          const uint64_t data_offset_into_buffer) {
+#if !defined(NDEBUG)
+    // Sanity check that the user isn't accidentally passing a data pointer but not a data size.
+    // This is a common mistake that is easy to make, since they are already passing a buffer size.
+    if (data != nullptr && data_size == 0) {
+        ::prism::common::log_error(
+            "data is not null but data_size is 0; did you mean to pass data_size, as in "
+            "create_buffer(usage, buffer_size, data_ptr, data_size)");
+    }
+#endif  // !defined(NDEBUG)
+
     const auto                 mapped = data != nullptr && data_size > 0;
     const WGPUBufferDescriptor desc{
         .nextInChain      = nullptr,
@@ -544,14 +554,16 @@ void draw_indexed_indirect(WGPUDevice device, WGPURenderBundleEncoder render_bun
 
 WGPURenderPassEncoder begin_render_pass(WGPUDevice device, WGPUCommandEncoder encoder,
                                         const WGPURenderPassDescriptor& render_pass_desc,
-                                        const uint32_t width, const uint32_t height) {
+                                        const uint32_t x, const uint32_t y, const uint32_t width,
+                                        const uint32_t height) {
     PRISM_DEBUG_SCOPE_START(device);
     const WGPURenderPassEncoder render_pass =
         wgpuCommandEncoderBeginRenderPass(encoder, &render_pass_desc);
     PRISM_DEBUG_RESULT(render_pass);
-    wgpuRenderPassEncoderSetViewport(render_pass, 0.0f, 0.0f, static_cast<float>(width),
-                                     static_cast<float>(height), 0.0f, 1.0f);
-    wgpuRenderPassEncoderSetScissorRect(render_pass, 0, 0, width, height);
+    wgpuRenderPassEncoderSetViewport(render_pass, static_cast<float>(x), static_cast<float>(y),
+                                     static_cast<float>(width), static_cast<float>(height), 0.0f,
+                                     1.0f);
+    wgpuRenderPassEncoderSetScissorRect(render_pass, x, y, width, height);
     PRISM_DEBUG_SCOPE_END(device, "starting render pass");
     return render_pass;
 }

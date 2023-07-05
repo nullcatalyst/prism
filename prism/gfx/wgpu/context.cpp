@@ -24,7 +24,10 @@ void Context::enable_debug() {
 
 Context::Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_width,
                  uint32_t surface_height)
-    : _instance{instance}, _surface{surface} {
+    : _instance{instance},
+      _surface{surface},
+      _surface_width{surface_width},
+      _surface_height{surface_height} {
     _adapter    = Adapter{common::request_adapter(_instance, _surface)};
     _device     = Device{common::create_device(_adapter)};
     _swap_chain = SwapChain{
@@ -35,7 +38,9 @@ Context::Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_wi
 }
 
 void Context::resize(const uint32_t surface_width, const uint32_t surface_height) {
-    _swap_chain = SwapChain{
+    _surface_width  = surface_width;
+    _surface_height = surface_height;
+    _swap_chain     = SwapChain{
         common::create_swap_chain(_device, _surface, _adapter, surface_width, surface_height)};
 }
 
@@ -122,11 +127,18 @@ TextureView Context::swap_chain_view() {
     return TextureView{common::swap_chain_view(_device, _swap_chain)};
 }
 
-RenderPassEncoder Context::begin_render_pass(const RenderPassDescriptor& render_pass_desc,
-                                             uint32_t width, uint32_t height) {
+RenderPassEncoder Context::begin_render_pass(const RenderPassDescriptor& render_pass_desc) {
     return RenderPassEncoder{common::begin_render_pass(
-        _device, _encoder, reinterpret_cast<const WGPURenderPassDescriptor&>(render_pass_desc),
-        width, height)};
+        _device, _encoder, reinterpret_cast<const WGPURenderPassDescriptor&>(render_pass_desc), 0,
+        0, _surface_width, _surface_height)};
+}
+
+RenderPassEncoder Context::begin_render_pass(const RenderPassDescriptor& render_pass_desc,
+                                             const uint32_t x, const uint32_t y,
+                                             const uint32_t width, const uint32_t height) {
+    return RenderPassEncoder{common::begin_render_pass(
+        _device, _encoder, reinterpret_cast<const WGPURenderPassDescriptor&>(render_pass_desc), x,
+        y, width, height)};
 }
 
 void Context::end_render_pass(const RenderPassEncoder& render_pass) {

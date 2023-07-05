@@ -108,8 +108,6 @@ void render() {
 
     ctx.start_frame();
 
-    const auto [width, height] = app.drawable_size();
-
     // Get the texture view for the next frame that will be displayed to the screen.
     auto next_frame = ctx.swap_chain_view();
 
@@ -121,13 +119,11 @@ void render() {
             .clear_value = {0.0f, 0.0f, 0.0f, 1.0f},
         },
     };
+    auto render_pass = ctx.begin_render_pass(prism::RenderPassDescriptor{
+        .color_attachment_count = std::size(color_attachments),
+        .color_attachments      = color_attachments,
+    });
 
-    auto render_pass = ctx.begin_render_pass(
-        prism::RenderPassDescriptor{
-            .color_attachment_count = std::size(color_attachments),
-            .color_attachments      = color_attachments,
-        },
-        width, height);
     ctx.set_pipeline(render_pass, render_pipeline);
     ctx.draw(render_pass, 3);
     ctx.end_render_pass(render_pass);

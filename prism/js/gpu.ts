@@ -231,10 +231,10 @@ export class Context {
 
     ////////////////////////////////
     // Render pass
-    beginRenderPass(desc: GPURenderPassDescriptor, width: number, height: number) {
+    beginRenderPass(desc: GPURenderPassDescriptor, x: number, y: number, width: number, height: number) {
         const passEncoder = this._drawEncoder.beginRenderPass(desc);
-        passEncoder.setViewport(0, 0, width, height, 0, 1);
-        passEncoder.setScissorRect(0, 0, width, height);
+        passEncoder.setViewport(x, y, width, height, 0, 1);
+        passEncoder.setScissorRect(x, y, width, height);
         return this._renderPasses.create(passEncoder);
     }
     endRenderPass(renderPassId: number) { this._renderPasses.get(renderPassId).end(); }

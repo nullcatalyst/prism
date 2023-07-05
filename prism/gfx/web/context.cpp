@@ -13,6 +13,8 @@ Context::Context(js::HtmlCanvasElement canvas)
 }
 
 void Context::resize(const uint32_t surface_width, const uint32_t surface_height) {
+    _surface_width  = surface_width;
+    _surface_height = surface_height;
     js::detail::gpu_resize_context(_context.obj_id(), surface_width, surface_height);
 }
 
@@ -298,8 +300,13 @@ TextureView Context::swap_chain_view() {
     return TextureView{_context.obj_id(), js::detail::gpu_get_swap_chain_view(_context.obj_id())};
 }
 
+RenderPassEncoder Context::begin_render_pass(const RenderPassDescriptor& render_pass_desc) {
+    return begin_render_pass(render_pass_desc, 0, 0, _surface_width, _surface_height);
+}
+
 RenderPassEncoder Context::begin_render_pass(const RenderPassDescriptor& render_pass_desc,
-                                             uint32_t width, uint32_t height) {
+                                             const uint32_t x, const uint32_t y,
+                                             const uint32_t width, const uint32_t height) {
     js::Object js_desc          = js::Object::object();
     js::Object attachments_desc = js::Object::array();
     for (int i = 0, end = render_pass_desc.color_attachment_count; i < end; ++i) {
@@ -345,8 +352,8 @@ RenderPassEncoder Context::begin_render_pass(const RenderPassDescriptor& render_
     }
 
     return RenderPassEncoder{
-        _context.obj_id(),
-        js::detail::gpu_begin_render_pass(_context.obj_id(), js_desc.obj_id(), width, height)};
+        _context.obj_id(), js::detail::gpu_begin_render_pass(_context.obj_id(), js_desc.obj_id(), x,
+                                                             y, width, height)};
 }
 
 void Context::end_render_pass(const RenderPassEncoder& render_pass) {

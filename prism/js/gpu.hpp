@@ -57,8 +57,8 @@ WASM_IMPORT("gpu", "presentFrame")
 void gpu_present_frame(uint32_t ctx_obj);
 
 WASM_IMPORT("gpu", "beginRenderPass")
-uint32_t gpu_begin_render_pass(uint32_t ctx_obj, uint32_t desc_obj, uint32_t width,
-                               uint32_t height);
+uint32_t gpu_begin_render_pass(uint32_t ctx_obj, uint32_t desc_obj, uint32_t x, uint32_t y,
+                               uint32_t width, uint32_t height);
 WASM_IMPORT("gpu", "endRenderPass")
 void gpu_end_render_pass(uint32_t ctx_obj, uint32_t render_pass_obj);
 WASM_IMPORT("gpu", "setPipeline")

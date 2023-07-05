@@ -18,6 +18,8 @@ class Context final {
     CommandEncoder _encoder    = nullptr;
 
     TextureFormat _surface_format = TextureFormat::Undefined;
+    uint32_t      _surface_width  = 0;
+    uint32_t      _surface_height = 0;
 
   public:
     static void enable_debug();
@@ -36,6 +38,8 @@ class Context final {
     [[nodiscard]] constexpr TextureFormat surface_format() const noexcept {
         return _surface_format;
     }
+    [[nodiscard]] constexpr uint32_t surface_width() const noexcept { return _surface_width; }
+    [[nodiscard]] constexpr uint32_t surface_height() const noexcept { return _surface_height; }
 
     // Invalidate and recreate the swap chain.
     void resize(const uint32_t surface_width, const uint32_t surface_height);
@@ -79,8 +83,10 @@ class Context final {
     void        present_frame();
     TextureView swap_chain_view();
 
+    RenderPassEncoder begin_render_pass(const RenderPassDescriptor& render_pass_desc);
     RenderPassEncoder begin_render_pass(const RenderPassDescriptor& render_pass_desc,
-                                        const uint32_t width, const uint32_t height);
+                                        const uint32_t x, const uint32_t y, const uint32_t width,
+                                        const uint32_t height);
     void              end_render_pass(const RenderPassEncoder& render_pass);
 
     void set_pipeline(const RenderPassEncoder& render_pass, const RenderPipeline& pipeline);
