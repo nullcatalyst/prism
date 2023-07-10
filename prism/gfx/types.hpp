@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <limits>
 
 #include "prism/gfx/enums.hpp"
 #include "webgpu-headers/webgpu.h"
@@ -23,30 +24,30 @@ struct Labelable {
 // BindGroupLayoutDescriptor
 
 struct BufferBindingLayout : public Chainable {
-    BufferBindingType type;
-    bool              has_dynamic_offset;
-    uint64_t          min_binding_size;
+    BufferBindingType type               = BufferBindingType::Undefined;
+    bool              has_dynamic_offset = false;
+    uint64_t          min_binding_size   = std::numeric_limits<uint64_t>::max();
 };
 
 struct SamplerBindingLayout : public Chainable {
-    SamplerBindingType type;
+    SamplerBindingType type = SamplerBindingType::Undefined;
 };
 
 struct TextureBindingLayout : public Chainable {
-    TextureSampleType    sample_type;
-    TextureViewDimension view_dimension;
-    bool                 multisampled;
+    TextureSampleType    sample_type    = TextureSampleType::Undefined;
+    TextureViewDimension view_dimension = TextureViewDimension::Undefined;
+    bool                 multisampled   = false;
 };
 
 struct StorageTextureBindingLayout : public Chainable {
-    StorageTextureAccess access;
-    TextureFormat        format;
-    TextureViewDimension view_dimension;
+    StorageTextureAccess access         = StorageTextureAccess::Undefined;
+    TextureFormat        format         = TextureFormat::Undefined;
+    TextureViewDimension view_dimension = TextureViewDimension::Undefined;
 };
 
 struct BindGroupLayoutEntry : public Chainable {
-    uint32_t                    binding;
-    ShaderStage                 visibility;
+    uint32_t                    binding    = 0;
+    ShaderStage                 visibility = ShaderStage::None;
     BufferBindingLayout         buffer;
     SamplerBindingLayout        sampler;
     TextureBindingLayout        texture;
@@ -54,57 +55,57 @@ struct BindGroupLayoutEntry : public Chainable {
 };
 
 struct BindGroupLayoutDescriptor : public Chainable, public Labelable {
-    uint32_t                    entry_count;
-    const BindGroupLayoutEntry* entries;
+    uint32_t                    entry_count = 0;
+    const BindGroupLayoutEntry* entries     = nullptr;
 };
 
 // BindGroupDescriptor
 
 struct BindGroupEntry : public Chainable {
-    uint32_t        binding;
-    WGPUBuffer      buffer = nullptr;
-    uint64_t        offset;
-    uint64_t        size;
+    uint32_t        binding      = 0;
+    WGPUBuffer      buffer       = nullptr;
+    uint64_t        offset       = 0;
+    uint64_t        size         = 0;
     WGPUSampler     sampler      = nullptr;
     WGPUTextureView texture_view = nullptr;
 };
 
 struct BindGroupDescriptor : public Chainable, public Labelable {
-    WGPUBindGroupLayout   layout;
-    uint32_t              entry_count;
-    const BindGroupEntry* entries;
+    WGPUBindGroupLayout   layout      = nullptr;
+    uint32_t              entry_count = 0;
+    const BindGroupEntry* entries     = nullptr;
 };
 
 // PipelineLayoutDescriptor
 
 struct PipelineLayoutDescriptor : public Chainable, public Labelable {
-    uint32_t                   bind_group_layout_count;
-    const WGPUBindGroupLayout* bind_group_layouts;
+    uint32_t                   bind_group_layout_count = 0;
+    const WGPUBindGroupLayout* bind_group_layouts      = nullptr;
 };
 
 // RenderPipelineDescriptor
 
 struct ConstantEntry : public Chainable {
-    char const* key;
-    double      value;
+    char const* key   = nullptr;
+    double      value = 0.0;
 };
 
 struct VertexAttribute {
-    VertexFormat format;
-    uint64_t     offset;
-    uint32_t     shader_location;
+    VertexFormat format          = VertexFormat::Undefined;
+    uint64_t     offset          = 0;
+    uint32_t     shader_location = 0;
 };
 
 struct VertexBufferLayout {
-    uint64_t               array_stride;
-    VertexStepMode         step_mode;
-    uint32_t               attribute_count;
-    const VertexAttribute* attributes;
+    uint64_t               array_stride    = 0;
+    VertexStepMode         step_mode       = VertexStepMode::Vertex;
+    uint32_t               attribute_count = 0;
+    const VertexAttribute* attributes      = nullptr;
 };
 
 struct VertexState : public Chainable {
-    WGPUShaderModule          module;
-    const char*               entry_point;
+    WGPUShaderModule          module         = nullptr;
+    const char*               entry_point    = nullptr;
     uint32_t                  constant_count = 0;
     const ConstantEntry*      constants      = nullptr;
     uint32_t                  buffer_count   = 0;
@@ -112,30 +113,30 @@ struct VertexState : public Chainable {
 };
 
 struct PrimitiveState : public Chainable {
-    PrimitiveTopology topology;
+    PrimitiveTopology topology           = PrimitiveTopology::TriangleList;
     IndexFormat       strip_index_format = IndexFormat::Undefined;
     FrontFace         front_face         = FrontFace::CCW;
     CullMode          cull_mode          = CullMode::None;
 };
 
 struct StencilFaceState {
-    CompareFunction  compare;
-    StencilOperation fail_op;
-    StencilOperation depth_fail_op;
-    StencilOperation pass_op;
+    CompareFunction  compare       = CompareFunction::Always;
+    StencilOperation fail_op       = StencilOperation::Keep;
+    StencilOperation depth_fail_op = StencilOperation::Keep;
+    StencilOperation pass_op       = StencilOperation::Keep;
 };
 
 struct DepthStencilState : public Chainable {
-    TextureFormat    format;
-    bool             depth_write_enabled;
-    CompareFunction  depth_compare;
+    TextureFormat    format              = TextureFormat::Undefined;
+    bool             depth_write_enabled = false;
+    CompareFunction  depth_compare       = CompareFunction::Always;
     StencilFaceState stencil_front;
     StencilFaceState stencil_back;
-    uint32_t         stencil_read_mask;
-    uint32_t         stencil_write_mask;
-    int32_t          depth_bias;
-    float            depth_bias_slope_scale;
-    float            depth_bias_clamp;
+    uint32_t         stencil_read_mask      = 0;
+    uint32_t         stencil_write_mask     = 0;
+    int32_t          depth_bias             = 0;
+    float            depth_bias_slope_scale = 0.0f;
+    float            depth_bias_clamp       = 0.0f;
 };
 
 struct MultisampleState : public Chainable {
@@ -156,18 +157,18 @@ struct BlendState {
 };
 
 struct ColorTargetState : public Chainable {
-    TextureFormat     format;
+    TextureFormat     format     = TextureFormat::Undefined;
     const BlendState* blend      = nullptr;
     ColorWriteMask    write_mask = ColorWriteMask::All;
 };
 
 struct FragmentState : public Chainable {
-    WGPUShaderModule        module;
-    const char*             entry_point;
+    WGPUShaderModule        module         = nullptr;
+    const char*             entry_point    = nullptr;
     uint32_t                constant_count = 0;
     const ConstantEntry*    constants      = nullptr;
-    uint32_t                target_count;
-    const ColorTargetState* targets;
+    uint32_t                target_count   = 0;
+    const ColorTargetState* targets        = nullptr;
 };
 
 struct RenderPipelineDescriptor : public Chainable, public Labelable {
@@ -209,9 +210,9 @@ struct RenderPassDepthStencilAttachment {
 };
 
 struct RenderPassTimestampWrite {
-    WGPUQuerySet                query_set;
-    uint32_t                    query_index;
-    RenderPassTimestampLocation location;
+    WGPUQuerySet                query_set   = nullptr;
+    uint32_t                    query_index = 0;
+    RenderPassTimestampLocation location    = RenderPassTimestampLocation::Beginning;
 };
 
 struct RenderPassDescriptor : public Chainable, public Labelable {
@@ -226,18 +227,18 @@ struct RenderPassDescriptor : public Chainable, public Labelable {
 // Indirect Commands (Draw, DrawIndexed)
 
 struct DrawIndirectCommand {
-    uint32_t vertex_count;
-    uint32_t instance_count;
-    uint32_t first_vertex;
-    uint32_t first_instance;
+    uint32_t vertex_count   = 0;
+    uint32_t instance_count = 0;
+    uint32_t first_vertex   = 0;
+    uint32_t first_instance = 0;
 };
 
 struct DrawIndexedIndirectCommand {
-    uint32_t index_count;
-    uint32_t instance_count;
-    uint32_t first_index;
-    int32_t  base_vertex;
-    uint32_t first_instance;
+    uint32_t index_count    = 0;
+    uint32_t instance_count = 0;
+    uint32_t first_index    = 0;
+    int32_t  base_vertex    = 0;
+    uint32_t first_instance = 0;
 };
 
 }  // namespace prism::gfx
