@@ -11,7 +11,7 @@ enum class MouseButton : uint32_t {
     Right   = 3,
 };
 
-enum class KeyCode : uint32_t {
+enum class Key : uint32_t {
     Unknown               = 0,
     A                     = 4,       // A
     B                     = 5,       // B

@@ -30,12 +30,14 @@ uint32_t dom_on_mouse_button_up(uint32_t element_obj,
                                 void* user_data);
 
 WASM_IMPORT("dom", "onKeyDown")
-uint32_t dom_on_key_down(uint32_t element_obj, void (*callback)(uint32_t key_code, void* user_data),
-                         void*    user_data);
+uint32_t dom_on_key_down(uint32_t element_obj,
+                         void (*callback)(uint32_t key_code, bool is_repeat, void* user_data),
+                         void* user_data);
 
 WASM_IMPORT("dom", "onKeyUp")
-uint32_t dom_on_key_up(uint32_t element_obj, void (*callback)(uint32_t key_code, void* user_data),
-                       void*    user_data);
+uint32_t dom_on_key_up(uint32_t element_obj,
+                       void (*callback)(uint32_t key_code, bool is_repeat, void* user_data),
+                       void* user_data);
 
 }  // namespace detail
 
@@ -60,11 +62,13 @@ class HtmlElement : public Object {
         detail::dom_on_mouse_button_up(obj_id(), callback, user_data);
     }
 
-    void on_key_down(void (*callback)(uint32_t key_code, void* user_data), void* user_data) {
+    void on_key_down(void (*callback)(uint32_t key_code, bool is_repeat, void* user_data),
+                     void* user_data) {
         detail::dom_on_key_down(obj_id(), callback, user_data);
     }
 
-    void on_key_up(void (*callback)(uint32_t key_code, void* user_data), void* user_data) {
+    void on_key_up(void (*callback)(uint32_t key_code, bool is_repeat, void* user_data),
+                   void* user_data) {
         detail::dom_on_key_up(obj_id(), callback, user_data);
     }
 };

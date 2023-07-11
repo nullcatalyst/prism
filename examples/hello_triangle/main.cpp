@@ -95,8 +95,8 @@ void init() {
     app.on_mouse_move([&](const float x, const float y) {});
     app.on_mouse_button_down([&](const prism::app::input::MouseButton button) {});
     app.on_mouse_button_up([&](const prism::app::input::MouseButton button) {});
-    app.on_key_down([&](const prism::app::input::KeyCode key_code) {});
-    app.on_key_up([&](const prism::app::input::KeyCode key_code) {});
+    app.on_key_down([&](const prism::app::input::Key key, const bool is_repeat) {});
+    app.on_key_up([&](const prism::app::input::Key key, const bool is_repeat) {});
 #if defined(PRISM_BACKEND_WEB)
     app.attach_event_listeners();
 #endif

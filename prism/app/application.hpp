@@ -32,9 +32,13 @@ concept Application = requires(T app) {
             static_cast<void (*)(const ::prism::app::input::MouseButton button)>(nullptr))
     };
     {
-        app.on_key_down(static_cast<void (*)(const ::prism::app::input::KeyCode key_code)>(nullptr))
+        app.on_key_down(
+            static_cast<void (*)(const ::prism::app::input::Key key, bool is_repeat)>(nullptr))
     };
-    { app.on_key_up(static_cast<void (*)(const ::prism::app::input::KeyCode key_code)>(nullptr)) };
+    {
+        app.on_key_up(
+            static_cast<void (*)(const ::prism::app::input::Key key, bool is_repeat)>(nullptr))
+    };
 };
 
 static_assert(Application<::prism::app::Application>);

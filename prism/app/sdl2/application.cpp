@@ -236,12 +236,14 @@ bool Application::poll() {
                 break;
             case SDL_KEYDOWN:
                 if (_on_key_down != nullptr) {
-                    _on_key_down(static_cast<input::KeyCode>(event.key.keysym.scancode));
+                    _on_key_down(static_cast<input::Key>(event.key.keysym.scancode),
+                                 event.key.repeat != 0);
                 }
                 break;
             case SDL_KEYUP:
                 if (_on_key_up != nullptr) {
-                    _on_key_up(static_cast<input::KeyCode>(event.key.keysym.scancode));
+                    _on_key_up(static_cast<input::Key>(event.key.keysym.scancode),
+                               event.key.repeat != 0);
                 }
                 break;
             case SDL_WINDOWEVENT:

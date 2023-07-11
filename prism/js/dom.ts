@@ -39,16 +39,14 @@ export function createDomWasmImport(memory: Memory, objLib: ObjectLibrary) {
                 const elem = objLib.get(elemId) as HTMLElement;
                 const callback = memory.createJsFunction(callbackPtr);
                 elem.addEventListener("keydown", event => {
-                    // `.button+1` to match the button numbers in the C++ code, where 0 is used as an invalid value
-                    callback(getKeyCode(event), userDataPtr);
+                    callback(getKeyCode(event), event.repeat, userDataPtr);
                 });
             },
             "onKeyUp": (elemId: number, callbackPtr: number, userDataPtr: number) => {
                 const elem = objLib.get(elemId) as HTMLElement;
                 const callback = memory.createJsFunction(callbackPtr);
                 elem.addEventListener("keyup", event => {
-                    // `.button+1` to match the button numbers in the C++ code, where 0 is used as an invalid value
-                    callback(getKeyCode(event), userDataPtr);
+                    callback(getKeyCode(event), event.repeat, userDataPtr);
                 });
             },
         },

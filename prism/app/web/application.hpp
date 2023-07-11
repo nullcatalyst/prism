@@ -10,12 +10,12 @@ namespace prism::app::inline web {
 class Application final {
     js::HtmlCanvasElement _canvas;
 
-    std::function<void(const float x, const float y)>    _on_mouse_move         = nullptr;
-    std::function<void(const input::MouseButton button)> _on_mouse_button_down  = nullptr;
-    std::function<void(const input::MouseButton button)> _on_mouse_button_up    = nullptr;
-    std::function<void(const input::KeyCode key_code)>   _on_key_down           = nullptr;
-    std::function<void(const input::KeyCode key_code)>   _on_key_up             = nullptr;
-    std::function<void(const uint32_t width, const uint32_t height)> _on_resize = nullptr;
+    std::function<void(const float x, const float y)>               _on_mouse_move        = nullptr;
+    std::function<void(const input::MouseButton button)>            _on_mouse_button_down = nullptr;
+    std::function<void(const input::MouseButton button)>            _on_mouse_button_up   = nullptr;
+    std::function<void(const input::Key key, const bool is_repeat)> _on_key_down          = nullptr;
+    std::function<void(const input::Key key, const bool is_repeat)> _on_key_up            = nullptr;
+    std::function<void(const uint32_t width, const uint32_t height)> _on_resize           = nullptr;
 
   public:
     ////////////////////////////////

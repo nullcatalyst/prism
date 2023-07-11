@@ -36,19 +36,19 @@ void Application::attach_event_listeners() {
         this);
 
     _canvas.on_key_down(
-        [](uint32_t key_code, void* user_data) {
+        [](uint32_t key_code, bool is_repeat, void* user_data) {
             auto* app = static_cast<Application*>(user_data);
             if (app->_on_key_down) {
-                app->_on_key_down(static_cast<input::KeyCode>(key_code));
+                app->_on_key_down(static_cast<input::Key>(key_code), is_repeat);
             }
         },
         this);
 
     _canvas.on_key_up(
-        [](uint32_t key_code, void* user_data) {
+        [](uint32_t key_code, bool is_repeat, void* user_data) {
             auto* app = static_cast<Application*>(user_data);
             if (app->_on_key_up != nullptr) {
-                app->_on_key_up(static_cast<input::KeyCode>(key_code));
+                app->_on_key_up(static_cast<input::Key>(key_code), is_repeat);
             }
         },
         this);

@@ -23,7 +23,7 @@ void Context::enable_debug() {
 }
 
 Context::Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_width,
-                 uint32_t surface_height, PresentMode present_mode = PresentMode::Fifo)
+                 uint32_t surface_height, PresentMode present_mode)
     : _instance{instance},
       _surface{surface},
       _surface_width{surface_width},
