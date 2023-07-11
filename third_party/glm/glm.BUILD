@@ -11,7 +11,7 @@ cc_library(
     }),
     defines = [
         "GLM_FORCE_DEPTH_ZERO_TO_ONE=1",
-        "GLM_SILENT_WARNINGS=1",
+        "GLM_FORCE_SILENT_WARNINGS=1",
     ],
     includes = ["glm"],
     textual_hdrs = glob(["glm/**/*.inl"]),
