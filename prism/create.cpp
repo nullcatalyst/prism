@@ -12,9 +12,9 @@ std::tuple<app::Application, gfx::Context> create_for_canvas(const char* canvas_
 #endif
 
 #if defined(PRISM_BACKEND_SDL2) && defined(PRISM_BACKEND_WGPU)
-std::tuple<app::Application, gfx::Context> create_window(const char*    title,
-                                                              const uint32_t width,
-                                                              const uint32_t height) {
+std::tuple<app::Application, gfx::Context> create_window(const char* title, const uint32_t width,
+                                                         const uint32_t height,
+                                                         PresentMode    present_mode) {
 #if defined(PRISM_PLATFORM_WINDOWS)
     constexpr const WGPUBackendType backend = WGPUBackendType_Vulkan;  // WGPUBackendType_D3D12;
 #elif defined(PRISM_PLATFORM_MACOS) || defined(PRISM_PLATFORM_IOS)
@@ -38,8 +38,8 @@ std::tuple<app::Application, gfx::Context> create_window(const char*    title,
     auto app                                   = app::Application{window};
     const auto [surface_width, surface_height] = app.drawable_size();
 
-    return std::make_tuple(std::move(app),
-                           gfx::Context{instance, surface, surface_width, surface_height});
+    return std::make_tuple(std::move(app), gfx::Context{instance, surface, surface_width,
+                                                        surface_height, present_mode});
 }
 #endif  // defined(PRISM_BACKEND_SDL2) && defined(PRISM_BACKEND_WGPU)
 
