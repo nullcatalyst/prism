@@ -116,6 +116,12 @@ enum class LoadOp : uint32_t {
     Load      = 0x00000002,
 };
 
+enum class PresentMode : uint32_t {
+    Immediate = 0x00000000,
+    Mailbox   = 0x00000001,
+    Fifo      = 0x00000002,
+};
+
 enum class PrimitiveTopology : uint32_t {
     PointList     = 0x00000000,
     LineList      = 0x00000001,

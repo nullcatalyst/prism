@@ -153,7 +153,8 @@ WGPUDevice create_device(WGPUAdapter adapter) {
 }
 
 WGPUSwapChain create_swap_chain(WGPUDevice device, WGPUSurface surface, WGPUAdapter adapter,
-                                const uint32_t width, const uint32_t height) {
+                                const uint32_t width, const uint32_t height,
+                                WGPUPresentMode present_mode) {
     PRISM_DEBUG_RESULT(surface);
     PRISM_DEBUG_RESULT(adapter);
     PRISM_DEBUG_SCOPE_START(device);
@@ -164,8 +165,7 @@ WGPUSwapChain create_swap_chain(WGPUDevice device, WGPUSurface surface, WGPUAdap
         .format      = wgpuSurfaceGetPreferredFormat(surface, adapter),
         .width       = width,
         .height      = height,
-        // .presentMode = WGPUPresentMode_Fifo,
-        .presentMode = WGPUPresentMode_Mailbox,
+        .presentMode = present_mode,
     };
 
     const WGPUSwapChain swap_chain = wgpuDeviceCreateSwapChain(device, surface, &desc);

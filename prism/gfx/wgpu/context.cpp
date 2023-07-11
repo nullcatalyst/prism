@@ -23,25 +23,28 @@ void Context::enable_debug() {
 }
 
 Context::Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_width,
-                 uint32_t surface_height)
+                 uint32_t surface_height, PresentMode present_mode = PresentMode::Fifo)
     : _instance{instance},
       _surface{surface},
       _surface_width{surface_width},
       _surface_height{surface_height} {
     _adapter    = Adapter{common::request_adapter(_instance, _surface)};
     _device     = Device{common::create_device(_adapter)};
-    _swap_chain = SwapChain{
-        common::create_swap_chain(_device, _surface, _adapter, surface_width, surface_height)};
-    _queue = Queue{common::get_queue(_device)};
+    _swap_chain = SwapChain{common::create_swap_chain(_device, _surface, _adapter, surface_width,
+                                                      surface_height,
+                                                      static_cast<WGPUPresentMode>(present_mode))};
+    _queue      = Queue{common::get_queue(_device)};
 
     _surface_format = static_cast<TextureFormat>(wgpuSurfaceGetPreferredFormat(_surface, _adapter));
 }
 
-void Context::resize(const uint32_t surface_width, const uint32_t surface_height) {
+void Context::resize(const uint32_t surface_width, const uint32_t surface_height,
+                     PresentMode present_mode) {
     _surface_width  = surface_width;
     _surface_height = surface_height;
-    _swap_chain     = SwapChain{
-        common::create_swap_chain(_device, _surface, _adapter, surface_width, surface_height)};
+    _swap_chain = SwapChain{common::create_swap_chain(_device, _surface, _adapter, surface_width,
+                                                      surface_height,
+                                                      static_cast<WGPUPresentMode>(present_mode))};
 }
 
 BindGroupLayout Context::create_bind_group_layout(

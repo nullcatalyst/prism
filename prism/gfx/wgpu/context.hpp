@@ -26,7 +26,7 @@ class Context final {
 
     constexpr Context() = default;
     Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_width,
-            uint32_t surface_height);
+            uint32_t surface_height, PresentMode present_mode = PresentMode::Fifo);
 
     Context(const Context& other)            = delete;
     Context& operator=(const Context& other) = delete;
@@ -42,7 +42,8 @@ class Context final {
     [[nodiscard]] constexpr uint32_t surface_height() const noexcept { return _surface_height; }
 
     // Invalidate and recreate the swap chain.
-    void resize(const uint32_t surface_width, const uint32_t surface_height);
+    void resize(const uint32_t surface_width, const uint32_t surface_height,
+                PresentMode present_mode = PresentMode::Fifo);
 
     ////////////////////////////////
     // Initialization functions
