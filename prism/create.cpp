@@ -38,8 +38,10 @@ std::tuple<app::Application, gfx::Context> create_window(const char* title, cons
     auto app                                   = app::Application{window};
     const auto [surface_width, surface_height] = app.drawable_size();
 
-    return std::make_tuple(std::move(app), gfx::Context{instance, surface, surface_width,
-                                                        surface_height, present_mode});
+    return std::make_tuple(
+        std::move(app),
+        gfx::Context{instance, surface, present_mode, surface_width, surface_height,
+                     static_cast<float>(surface_width) / static_cast<float>(width)});
 }
 #endif  // defined(PRISM_BACKEND_SDL2) && defined(PRISM_BACKEND_WGPU)
 

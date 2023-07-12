@@ -12,9 +12,10 @@ namespace prism::gfx::inline web {
 class Context final {
     js::Object _context;
 
-    TextureFormat _surface_format = TextureFormat::Undefined;
-    uint32_t      _surface_width  = 0;
-    uint32_t      _surface_height = 0;
+    TextureFormat _surface_format      = TextureFormat::Undefined;
+    uint32_t      _surface_width       = 0;
+    uint32_t      _surface_height      = 0;
+    float         _surface_pixel_ratio = 1.0f;
 
   public:
     static void enable_debug() {}
@@ -34,8 +35,23 @@ class Context final {
     }
     [[nodiscard]] constexpr uint32_t surface_width() const noexcept { return _surface_width; }
     [[nodiscard]] constexpr uint32_t surface_height() const noexcept { return _surface_height; }
+    [[nodiscard]] constexpr float    surface_pixel_ratio() const noexcept {
+        return _surface_pixel_ratio;
+    }
 
-    void resize(const uint32_t surface_width, const uint32_t surface_height);
+    /**
+     * Invalidate and recreate the swap chain.
+     *
+     * @param present_mode For web, this is ignored. The browser will decide the present mode.
+     * @param surface_width The width of the renderable surface area.
+     * @param surface_height The height of the renderable surface area.
+     * @param surface_pixel_ratio The pixel ratio of the surface. This is not actually used when
+     * recreating the swap chain, it is merely cached because it is a useful value for the user
+     * rendering anything to have. Use `0.0f` to reuse the previous pixel ratio, as this is probably
+     * the most common case.
+     */
+    void recreate_swap_chain(const PresentMode present_mode, const uint32_t surface_width,
+                             const uint32_t surface_height, const float surface_pixel_ratio = 0.0f);
 
     ////////////////////////////////
     // Initialization functions

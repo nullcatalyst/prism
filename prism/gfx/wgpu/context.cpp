@@ -22,12 +22,13 @@ void Context::enable_debug() {
 #endif
 }
 
-Context::Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_width,
-                 uint32_t surface_height, PresentMode present_mode)
+Context::Context(WGPUInstance instance, WGPUSurface surface, PresentMode present_mode,
+                 uint32_t surface_width, uint32_t surface_height, float surface_pixel_ratio)
     : _instance{instance},
       _surface{surface},
       _surface_width{surface_width},
-      _surface_height{surface_height} {
+      _surface_height{surface_height},
+      _surface_pixel_ratio{surface_pixel_ratio} {
     _adapter    = Adapter{common::request_adapter(_instance, _surface)};
     _device     = Device{common::create_device(_adapter)};
     _swap_chain = SwapChain{common::create_swap_chain(_device, _surface, _adapter, surface_width,
@@ -38,13 +39,17 @@ Context::Context(WGPUInstance instance, WGPUSurface surface, uint32_t surface_wi
     _surface_format = static_cast<TextureFormat>(wgpuSurfaceGetPreferredFormat(_surface, _adapter));
 }
 
-void Context::resize(const uint32_t surface_width, const uint32_t surface_height,
-                     PresentMode present_mode) {
+void Context::recreate_swap_chain(const PresentMode present_mode, const uint32_t surface_width,
+                                  const uint32_t surface_height, const float surface_pixel_ratio) {
     _surface_width  = surface_width;
     _surface_height = surface_height;
     _swap_chain = SwapChain{common::create_swap_chain(_device, _surface, _adapter, surface_width,
                                                       surface_height,
                                                       static_cast<WGPUPresentMode>(present_mode))};
+
+    if (surface_pixel_ratio != 0.0f) {
+        _surface_pixel_ratio = surface_pixel_ratio;
+    }
 }
 
 BindGroupLayout Context::create_bind_group_layout(

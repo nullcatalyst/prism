@@ -10,12 +10,20 @@ Context::Context(js::HtmlCanvasElement canvas)
     : _context{js::Object::from_raw(js::detail::gpu_create_context(canvas.obj_id()))} {
     _surface_format =
         static_cast<TextureFormat>(js::detail::gpu_get_surface_format(_context.obj_id()));
+    _surface_width       = canvas.width();
+    _surface_height      = canvas.height();
+    _surface_pixel_ratio = js::detail::gpu_get_pixel_ratio();
 }
 
-void Context::resize(const uint32_t surface_width, const uint32_t surface_height) {
+void Context::recreate_swap_chain(const PresentMode present_mode, const uint32_t surface_width,
+                                  const uint32_t surface_height, const float surface_pixel_ratio) {
     _surface_width  = surface_width;
     _surface_height = surface_height;
     js::detail::gpu_resize_context(_context.obj_id(), surface_width, surface_height);
+
+    if (surface_pixel_ratio != 0.0f) {
+        _surface_pixel_ratio = surface_pixel_ratio;
+    }
 }
 
 BindGroupLayout Context::create_bind_group_layout(const BindGroupLayoutDescriptor& layout_desc) {
