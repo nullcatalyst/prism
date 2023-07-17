@@ -12,20 +12,23 @@ std::tuple<app::Application, gfx::Context> create_for_canvas(const char* canvas_
 #endif
 
 #if defined(PRISM_BACKEND_SDL2) && defined(PRISM_BACKEND_WGPU)
-std::tuple<app::Application, gfx::Context> create_window(const char* title, const uint32_t width,
-                                                         const uint32_t height,
-                                                         PresentMode    present_mode) {
+constexpr WGPUBackendType choose_backend() {
 #if defined(PRISM_PLATFORM_WINDOWS)
-    constexpr const WGPUBackendType backend = WGPUBackendType_Vulkan;  // WGPUBackendType_D3D12;
+    return WGPUBackendType_D3D12;
 #elif defined(PRISM_PLATFORM_MACOS) || defined(PRISM_PLATFORM_IOS)
-    constexpr const WGPUBackendType backend = WGPUBackendType_Metal;
+    return WGPUBackendType_Metal;
 #elif defined(PRISM_PLATFORM_LINUX)
-    constexpr const WGPUBackendType backend = WGPUBackendType_Vulkan;
+    return WGPUBackendType_Vulkan;
 #else
     static_assert(false, "Unsupported platform");
 #endif
+}
 
-    const auto window = app::create_window(title, width, height, backend);
+std::tuple<app::Application, gfx::Context> create_window(const char* const title,
+                                                         const uint32_t    width,
+                                                         const uint32_t    height,
+                                                         const PresentMode present_mode) {
+    const auto window = app::create_window(title, width, height, choose_backend());
     PRISM_DEBUG_RESULT(window);
     const WGPUInstanceDescriptor instance_desc = {
         .nextInChain = nullptr,
@@ -40,7 +43,7 @@ std::tuple<app::Application, gfx::Context> create_window(const char* title, cons
 
     return std::make_tuple(
         std::move(app),
-        gfx::Context{instance, surface, present_mode, surface_width, surface_height,
+        gfx::Context{instance, surface, surface_width, surface_height, present_mode,
                      static_cast<float>(surface_width) / static_cast<float>(width)});
 }
 #endif  // defined(PRISM_BACKEND_SDL2) && defined(PRISM_BACKEND_WGPU)

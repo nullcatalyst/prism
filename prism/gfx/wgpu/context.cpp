@@ -22,8 +22,9 @@ void Context::enable_debug() {
 #endif
 }
 
-Context::Context(WGPUInstance instance, WGPUSurface surface, PresentMode present_mode,
-                 uint32_t surface_width, uint32_t surface_height, float surface_pixel_ratio)
+Context::Context(const WGPUInstance instance, const WGPUSurface surface,
+                 const uint32_t surface_width, const uint32_t surface_height,
+                 const PresentMode present_mode, const float surface_pixel_ratio)
     : _instance{instance},
       _surface{surface},
       _surface_width{surface_width},
@@ -39,8 +40,8 @@ Context::Context(WGPUInstance instance, WGPUSurface surface, PresentMode present
     _surface_format = static_cast<TextureFormat>(wgpuSurfaceGetPreferredFormat(_surface, _adapter));
 }
 
-void Context::recreate_swap_chain(const PresentMode present_mode, const uint32_t surface_width,
-                                  const uint32_t surface_height, const float surface_pixel_ratio) {
+void Context::recreate_swap_chain(const uint32_t surface_width, const uint32_t surface_height,
+                                  const PresentMode present_mode, const float surface_pixel_ratio) {
     _surface_width  = surface_width;
     _surface_height = surface_height;
     _swap_chain = SwapChain{common::create_swap_chain(_device, _surface, _adapter, surface_width,

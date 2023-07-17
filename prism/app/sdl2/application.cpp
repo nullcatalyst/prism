@@ -160,14 +160,19 @@ Application::~Application() {
     return result;
 }
 
-[[nodiscard]] std::tuple<uint32_t, uint32_t> Application::window_size() const {
-#if defined(PLATFORM_IOS)
-    SDL_DisplayMode display_mode = {};
-    if (SDL_GetCurrentDisplayMode(0, &display_mode) == 0) {
+[[nodiscard]] std::tuple<uint32_t, uint32_t> Application::display_size() const {
+    const int       display_index = SDL_GetWindowDisplayIndex(_window);
+    SDL_DisplayMode display_mode  = {};
+    if (SDL_GetCurrentDisplayMode(display_index, &display_mode) == 0) {
         return std::make_tuple(static_cast<uint32_t>(display_mode.w),
                                static_cast<uint32_t>(display_mode.h));
     }
     return std::make_tuple(0, 0);
+}
+
+[[nodiscard]] std::tuple<uint32_t, uint32_t> Application::window_size() const {
+#if defined(PLATFORM_IOS)
+    return display_size();
 #else
     int w = 0;
     int h = 0;
@@ -185,6 +190,18 @@ Application::~Application() {
     SDL_Vulkan_GetDrawableSize(_window, &w, &h);
 #endif
     return std::make_tuple(static_cast<uint32_t>(w), static_cast<uint32_t>(h));
+}
+
+void Application::set_fullscreen(bool is_fullscreen) {
+    if (is_fullscreen) {
+        SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    } else {
+        SDL_SetWindowFullscreen(_window, 0);
+    }
+}
+
+void Application::resize(const uint32_t width, const uint32_t height) {
+    SDL_SetWindowSize(_window, static_cast<int>(width), static_cast<int>(height));
 }
 
 void Application::show() {

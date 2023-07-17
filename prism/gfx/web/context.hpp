@@ -42,16 +42,17 @@ class Context final {
     /**
      * Invalidate and recreate the swap chain.
      *
-     * @param present_mode For web, this is ignored. The browser will decide the present mode.
      * @param surface_width The width of the renderable surface area.
      * @param surface_height The height of the renderable surface area.
+     * @param present_mode For web, this is ignored. The browser will decide the present mode.
      * @param surface_pixel_ratio The pixel ratio of the surface. This is not actually used when
      * recreating the swap chain, it is merely cached because it is a useful value for the user
      * rendering anything to have. Use `0.0f` to reuse the previous pixel ratio, as this is probably
      * the most common case.
      */
-    void recreate_swap_chain(const PresentMode present_mode, const uint32_t surface_width,
-                             const uint32_t surface_height, const float surface_pixel_ratio = 0.0f);
+    void recreate_swap_chain(const uint32_t surface_width, const uint32_t surface_height,
+                             const PresentMode present_mode,
+                             const float       surface_pixel_ratio = 0.0f);
 
     ////////////////////////////////
     // Initialization functions

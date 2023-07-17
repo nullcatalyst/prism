@@ -48,23 +48,67 @@ class Application final {
 
     ~Application();
 
+    /** Gets the size of the display that the window is on, in pixels. */
+    [[nodiscard]] std::tuple<uint32_t, uint32_t> display_size() const;
+
+    /** Gets the size of the window, in desktop units (ie: not necessarily in display pixels). */
     [[nodiscard]] std::tuple<uint32_t, uint32_t> window_size() const;
+
+    /**
+     * Gets the size of the drawable surface, in pixels. This can be different than the window's
+     * size, particularly in the case that the window is being rendered on a high resolution
+     * display.
+     **/
     [[nodiscard]] std::tuple<uint32_t, uint32_t> drawable_size() const;
-    [[nodiscard]] float                          pixel_ratio() const {
+
+    /**
+     * Common utility to determine the pixel ratio between the window size and the actual drawable
+     * size. Can be useful when trying to determine whether something should be scaled larger so it
+     * doesn't get rendered too tiny to see.
+     **/
+    [[nodiscard]] float pixel_ratio() const {
         const auto [window_width, window_height]     = window_size();
         const auto [drawable_width, drawable_height] = drawable_size();
         return static_cast<float>(drawable_width) / static_cast<float>(window_width);
     }
 
+    /**
+     * Change to or from fullscreen.
+     * Note that this does NOT automatically resize the graphics context to match.
+     **/
+    void set_fullscreen(bool is_fullscreen);
+
+    /**
+     * Resize the window.
+     * Note that this does NOT automatically resize the graphics context to match.
+     **/
+    void resize(const uint32_t width, const uint32_t height);
+
+    /**
+     * Show the window.
+     * Note that the window starts off hidden by default, that way it can be rendered to before
+     * being shown, so that the user doesn't see a flash of a blank window.
+     **/
     void show();
+
+    /** Hide the window without destroying it. */
     void hide();
+
+    /** Close (and destroy) the window. It is no longer usable after this. */
     void close();
 
-    // The amount of time in seconds since the last time `frame_time()` was called
+    /**
+     * @return The amount of time in seconds since the last time `frame_time()` was called.
+     **/
     double frame_time();
 
-    // Returns true if the application should close
-    bool poll();
+    /**
+     * Polls for user events and calls the appropriate event handlers.
+     *
+     * @return `true` if the application should close (eg: the window's close button was clicked),
+     * `false` otherwise.
+     **/
+    [[nodiscard]] bool poll();
 
     ////////////////////////////////
     // Event handlers

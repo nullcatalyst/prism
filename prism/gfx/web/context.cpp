@@ -15,8 +15,8 @@ Context::Context(js::HtmlCanvasElement canvas)
     _surface_pixel_ratio = js::detail::gpu_get_pixel_ratio();
 }
 
-void Context::recreate_swap_chain(const PresentMode present_mode, const uint32_t surface_width,
-                                  const uint32_t surface_height, const float surface_pixel_ratio) {
+void Context::recreate_swap_chain(const uint32_t surface_width, const uint32_t surface_height,
+                                  const PresentMode present_mode, const float surface_pixel_ratio) {
     _surface_width  = surface_width;
     _surface_height = surface_height;
     js::detail::gpu_resize_context(_context.obj_id(), surface_width, surface_height);

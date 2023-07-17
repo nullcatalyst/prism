@@ -26,8 +26,8 @@ class Context final {
     static void enable_debug();
 
     constexpr Context() = default;
-    Context(const WGPUInstance instance, const WGPUSurface surface, const PresentMode present_mode,
-            const uint32_t surface_width, const uint32_t surface_height,
+    Context(const WGPUInstance instance, const WGPUSurface surface, const uint32_t surface_width,
+            const uint32_t surface_height, const PresentMode present_mode,
             const float surface_pixel_ratio = 1.0f);
 
     Context(const Context& other)            = delete;
@@ -49,19 +49,20 @@ class Context final {
     /**
      * Invalidate and recreate the swap chain.
      *
+     * @param surface_width The width of the renderable surface area.
+     * @param surface_height The height of the renderable surface area.
      * @param present_mode The present mode to use for the swap chain. Typically you want to use
      * `Fifo` for vsync, and `Mailbox` otherwise. `Immediate` can technically be faster (with the
      * caveat that it can result in screen tearing), but with modern variable refresh rate displays,
      * `Immediate` is no longer recommended.
-     * @param surface_width The width of the renderable surface area.
-     * @param surface_height The height of the renderable surface area.
      * @param surface_pixel_ratio The pixel ratio of the surface. This is not actually used when
      * recreating the swap chain, it is merely cached because it is a useful value for the user
      * rendering anything to have. Use `0.0f` to reuse the previous pixel ratio, as this is probably
      * the most common case.
      */
-    void recreate_swap_chain(const PresentMode present_mode, const uint32_t surface_width,
-                             const uint32_t surface_height, const float surface_pixel_ratio = 0.0f);
+    void recreate_swap_chain(const uint32_t surface_width, const uint32_t surface_height,
+                             const PresentMode present_mode,
+                             const float       surface_pixel_ratio = 0.0f);
 
     ////////////////////////////////
     // Initialization functions

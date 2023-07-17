@@ -3,6 +3,8 @@
 #include "prism/prism.hpp"
 #include "prism/wasm/export.hpp"
 
+#define USE_FULLSCREEN 0
+
 namespace {
 
 // I would recommend storing this somewhere rather than having a global variable.
@@ -49,9 +51,10 @@ fn fs_main(v: Varyings) -> @location(0) vec4<f32> {
 WASM_EXPORT("init")
 void init() {
 #if defined(PRISM_BACKEND_SDL2)
-    auto [new_app, new_ctx] = prism::create_window("hello_triangle", 1280, 720);
-    app                     = std::move(new_app);
-    ctx                     = std::move(new_ctx);
+    auto [new_app, new_ctx] =
+        prism::create_window("hello_triangle", 1280, 720, prism::gfx::PresentMode::Fifo);
+    app = std::move(new_app);
+    ctx = std::move(new_ctx);
 #elif defined(PRISM_BACKEND_WEB)
     auto [new_app, new_ctx] = prism::create_for_canvas("hello_triangle");
     app                     = std::move(new_app);
@@ -95,7 +98,11 @@ void init() {
     app.on_mouse_move([&](const float x, const float y) {});
     app.on_mouse_button_down([&](const prism::app::input::MouseButton button) {});
     app.on_mouse_button_up([&](const prism::app::input::MouseButton button) {});
-    app.on_key_down([&](const prism::app::input::Key key, const bool is_repeat) {});
+    app.on_key_down([&](const prism::app::input::Key key, const bool is_repeat) {
+        if (key == prism::app::input::Key::Escape) {
+            std::exit(0);
+        }
+    });
     app.on_key_up([&](const prism::app::input::Key key, const bool is_repeat) {});
 #if defined(PRISM_BACKEND_WEB)
     app.attach_event_listeners();
@@ -143,6 +150,16 @@ WASM_EXPORT("memFree") void memory_free(void* ptr) { return free(ptr); }
 int main(const int argc, char** const argv) {
     // Create the window and graphics context, and initialize resources.
     init();
+
+#if USE_FULLSCREEN
+    // Using a `Mailbox` present mode appears to be the only way to prevent a flash of a blank
+    // screen when entering fullscreen mode. Just make sure that the window is display size prior to
+    // rendering the first frame, so that the graphics context doesn't need to be resized.
+    const auto [display_width, display_height] = app.display_size();
+    app.resize(display_width, display_height);
+    ctx.recreate_swap_chain(display_width, display_height, prism::gfx::PresentMode::Mailbox);
+    app.set_fullscreen(true);
+#endif
 
     // Render the first frame then call show to prevent a flash of garbage contents that sometimes
     // happens on some systems.
