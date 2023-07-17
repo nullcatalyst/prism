@@ -89,8 +89,9 @@ TextureView load_png(Context& ctx, TextureFormat format, const void* data, const
     void*             texture_bytes =
         stbi__png_load(&s, &width, &height, &component_count, num_channels, &result);
 
-    if (result.bits_per_channel != bits_per_channel || component_count != num_channels) {
-        common::log_fatal("mismatch between requested and loaded texture format");
+    if (result.bits_per_channel != bits_per_channel) {
+        common::log_fatal("mismatch between requested and loaded texture format; expecting ",
+                          bits_per_channel, " bits per channel, but got ", result.bits_per_channel);
     }
 
     const auto texture = ctx.create_texture_2d(TextureUsage::CopyDst | TextureUsage::TextureBinding,
