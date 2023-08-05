@@ -10,8 +10,10 @@ cc_library(
         "//conditions:default": ["-Wno-deprecated-volatile"],
     }),
     defines = [
-        "GLM_FORCE_DEPTH_ZERO_TO_ONE=1",
-        "GLM_FORCE_SILENT_WARNINGS=1",
+        # "GLM_FORCE_ALIGNED_GENTYPES",
+        "GLM_FORCE_DEPTH_ZERO_TO_ONE",
+        "GLM_FORCE_INTRINSICS",
+        "GLM_FORCE_SILENT_WARNINGS",
     ],
     includes = ["glm"],
     textual_hdrs = glob(["glm/**/*.inl"]),
