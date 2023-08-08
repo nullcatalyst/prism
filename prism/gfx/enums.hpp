@@ -88,6 +88,11 @@ enum class CompareFunction : uint32_t {
     Always       = 0x00000008,
 };
 
+enum class ComputePassTimestampLocation : uint32_t {
+    Beginning = 0x00000000,
+    End       = 0x00000001,
+};
+
 enum class CullMode : uint32_t {
     None  = 0x00000000,
     Front = 0x00000001,

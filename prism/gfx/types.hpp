@@ -83,12 +83,41 @@ struct PipelineLayoutDescriptor : public Chainable, public Labelable {
     const WGPUBindGroupLayout* bind_group_layouts      = nullptr;
 };
 
-// RenderPipelineDescriptor
+// (shared pipeline descriptor structs)
 
 struct ConstantEntry : public Chainable {
     char const* key   = nullptr;
     double      value = 0.0;
 };
+
+// ComputePipelineDescriptor
+
+struct ProgrammableStageDescriptor : public Chainable {
+    WGPUShaderModule     module         = nullptr;
+    const char*          entry_point    = nullptr;
+    uint32_t             constant_count = 0;
+    const ConstantEntry* constants      = nullptr;
+};
+
+struct ComputePipelineDescriptor : public Chainable, public Labelable {
+    WGPUPipelineLayout          layout = nullptr;
+    ProgrammableStageDescriptor compute;
+};
+
+// ComputePassDescriptor
+
+struct ComputePassTimestampWrite {
+    WGPUQuerySet                 query_set   = nullptr;
+    uint32_t                     query_index = 0;
+    ComputePassTimestampLocation location    = ComputePassTimestampLocation::Beginning;
+};
+
+struct ComputePassDescriptor : public Chainable, public Labelable {
+    uint32_t                         timestamp_write_count;
+    const ComputePassTimestampWrite* timestamp_writes;
+};
+
+// RenderPipelineDescriptor
 
 struct VertexAttribute {
     VertexFormat format          = VertexFormat::Undefined;
