@@ -136,11 +136,34 @@ TextureView Context::swap_chain_view() {
     return TextureView{common::swap_chain_view(_device, _swap_chain)};
 }
 
-RenderPassEncoder Context::begin_render_pass(const RenderPassDescriptor& render_pass_desc) {
-    return RenderPassEncoder{common::begin_render_pass(
-        _device, _encoder, reinterpret_cast<const WGPURenderPassDescriptor&>(render_pass_desc), 0,
-        0, _surface_width, _surface_height)};
+// Compute pass
+
+ComputePassEncoder Context::begin_compute_pass(const ComputePassDescriptor& compute_pass_desc) {
+    return ComputePassEncoder{common::begin_compute_pass(
+        _device, _encoder, reinterpret_cast<const WGPUComputePassDescriptor&>(compute_pass_desc))};
 }
+
+void Context::end_compute_pass(const ComputePassEncoder& compute_pass) {
+    common::end_compute_pass(_device, compute_pass);
+    const_cast<ComputePassEncoder&>(compute_pass).UNSAFE_release_without_dtor();
+}
+
+void Context::set_pipeline(const ComputePassEncoder& compute_pass,
+                           const ComputePipeline&    pipeline) {
+    common::set_pipeline(_device, compute_pass, pipeline);
+}
+
+void Context::set_bind_group(const ComputePassEncoder& compute_pass, const uint32_t index,
+                             const BindGroup& bind_group) {
+    common::set_bind_group(_device, compute_pass, index, bind_group);
+}
+
+void Context::dispatch(const ComputePassEncoder& compute_pass, const uint32_t x, const uint32_t y,
+                       const uint32_t z) {
+    common::dispatch(_device, compute_pass, x, y, z);
+}
+
+// Render pass
 
 RenderPassEncoder Context::begin_render_pass(const RenderPassDescriptor& render_pass_desc,
                                              const uint32_t x, const uint32_t y,

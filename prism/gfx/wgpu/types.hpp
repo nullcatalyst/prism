@@ -24,6 +24,7 @@ PRISM_WGPU_TYPE_REF(SwapChain, wgpuSwapChainDrop);
 PRISM_WGPU_TYPE_REF(Queue,
                     (void));  // The queue is owned by the device, so we don't need to drop it.
 PRISM_WGPU_TYPE_REF(CommandEncoder, wgpuCommandEncoderDrop);
+PRISM_WGPU_TYPE_REF(ComputePassEncoder, wgpuComputePassEncoderDrop);
 PRISM_WGPU_TYPE_REF(RenderBundleEncoder, wgpuRenderBundleEncoderDrop);
 PRISM_WGPU_TYPE_REF(RenderPassEncoder, wgpuRenderPassEncoderDrop);
 PRISM_WGPU_TYPE_REF(BindGroupLayout, wgpuBindGroupLayoutDrop);

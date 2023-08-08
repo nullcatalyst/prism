@@ -231,20 +231,20 @@ WGPUPipelineLayout create_pipeline_layout(WGPUDevice                          de
     return layout;
 }
 
-WGPURenderPipeline create_render_pipeline(WGPUDevice                          device,
-                                          const WGPURenderPipelineDescriptor& pipeline_desc) {
-    PRISM_DEBUG_SCOPE_START(device);
-    const WGPURenderPipeline pipeline = wgpuDeviceCreateRenderPipeline(device, &pipeline_desc);
-    PRISM_DEBUG_SCOPE_END(device, "creating render pipline");
-    PRISM_DEBUG_RESULT(pipeline);
-    return pipeline;
-}
-
 WGPUComputePipeline create_compute_pipeline(WGPUDevice                           device,
                                             const WGPUComputePipelineDescriptor& pipeline_desc) {
     PRISM_DEBUG_SCOPE_START(device);
     const WGPUComputePipeline pipeline = wgpuDeviceCreateComputePipeline(device, &pipeline_desc);
     PRISM_DEBUG_SCOPE_END(device, "creating compute pipline");
+    PRISM_DEBUG_RESULT(pipeline);
+    return pipeline;
+}
+
+WGPURenderPipeline create_render_pipeline(WGPUDevice                          device,
+                                          const WGPURenderPipelineDescriptor& pipeline_desc) {
+    PRISM_DEBUG_SCOPE_START(device);
+    const WGPURenderPipeline pipeline = wgpuDeviceCreateRenderPipeline(device, &pipeline_desc);
+    PRISM_DEBUG_SCOPE_END(device, "creating render pipline");
     PRISM_DEBUG_RESULT(pipeline);
     return pipeline;
 }
@@ -456,6 +456,8 @@ WGPUTextureView swap_chain_view(WGPUDevice device, WGPUSwapChain swap_chain) {
     return texture_view;
 }
 
+// Render bundle
+
 WGPURenderBundleEncoder begin_render_bundle(
     WGPUDevice device, const WGPURenderBundleEncoderDescriptor& render_bundle_encoder_desc) {
     PRISM_DEBUG_SCOPE_START(device);
@@ -551,6 +553,47 @@ void draw_indexed_indirect(WGPUDevice device, WGPURenderBundleEncoder render_bun
                                                indirect_offset);
     PRISM_DEBUG_SCOPE_END(device, "drawing indexed indirect");
 }
+
+// Compute pass
+
+WGPUComputePassEncoder begin_compute_pass(WGPUDevice device, WGPUCommandEncoder encoder,
+                                          const WGPUComputePassDescriptor& compute_pass_desc) {
+    PRISM_DEBUG_SCOPE_START(device);
+    const WGPUComputePassEncoder compute_pass =
+        wgpuCommandEncoderBeginComputePass(encoder, &compute_pass_desc);
+    PRISM_DEBUG_RESULT(compute_pass);
+    PRISM_DEBUG_SCOPE_END(device, "starting compute pass");
+    return compute_pass;
+}
+
+void end_compute_pass(WGPUDevice device, WGPUComputePassEncoder compute_pass) {
+    PRISM_DEBUG_SCOPE_START(device);
+    wgpuComputePassEncoderEnd(compute_pass);
+    PRISM_DEBUG_SCOPE_END(device, "ending compute pass");
+}
+
+void set_pipeline(WGPUDevice device, WGPUComputePassEncoder compute_pass,
+                  WGPUComputePipeline pipeline) {
+    PRISM_DEBUG_SCOPE_START(device);
+    wgpuComputePassEncoderSetPipeline(compute_pass, pipeline);
+    PRISM_DEBUG_SCOPE_END(device, "setting pipeline");
+}
+
+void set_bind_group(WGPUDevice device, WGPUComputePassEncoder compute_pass, const uint32_t slot,
+                    WGPUBindGroup bind_group) {
+    PRISM_DEBUG_SCOPE_START(device);
+    wgpuComputePassEncoderSetBindGroup(compute_pass, slot, bind_group, 0, nullptr);
+    PRISM_DEBUG_SCOPE_END(device, "setting bind group");
+}
+
+void dispatch(WGPUDevice device, WGPUComputePassEncoder compute_pass, const uint32_t x,
+              const uint32_t y, const uint32_t z) {
+    PRISM_DEBUG_SCOPE_START(device);
+    wgpuComputePassEncoderDispatchWorkgroups(compute_pass, x, y, z);
+    PRISM_DEBUG_SCOPE_END(device, "dispatching workgroups");
+}
+
+// Render pass
 
 WGPURenderPassEncoder begin_render_pass(WGPUDevice device, WGPUCommandEncoder encoder,
                                         const WGPURenderPassDescriptor& render_pass_desc,

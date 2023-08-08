@@ -69,10 +69,11 @@ class Context final {
 
     BindGroupLayout create_bind_group_layout(
         const BindGroupLayoutDescriptor& bind_group_layout_desc);
-    BindGroup      create_bind_group(const BindGroupDescriptor& bind_group_desc);
-    ShaderModule   create_shader_module(const char* source);
-    PipelineLayout create_pipeline_layout(const PipelineLayoutDescriptor& pipeline_layout_desc);
-    RenderPipeline create_render_pipeline(const RenderPipelineDescriptor& render_pipeline_desc);
+    BindGroup       create_bind_group(const BindGroupDescriptor& bind_group_desc);
+    ShaderModule    create_shader_module(const char* source);
+    PipelineLayout  create_pipeline_layout(const PipelineLayoutDescriptor& pipeline_layout_desc);
+    ComputePipeline create_compute_pipeline(const ComputePipelineDescriptor& compute_pipeline_desc);
+    RenderPipeline  create_render_pipeline(const RenderPipelineDescriptor& render_pipeline_desc);
 
     Buffer create_buffer(const BufferUsage usage, const uint64_t buffer_size,
                          const void* data = nullptr, const uint64_t data_size = 0,
@@ -103,7 +104,20 @@ class Context final {
     void        present_frame();
     TextureView swap_chain_view();
 
-    RenderPassEncoder begin_render_pass(const RenderPassDescriptor& render_pass_desc);
+    // Compute pass
+
+    ComputePassEncoder begin_compute_pass(const ComputePassDescriptor& compute_pass_desc);
+    void               end_compute_pass(const ComputePassEncoder& compute_pass);
+
+    void set_pipeline(const ComputePassEncoder& compute_pass, const ComputePipeline& pipeline);
+    void set_bind_group(const ComputePassEncoder& compute_pass, const uint32_t index,
+                        const BindGroup& bind_group);
+
+    void dispatch(const ComputePassEncoder& compute_pass, const uint32_t x, const uint32_t y = 1,
+                  const uint32_t z = 1);
+
+    // Render pass
+
     RenderPassEncoder begin_render_pass(const RenderPassDescriptor& render_pass_desc,
                                         const uint32_t x, const uint32_t y, const uint32_t width,
                                         const uint32_t height);
